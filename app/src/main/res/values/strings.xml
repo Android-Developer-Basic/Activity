@@ -1,4 +1,13 @@
 <resources>
     <string name="app_name">Activities</string>
     <string name="title_send">Отправить</string>
+    <string name="takePhoto">Take photo</string>
+    <string name="chosePhoto">Chose photo</string>
+    <string name="textForAlertDialog">To take photo You need to allow this app access to the camera.</string>
+
+    <string-array name="dialogWindowArray">
+        <item>Take photo</item>
+        <item>Chose photo</item>
+    </string-array>
 </resources>
+
