@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context=".SenderActivity">
+
+    <Space
+        android:id="@+id/space3"
+        android:layout_height="0dp"
+        android:layout_width="match_parent"
+        android:layout_weight="1"/>
+    <Button
+        android:id="@+id/buttonToGoogleMaps"
+        android:layout_height="wrap_content"
+        android:layout_width="match_parent"
+        android:gravity="center"
+        android:text="@string/to_google_map"
+     />
+
+    <Space
+        android:id="@+id/space"
+        android:layout_height="0dp"
+        android:layout_width="match_parent"
+        android:layout_weight="0.2"/>
+
+    <Button
+        android:id="@+id/buttonSendEmail"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:text="@string/send_e_mail" />
+    <Space
+        android:layout_height="0dp"
+        android:layout_width="match_parent"
+        android:layout_weight="0.2"/>
+    <Button
+        android:id="@+id/buttonOpenReceiver"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:text="@string/open_receiver" />
+    <Space
+        android:id="@+id/space4"
+        android:layout_height="0dp"
+        android:layout_width="match_parent"
+        android:layout_weight="0.3"/>
+
+
+</LinearLayout>
