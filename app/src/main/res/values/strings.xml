@@ -1,4 +1,17 @@
 <resources>
     <string name="app_name">Activities</string>
     <string name="title_send">Отправить</string>
+    <string name="person_name">Имя</string>
+    <string name="person_last_name">Фамилия</string>
+    <string name="person_age"> Возраст</string>
+    <string name="OK">Применить</string>
+    <string name="permission_explanation">Для того, чтобы Вы смогли сделать фотографию и использовать её в своём профиле, приложению необходимо получить разрешение на использование камеры.\n\nОткрыть системные настройки?</string>
+    <string name="to_permissions_title">Требуется разрешение</string>
+    <string name="open_settings">Открыть настройки</string>
+    <string name="no_camera_permission">Нет доступа к камере</string>
+    <string name="no_Telegram">Приложение Telegram не установлено!</string>
+    <string name="cancel_dialog">Отмена</string>
+    <string name="allow_access">Дать доступ</string>
+    <string name="choose_photo">Выбрать фото</string>
+    <string name="make_photo">Сделать фото</string>
 </resources>
