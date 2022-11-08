@@ -1,4 +1,4 @@
-package otus.gpb.homework.activities.sender
+package otus.gpb.homework.activities.receiver
 
 import android.os.Parcelable
 import kotlinx.parcelize.Parcelize

@@ -8,7 +8,6 @@ import android.os.Bundle
 import android.view.View
 import android.view.View.OnClickListener
 import android.widget.Toast
-import dto.MovieDescriptionDTO
 
 class SenderActivity : AppCompatActivity(), OnClickListener {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -54,10 +53,10 @@ class SenderActivity : AppCompatActivity(), OnClickListener {
 
     private fun openReceiver() {
         // отошел от требования ТЗ. Передал как ДТО
-        val movieDescription = MovieDescriptionDTO(
+        val movieDescription = Payload(
             title = "Славные парни",
             description = "Что бывает, когда напарником брутального костолома становится субтильный лопух? Наемный охранник Джексон Хили и частный детектив Холланд Марч вынуждены работать в паре, чтобы распутать плевое дело о пропавшей девушке, которое оборачивается преступлением века. Смогут ли парни разгадать сложный ребус, если у каждого из них – свои, весьма индивидуальные методы.",
-            year = 2016
+            year = "2016"
         )
         val intent = Intent(Intent.ACTION_SEND).apply {
             type = "text/plain"
