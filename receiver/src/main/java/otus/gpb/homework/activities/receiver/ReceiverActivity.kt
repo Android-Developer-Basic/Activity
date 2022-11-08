@@ -8,7 +8,6 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.content.res.AppCompatResources
 
 class ReceiverActivity : AppCompatActivity() {
-    private val NOT_FOUND_TEMPLATE: String = " text is not found"
     private lateinit var posterImageView: ImageView
     private lateinit var titleTextView: TextView
     private lateinit var yearTextView: TextView
@@ -25,7 +24,7 @@ class ReceiverActivity : AppCompatActivity() {
     }
 
     private fun processIntent(intent: Intent) {
-        val title = intent.extras?.get("title")?.toString() ?: "Title$NOT_FOUND_TEMPLATE"
+        val title = intent.getStringExtra("title")
         val drawable = when (title) {
             "Интерстеллар" -> AppCompatResources.getDrawable(
                 applicationContext,
@@ -37,11 +36,10 @@ class ReceiverActivity : AppCompatActivity() {
             )
             else -> null
         }
-        posterImageView.setImageDrawable(drawable)
+        if (drawable != null) posterImageView.setImageDrawable(drawable)
         titleTextView.text = title
-        yearTextView.text = intent.extras?.get("year")?.toString() ?: "Year$NOT_FOUND_TEMPLATE"
-        descriptionTextView.text =
-            intent.extras?.get("description")?.toString() ?: "Description$NOT_FOUND_TEMPLATE"
+        yearTextView.text = intent.getStringExtra("year")
+        descriptionTextView.text = intent.getStringExtra("description")
     }
 
 }
