@@ -17,7 +17,26 @@ class ReceiverActivity : AppCompatActivity() {
         findViewById<TextView>(R.id.descriptionTextView).text = description
         findViewById<TextView>(R.id.titleTextView).text = title
         findViewById<TextView>(R.id.yearTextView).text = year
-        // Пока не ясно как смапить ресурсы
-        findViewById<ImageView>(R.id.posterImageView).setImageDrawable(getDrawable(0))
+
+        if (title !== null) {
+            val resourceId = getIdByTitle(title)
+            findViewById<ImageView>(R.id.posterImageView).setImageDrawable(getDrawable(resourceId))
+        }
+    }
+
+    private fun getIdByTitle(title: String): Int {
+        return when (title) {
+            "Славные парни" -> {
+                this.resources.getIdentifier(
+                    "niceguys", "drawable", packageName
+                )
+            }
+            "Интерстеллар" -> {
+                this.resources.getIdentifier(
+                    "interstellar", "drawable", packageName
+                )
+            }
+            else -> 0
+        }
     }
 }
