@@ -10,12 +10,14 @@ class ReceiverActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_receiver)
-        intent.getParcelableExtra<Payload>("data")?.let {
-            findViewById<TextView>(R.id.descriptionTextView).text = it.description
-            findViewById<TextView>(R.id.titleTextView).text = it.title
-            findViewById<TextView>(R.id.yearTextView).text = it.year
-            // Пока не ясно как смапить ресурсы
-            findViewById<ImageView>(R.id.posterImageView).setImageDrawable(getDrawable(0))
-        }
+        val title = intent.getStringExtra("title")
+        val year = intent.getStringExtra("year")
+        val description = intent.getStringExtra("description")
+
+        findViewById<TextView>(R.id.descriptionTextView).text = description
+        findViewById<TextView>(R.id.titleTextView).text = title
+        findViewById<TextView>(R.id.yearTextView).text = year
+        // Пока не ясно как смапить ресурсы
+        findViewById<ImageView>(R.id.posterImageView).setImageDrawable(getDrawable(0))
     }
 }
