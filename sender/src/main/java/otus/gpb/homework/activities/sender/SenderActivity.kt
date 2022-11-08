@@ -13,6 +13,16 @@ class SenderActivity : AppCompatActivity(), OnClickListener {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_sender)
+        findViewById<View>(R.id.toGoogleMap).setOnClickListener {
+            onClick(it)
+        }
+        findViewById<View>(R.id.sendEmail).setOnClickListener {
+            onClick(it)
+        }
+        findViewById<View>(R.id.openReciever).setOnClickListener {
+            onClick(it)
+        }
+
     }
 
     private fun executeIntent(intent: Intent) {
