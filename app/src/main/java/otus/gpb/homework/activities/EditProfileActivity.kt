@@ -3,20 +3,20 @@ package otus.gpb.homework.activities
 import android.graphics.BitmapFactory
 import android.net.Uri
 import android.os.Bundle
-import android.widget.ImageView
 import androidx.appcompat.app.AppCompatActivity
-import androidx.appcompat.widget.Toolbar
+import otus.gpb.homework.activities.databinding.ActivityEditProfileBinding
 
 class EditProfileActivity : AppCompatActivity() {
 
-    private lateinit var imageView: ImageView
+    private lateinit var binding: ActivityEditProfileBinding
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_edit_profile)
-        imageView = findViewById(R.id.imageview_photo)
+        binding = ActivityEditProfileBinding.inflate(layoutInflater).also {
+            setContentView(it.root)
+        }
 
-        findViewById<Toolbar>(R.id.toolbar).apply {
+        binding.toolbar.apply {
             inflateMenu(R.menu.menu)
             setOnMenuItemClickListener {
                 when (it.itemId) {
@@ -35,7 +35,7 @@ class EditProfileActivity : AppCompatActivity() {
      */
     private fun populateImage(uri: Uri) {
         val bitmap = BitmapFactory.decodeStream(contentResolver.openInputStream(uri))
-        imageView.setImageBitmap(bitmap)
+        binding.imageviewPhoto.setImageBitmap(bitmap)
     }
 
     private fun openSenderApp() {
