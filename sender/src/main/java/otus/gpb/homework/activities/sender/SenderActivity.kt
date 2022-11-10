@@ -17,16 +17,6 @@ class SenderActivity : AppCompatActivity() {
             setContentView(it.root)
         }
 
-        val title = "Славные парни"
-        val year = "2016"
-        val description = "Что бывает, когда напарником брутального костолома " +
-                "становится субтильный лопух?" +
-                " Наемный охранник Джексон Хили и частный детектив Холланд Марч вынуждены " +
-                "работать в паре, чтобы распутать плевое дело о пропавшей девушке, " +
-                "которое оборачивается преступлением века. " +
-                "Смогут ли парни разгадать сложный ребус, если у каждого из них – свои," +
-                " весьма индивидуальные методы."
-
         binding.btnToGoogleMaps.setOnClickListener {
             val geoUriString = "geo:0,0?q=Moscow+restaurants&z=8"
             val geoUri = Uri.parse(geoUriString)
@@ -54,9 +44,9 @@ class SenderActivity : AppCompatActivity() {
             val intent = Intent(Intent.ACTION_SEND).apply {
                 addCategory(Intent.CATEGORY_DEFAULT)
                 type = "text/plain"
-                putExtra("title", title)
-                putExtra("year", year)
-                putExtra("description", description)
+                putExtra("title", getString(R.string.title))
+                putExtra("year", getString(R.string.year))
+                putExtra("description", getString(R.string.description))
             }
 
             startActivity(intent)
