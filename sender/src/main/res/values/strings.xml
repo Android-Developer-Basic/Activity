@@ -1,3 +1,10 @@
 <resources>
     <string name="app_name">Sender</string>
+    <string name="to_google_maps">To Google Maps</string>
+    <string name="send_email">Send Email</string>
+    <string name="open_receiver">Open Receiver</string>
+
+    <string name="title">Славные парни</string>
+    <string name="year">2016</string>
+    <string name="description">Что бывает, когда напарником брутального костолома становится субтильный лопух? Наемный охранник Джексон Хили и частный детектив Холланд Марч вынуждены работать в паре, чтобы распутать плевое дело о пропавшей девушке, которое оборачивается преступлением века. Смогут ли парни разгадать сложный ребус, если у каждого из них – свои, весьма индивидуальные методы.</string>
 </resources>
