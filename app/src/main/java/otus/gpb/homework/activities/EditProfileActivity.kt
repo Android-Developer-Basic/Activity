@@ -25,6 +25,11 @@ class EditProfileActivity : AppCompatActivity() {
                     showSettingsDialog()
         }
 
+    private val imageContract =
+        registerForActivityResult(ActivityResultContracts.GetContent()) {
+            it?.let { populateImage(it) }
+        }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityEditProfileBinding.inflate(layoutInflater).also {
@@ -59,6 +64,7 @@ class EditProfileActivity : AppCompatActivity() {
                     cameraContract.launch(Manifest.permission.CAMERA)
             }
             setPositiveButton(resources.getString(R.string.choose_photo)) { _, _ ->
+                imageContract.launch("image/*")
             }
         }.show()
     }
