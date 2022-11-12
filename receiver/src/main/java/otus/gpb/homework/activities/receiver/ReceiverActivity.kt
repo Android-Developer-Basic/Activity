@@ -26,16 +26,8 @@ class ReceiverActivity : AppCompatActivity() {
 
     private fun getIdByTitle(title: String): Int {
         return when (title) {
-            "Славные парни" -> {
-                this.resources.getIdentifier(
-                    "niceguys", "drawable", packageName
-                )
-            }
-            "Интерстеллар" -> {
-                this.resources.getIdentifier(
-                    "interstellar", "drawable", packageName
-                )
-            }
+            "Славные парни" -> R.drawable.niceguys
+            "Интерстеллар" -> R.drawable.interstellar
             else -> 0
         }
     }
