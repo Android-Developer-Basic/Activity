@@ -11,4 +11,9 @@
     <string name="permission_message">Данное разрешение нужно чтобы установить картинку</string>
     <string name="photo_permission">Настроить доступ</string>
     <string name="open_settings">Открыть настройки</string>
+    <string name="apply_button">Применить</string>
+    <string name="name">Имя</string>
+    <string name="second_name">Фамилия</string>
+    <string name="age">Возраст</string>
+    <string name="edit_profile">Редактировать профиль</string>
 </resources>

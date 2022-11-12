@@ -1,11 +1,13 @@
 package otus.gpb.homework.activities
 
 import android.Manifest
+import android.content.ActivityNotFoundException
 import android.content.Intent
 import android.graphics.BitmapFactory
 import android.net.Uri
 import android.os.Bundle
 import android.provider.Settings
+import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.content.res.AppCompatResources
@@ -27,8 +29,17 @@ class EditProfileActivity : AppCompatActivity() {
 
     private val imageContract =
         registerForActivityResult(ActivityResultContracts.GetContent()) {
-            it?.let { populateImage(it) }
+            it?.let {
+//                imageURI = it
+                populateImage(it)
+            }
         }
+
+    private val fillFormContract = registerForActivityResult(FillFormContract()) { result ->
+        updateFields(result)
+    }
+
+    private var imageURI: Uri? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -51,6 +62,10 @@ class EditProfileActivity : AppCompatActivity() {
 
         binding.imageviewPhoto.setOnClickListener {
             showAlertDialog()
+        }
+
+        binding.button4.setOnClickListener {
+            fillFormContract.launch("")
         }
     }
 
@@ -103,6 +118,16 @@ class EditProfileActivity : AppCompatActivity() {
         )
     }
 
+    private fun updateFields(user: UserModel?) {
+        user?.let {
+            val (fName, lName, age) = it
+
+            binding.textviewName.text = fName
+            binding.textviewSurname.text = lName
+            binding.textviewAge.text = age.toString()
+        }
+    }
+
     /**
      * Используйте этот метод чтобы отобразить картинку полученную из медиатеки в ImageView
      */
@@ -112,6 +137,23 @@ class EditProfileActivity : AppCompatActivity() {
     }
 
     private fun openSenderApp() {
-        TODO("В качестве реализации метода отправьте неявный Intent чтобы поделиться профилем. В качестве extras передайте заполненные строки и картинку")
+        try {
+            val intent = Intent(Intent.ACTION_SEND).apply {
+                setPackage("org.telegram.messenger")
+                type = "image/*"
+                imageURI?.let {
+                    putExtra(Intent.EXTRA_STREAM, imageURI)
+                    addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
+                }
+                putExtra(
+                    Intent.EXTRA_TEXT,
+                    "Name: ${binding.textviewName.text}\nSurName: ${binding.textviewSurname.text}\nAge: ${binding.textviewAge.text}"
+                )
+            }
+
+            startActivity(intent)
+        } catch (e: ActivityNotFoundException) {
+            Toast.makeText(this, "Telegram не установлен", Toast.LENGTH_SHORT).show()
+        }
     }
 }
