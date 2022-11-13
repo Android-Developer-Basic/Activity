@@ -1,5 +1,6 @@
 package otus.gpb.homework.activities
 
+import android.content.Context
 import android.graphics.BitmapFactory
 import android.net.Uri
 import android.os.Bundle
@@ -11,10 +12,7 @@ import com.google.android.material.dialog.MaterialAlertDialogBuilder
 class EditProfileActivity : AppCompatActivity() {
 
     private lateinit var imageView: ImageView
-    private val alertChoices = arrayOf(
-        resources.getString(R.string.choose_photo),
-        resources.getString(R.string.make_photo)
-    )
+    private lateinit var alertChoices: Array<String>
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -22,6 +20,11 @@ class EditProfileActivity : AppCompatActivity() {
         imageView = findViewById<ImageView?>(R.id.imageview_photo).apply {
             setOnClickListener { showAlertDialog() }
         }
+
+        alertChoices = arrayOf(
+            resources.getString(R.string.choose_photo),
+            resources.getString(R.string.make_photo)
+        )
 
         findViewById<Toolbar>(R.id.toolbar).apply {
             inflateMenu(R.menu.menu)
