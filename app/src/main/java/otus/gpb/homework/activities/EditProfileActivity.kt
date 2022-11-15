@@ -31,10 +31,7 @@ class EditProfileActivity : AppCompatActivity() {
             if (granted) {
                 imageUri = null
                 imageView.setImageDrawable(
-                    AppCompatResources.getDrawable(
-                        applicationContext,
-                        R.drawable.cat
-                    )
+                    AppCompatResources.getDrawable(this, R.drawable.cat)
                 )
             } else {
                 if (!shouldShowRequestPermissionRationale(android.Manifest.permission.CAMERA)) {
