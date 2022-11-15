@@ -4,7 +4,7 @@ import android.graphics.BitmapFactory
 import android.net.Uri
 import android.os.Bundle
 import android.widget.ImageView
-import androidx.activity.result.contract.ActivityResultContracts
+import androidx.activity.result.contract.ActivityResultContracts.*
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
 import androidx.core.content.res.ResourcesCompat
@@ -16,9 +16,13 @@ class EditProfileActivity : AppCompatActivity() {
     private lateinit var alertChoices: Array<String>
 
     private val requestCameraPermissionLauncher = registerForActivityResult(
-        ActivityResultContracts.RequestPermission(),
+        RequestPermission(),
         ::permissionResultHandler
     )
+
+    private val getPictureFromLocalLibrary = registerForActivityResult(GetContent()) {
+        uri -> if (uri !== null) populateImage(uri)
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -67,8 +71,8 @@ class EditProfileActivity : AppCompatActivity() {
             .setTitle(resources.getString(R.string.alert_title))
             .setItems(alertChoices) { _, index: Int ->
                     when (index) {
+                        0 -> getPictureFromLocalLibrary.launch("image/*")
                         1 -> requestCameraPermissionLauncher.launch(android.Manifest.permission.CAMERA)
-                        2 -> {}
                         else -> {}
                     }
             }
