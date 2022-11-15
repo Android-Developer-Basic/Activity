@@ -1,0 +1,11 @@
+<resources>
+
+    <dimen name="button_text">25sp</dimen>
+
+
+    <dimen name="padding">10dp</dimen>
+    <dimen name="margin_chain">60dp</dimen>
+    <dimen name="from_top">130dp</dimen>
+    <dimen name="button_width">300dp</dimen>
+
+</resources>
