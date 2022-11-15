@@ -4,4 +4,7 @@
     <string name="make_photo">Сделать фото</string>
     <string name="choose_photo">Выбрать фото</string>
     <string name="alert_title">Выберите действие</string>
+    <string name="why_we_need_permission">Нам нужен доступ к камере</string>
+    <string name="give_permission">Дать разрешение</string>
+    <string name="cancel_give_permission">Отменить</string>
 </resources>

@@ -1,18 +1,24 @@
 package otus.gpb.homework.activities
 
-import android.content.Context
 import android.graphics.BitmapFactory
 import android.net.Uri
 import android.os.Bundle
 import android.widget.ImageView
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
+import androidx.core.content.res.ResourcesCompat
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 
 class EditProfileActivity : AppCompatActivity() {
 
     private lateinit var imageView: ImageView
     private lateinit var alertChoices: Array<String>
+
+    private val requestCameraPermissionLauncher = registerForActivityResult(
+        ActivityResultContracts.RequestPermission(),
+        ::permissionResultHandler
+    )
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -40,13 +46,29 @@ class EditProfileActivity : AppCompatActivity() {
         }
     }
 
+    private fun permissionResultHandler(granted: Boolean) {
+        if (granted) {
+            findViewById<ImageView>(R.id.imageview_photo)
+                .setImageDrawable(ResourcesCompat.getDrawable(resources, R.drawable.cat, null))
+        } else {
+            if (shouldShowRequestPermissionRationale(android.Manifest.permission.CAMERA)) {
+                MaterialAlertDialogBuilder(this)
+                    .setTitle(R.string.why_we_need_permission)
+                    .setPositiveButton(R.string.give_permission
+                    ) { _, _ -> requestCameraPermissionLauncher.launch(android.Manifest.permission.CAMERA) }
+                    .setNegativeButton(R.string.cancel_give_permission, null)
+                    .show()
+            }
+        }
+    }
+
     private fun showAlertDialog() {
         MaterialAlertDialogBuilder(this)
             .setTitle(resources.getString(R.string.alert_title))
             .setItems(alertChoices) { _, index: Int ->
                     when (index) {
-                        0 -> {}
-                        1 -> {}
+                        1 -> requestCameraPermissionLauncher.launch(android.Manifest.permission.CAMERA)
+                        2 -> {}
                         else -> {}
                     }
             }
