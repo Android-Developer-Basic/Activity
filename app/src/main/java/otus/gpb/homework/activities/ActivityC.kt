@@ -29,9 +29,7 @@ class ActivityC : AppCompatActivity() {
         }
         val buttonCloseStack = findViewById<Button>(R.id.buttonclosestack)
         buttonCloseStack.setOnClickListener {
-            val intent = Intent(this, ActivityA::class.java)
-            intent.flags = FLAG_ACTIVITY_TASK_ON_HOME
-            startActivity(intent)
+            finishAffinity()
         }
     }
 }
