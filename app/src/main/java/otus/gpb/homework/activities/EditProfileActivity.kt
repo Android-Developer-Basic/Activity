@@ -6,8 +6,6 @@ import android.content.pm.PackageManager.NameNotFoundException
 import android.graphics.BitmapFactory
 import android.net.Uri
 import android.os.Bundle
-import android.view.View
-import android.view.View.OnClickListener
 import android.widget.Button
 import android.widget.ImageView
 import android.widget.TextView
@@ -19,7 +17,7 @@ import androidx.core.content.res.ResourcesCompat
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import otus.gpb.homework.activities.dto.User
 
-class EditProfileActivity : AppCompatActivity(), OnClickListener {
+class EditProfileActivity : AppCompatActivity() {
 
     private lateinit var imageView: ImageView
     private lateinit var alertChoices: Array<String>
@@ -60,6 +58,13 @@ class EditProfileActivity : AppCompatActivity(), OnClickListener {
         lastName = findViewById(R.id.textview_surname)
         age = findViewById(R.id.textview_age)
         editBtn = findViewById(R.id.button4)
+
+        imageView.apply {
+            setOnClickListener { showAlertDialog() }
+        }
+        editBtn.apply {
+            setOnClickListener { getFillForm.launch("") }
+        }
 
         alertChoices = arrayOf(
             resources.getString(R.string.choose_photo),
@@ -137,13 +142,6 @@ class EditProfileActivity : AppCompatActivity(), OnClickListener {
                 "No Telegram app found on system",
                 Toast.LENGTH_LONG
             ).show()
-        }
-    }
-
-    override fun onClick(view: View?) {
-        when (view?.id) {
-            R.id.button4 -> getFillForm.launch("")
-            R.id.imageview_photo -> showAlertDialog()
         }
     }
 }
