@@ -13,16 +13,9 @@ class SenderActivity : AppCompatActivity(), OnClickListener {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_sender)
-        findViewById<View>(R.id.toGoogleMap).setOnClickListener {
-            onClick(it)
-        }
-        findViewById<View>(R.id.sendEmail).setOnClickListener {
-            onClick(it)
-        }
-        findViewById<View>(R.id.openReciever).setOnClickListener {
-            onClick(it)
-        }
-
+        findViewById<View>(R.id.toGoogleMap)
+        findViewById<View>(R.id.sendEmail)
+        findViewById<View>(R.id.openReciever)
     }
 
     private fun executeIntent(intent: Intent) {
@@ -40,11 +33,7 @@ class SenderActivity : AppCompatActivity(), OnClickListener {
         val intent = Intent(Intent.ACTION_VIEW, Uri.parse("geo:0,0?q=${param}")).apply {
             setPackage("com.google.android.apps.maps")
         }
-        try {
-            startActivity(intent)
-        } catch (e: ActivityNotFoundException) {
-            executeIntent(intent)
-        }
+        executeIntent(intent)
     }
 
     private fun sendEmail() {
@@ -54,11 +43,7 @@ class SenderActivity : AppCompatActivity(), OnClickListener {
             putExtra(Intent.EXTRA_SUBJECT, "Home work")
             putExtra(Intent.EXTRA_TEXT, "Home work Activity 2")
         }
-        try {
-            startActivity(intent)
-        } catch (e: ActivityNotFoundException) {
-            executeIntent(intent)
-        }
+        executeIntent(intent)
     }
 
     private fun openReceiver() {

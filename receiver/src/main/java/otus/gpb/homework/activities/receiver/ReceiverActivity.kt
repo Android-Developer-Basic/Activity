@@ -18,7 +18,7 @@ class ReceiverActivity : AppCompatActivity() {
         findViewById<TextView>(R.id.titleTextView).text = title
         findViewById<TextView>(R.id.yearTextView).text = year
 
-        if (title !== null) {
+        if (title != null) {
             val resourceId = getIdByTitle(title)
             findViewById<ImageView>(R.id.posterImageView).setImageDrawable(getDrawable(resourceId))
         }
