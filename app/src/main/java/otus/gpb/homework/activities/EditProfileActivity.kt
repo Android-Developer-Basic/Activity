@@ -20,7 +20,6 @@ import otus.gpb.homework.activities.dto.User
 class EditProfileActivity : AppCompatActivity() {
 
     private lateinit var imageView: ImageView
-    private lateinit var alertChoices: Array<String>
     private lateinit var firstName: TextView
     private lateinit var lastName: TextView
     private lateinit var age: TextView
@@ -59,17 +58,10 @@ class EditProfileActivity : AppCompatActivity() {
         age = findViewById(R.id.textview_age)
         editBtn = findViewById(R.id.button4)
 
-        imageView.apply {
-            setOnClickListener { showAlertDialog() }
-        }
-        editBtn.apply {
-            setOnClickListener { getFillForm.launch("") }
-        }
+        imageView.setOnClickListener { showAlertDialog() }
+        editBtn.setOnClickListener { getFillForm.launch("") }
 
-        alertChoices = arrayOf(
-            resources.getString(R.string.choose_photo),
-            resources.getString(R.string.make_photo)
-        )
+
 
         findViewById<Toolbar>(R.id.toolbar).apply {
             inflateMenu(R.menu.menu)
@@ -103,6 +95,10 @@ class EditProfileActivity : AppCompatActivity() {
     }
 
     private fun showAlertDialog() {
+        val alertChoices = arrayOf(
+            resources.getString(R.string.choose_photo),
+            resources.getString(R.string.make_photo)
+        )
         MaterialAlertDialogBuilder(this)
             .setTitle(resources.getString(R.string.alert_title))
             .setItems(alertChoices) { _, index: Int ->

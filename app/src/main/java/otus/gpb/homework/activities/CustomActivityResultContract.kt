@@ -12,7 +12,7 @@ class CustomActivityResultContract: ActivityResultContract<String, User?>() {
     }
 
     override fun parseResult(resultCode: Int, intent: Intent?): User? {
-        if (intent === null) return null
+        if (intent == null) return null
         return intent.getParcelableExtra(USER_DTO_EXTRA)
     }
 
