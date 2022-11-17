@@ -30,7 +30,7 @@ class EditProfileActivity : AppCompatActivity() {
     private val imageContract =
         registerForActivityResult(ActivityResultContracts.GetContent()) {
             it?.let {
-//                imageURI = it
+                imageURI = it
                 populateImage(it)
             }
         }
