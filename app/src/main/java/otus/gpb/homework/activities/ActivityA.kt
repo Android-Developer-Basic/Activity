@@ -1,9 +1,11 @@
 package otus.gpb.homework.activities
 
 import android.content.Intent
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.Button
+import androidx.appcompat.app.AppCompatActivity
+import com.example.homework.R
+
 
 class ActivityA : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -11,11 +13,10 @@ class ActivityA : AppCompatActivity() {
         setContentView(R.layout.activity_a)
         val button = findViewById<Button>(R.id.b_openB)
 
-        button.setOnClickListener{
+        button.setOnClickListener {
             val intent = Intent(this, ActivityB::class.java)
             intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_MULTIPLE_TASK)
             startActivity(intent)
-
         }
     }
 }
