@@ -12,12 +12,13 @@
         <activity
             android:name=".ReceiverActivity"
             android:exported="true"
-            android:label="singleTask launchMode"
-            android:launchMode="singleTask">
+            android:label="singleTask launchMode">
             <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-                <action android:name="android.intent.action.SENDTO" />
+                <action android:name="android.intent.action.SEND" />
+                <category android:name="android.intent.category.DEFAULT" />
                 <category android:name="android.intent.category.LAUNCHER" />
+                <data android:mimeType="text/plain" />
+
             </intent-filter>
 
         </activity>

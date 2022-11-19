@@ -6,7 +6,6 @@ import android.net.Uri
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.Button
-import otus.gpb.homework.activities.receiver.ReceiverActivity
 import java.util.logging.XMLFormatter
 
 class SenderActivity : AppCompatActivity() {
@@ -23,7 +22,6 @@ class SenderActivity : AppCompatActivity() {
             mapIntent.setPackage("com.google.android.apps.maps")
             startActivity(mapIntent)
 
-// гугл карта открывается отдельно, не смогла сделать так, чтобы в эмуляторе не открывалось отдельное приложение maps
         }
 
 
@@ -38,7 +36,6 @@ class SenderActivity : AppCompatActivity() {
             } catch (notFoundException: ActivityNotFoundException) {
 
             }
-//аналогично с открытием Gmail
 
         }
 
@@ -57,10 +54,16 @@ class SenderActivity : AppCompatActivity() {
                             "Смогут ли парни разгадать сложный ребус, если у каждого из них – свои, весьма индивидуальные методы."
                 )
 
-// 3 задание я вообще не поняла как сделать, чтобы оно работало
+                putExtra("title", payload.title)
+                putExtra("year", payload.year)
+                putExtra("description", payload.description)
+
+                type = "text/plain"
 
 
             }
+
+            startActivity(intent)
 
 
         }
