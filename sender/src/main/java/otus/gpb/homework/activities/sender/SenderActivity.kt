@@ -1,14 +1,12 @@
 package otus.gpb.homework.activities.sender
 
 import android.content.ActivityNotFoundException
-import android.content.ComponentName
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
 import android.widget.Button
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
-import dto.MovieDTO
 
 
 class SenderActivity : AppCompatActivity() {
@@ -72,7 +70,7 @@ class SenderActivity : AppCompatActivity() {
         buttonReceiver.setOnClickListener {
             try {
                 val intent = Intent(Intent.ACTION_SEND)
-                intent.setType("text/plain")
+                intent.type = "text/plain"
                 intent.addCategory("category.DEFAULT")
 
                 intent.putExtra("title", "Интерстеллар")
@@ -82,10 +80,6 @@ class SenderActivity : AppCompatActivity() {
                     "description",
                     "Когда засуха, пыльные бури и вымирание растений приводят человечество к продовольственному кризису, коллектив исследователей и учёных отправляется сквозь червоточину (которая предположительно соединяет области пространства-времени через большое расстояние) в путешествие, чтобы превзойти прежние ограничения для космических путешествий человека и найти планету с подходящими для человечества условиями."
                 )
-                intent.component = ComponentName(
-                    "otus.gpb.homework.activities.receiver",
-                    "otus.gpb.homework.activities.receiver.ReceiverActivity"
-               )
                 startActivity(intent)
             } catch (exception: ActivityNotFoundException) {
                 Toast.makeText(this, "Нет обработчика для этого элемента", Toast.LENGTH_LONG).show()
