@@ -13,6 +13,7 @@ class ReceiverActivity : AppCompatActivity() {
         setContentView(R.layout.activity_receiver)
         val intent = intent
         findViewById<TextView>(R.id.titleTextView).text = intent.getStringExtra("title")
+            //intent.getStringExtra("title")
         findViewById<TextView>(R.id.descriptionTextView).text= intent.getStringExtra("description")
         findViewById<TextView>(R.id.yearTextView).text= intent.getStringExtra("year")
         if (intent.getStringExtra("title") == "Интерстеллар")

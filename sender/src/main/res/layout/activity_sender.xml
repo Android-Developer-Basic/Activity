@@ -5,8 +5,8 @@
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
     android:orientation="horizontal"
-    tools:context=".SenderActivity">
-
+    tools:context=".SenderActivity"
+    android:id="@+id/parentLayout">
 
     <Button
         android:id="@+id/Maps"
@@ -15,7 +15,8 @@
         android:layout_weight="1"
         android:text="To Google Maps"
         android:layout_marginRight="3dp"
-        android:backgroundTint="@color/black"/>
+        android:backgroundTint="@color/black"
+        android:textSize="7dp"/>
 
     <Button
         android:id="@+id/EMail"
@@ -24,7 +25,8 @@
         android:layout_weight="1"
         android:text="Send Email"
         android:layout_marginRight="3dp"
-        android:backgroundTint="@color/black"/>
+        android:backgroundTint="@color/black"
+        android:textSize="7dp"/>
 
     <Button
         android:id="@+id/Receiver"
@@ -33,5 +35,7 @@
         android:layout_weight="1"
         android:text="Open Receiver"
         android:layout_marginRight="3dp"
-        android:backgroundTint="@color/black"/>
+        android:backgroundTint="@color/black"
+        android:textSize="7dp"/>
+
 </LinearLayout>
