@@ -12,20 +12,18 @@ import android.widget.TextView
 import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts.*
 import androidx.appcompat.app.AppCompatActivity
+import androidx.appcompat.content.res.AppCompatResources
 import androidx.appcompat.widget.Toolbar
-import androidx.core.content.res.ResourcesCompat
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
+import otus.gpb.homework.activities.databinding.ActivityEditProfileBinding
 import otus.gpb.homework.activities.dto.User
 
 class EditProfileActivity : AppCompatActivity() {
 
-    private lateinit var imageView: ImageView
-    private lateinit var firstName: TextView
-    private lateinit var lastName: TextView
-    private lateinit var age: TextView
-    private lateinit var editBtn: Button
-    private lateinit var user: User
-    private lateinit var uri: Uri
+    private lateinit var editProfileBinding: ActivityEditProfileBinding
+
+    private var user: User? = null
+    private var uri: Uri? = null
 
     private val requestCameraPermissionLauncher = registerForActivityResult(
         RequestPermission(),
@@ -33,16 +31,16 @@ class EditProfileActivity : AppCompatActivity() {
     )
 
     private val getFillForm = registerForActivityResult(CustomActivityResultContract()) {
-        if (it !== null) {
+        if (it != null) {
             user = it
-            firstName.text = it.firstName
-            lastName.text = it.lastName
-            age.text = it.age
+            editProfileBinding.textviewName.text = it.firstName
+            editProfileBinding.textviewSurname.text = it.lastName
+            editProfileBinding.textviewAge.text = it.age
         }
     }
 
     private val getPictureFromLocalLibrary = registerForActivityResult(GetContent()) { uri ->
-        if (uri !== null) {
+        if (uri != null) {
             this.uri = uri
             populateImage(uri)
         }
@@ -52,18 +50,10 @@ class EditProfileActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_edit_profile)
 
-        imageView = findViewById(R.id.imageview_photo)
-        firstName = findViewById(R.id.textview_name)
-        lastName = findViewById(R.id.textview_surname)
-        age = findViewById(R.id.textview_age)
-        editBtn = findViewById(R.id.button4)
+        editProfileBinding.imageviewPhoto.setOnClickListener { showAlertDialog() }
+        editProfileBinding.button4.setOnClickListener { getFillForm.launch("") }
 
-        imageView.setOnClickListener { showAlertDialog() }
-        editBtn.setOnClickListener { getFillForm.launch("") }
-
-
-
-        findViewById<Toolbar>(R.id.toolbar).apply {
+        editProfileBinding.toolbar.apply {
             inflateMenu(R.menu.menu)
             setOnMenuItemClickListener {
                 when (it.itemId) {
@@ -79,8 +69,7 @@ class EditProfileActivity : AppCompatActivity() {
 
     private fun permissionResultHandler(granted: Boolean) {
         if (granted) {
-            findViewById<ImageView>(R.id.imageview_photo)
-                .setImageDrawable(ResourcesCompat.getDrawable(resources, R.drawable.cat, null))
+            setDefaultPicture()
         } else {
             if (shouldShowRequestPermissionRationale(android.Manifest.permission.CAMERA)) {
                 MaterialAlertDialogBuilder(this)
@@ -92,6 +81,11 @@ class EditProfileActivity : AppCompatActivity() {
                     .show()
             }
         }
+    }
+
+    private fun setDefaultPicture() {
+        editProfileBinding.imageviewPhoto
+            .setImageDrawable(AppCompatResources.getDrawable(this, R.drawable.cat))
     }
 
     private fun showAlertDialog() {
@@ -116,20 +110,21 @@ class EditProfileActivity : AppCompatActivity() {
      */
     private fun populateImage(uri: Uri) {
         val bitmap = BitmapFactory.decodeStream(contentResolver.openInputStream(uri))
-        imageView.setImageBitmap(bitmap)
+        editProfileBinding.imageviewPhoto.setImageBitmap(bitmap)
     }
 
     private fun openSenderApp() {
-        val telegramPackageName = "org.telegram.messenger"
         try {
-            this.packageManager.getPackageInfo(
-                telegramPackageName,
-                PackageManager.GET_ACTIVITIES
-            )
             val intent = Intent(Intent.ACTION_SEND).apply {
-                setPackage(telegramPackageName)
-                putExtra("Extra", user)
-                putExtra("Picture", uri)
+                setPackage("org.telegram.messenger")
+                type = "image/*"
+                user?.let {
+                    putExtra(Intent.EXTRA_TEXT, it.toString())
+                }
+                uri?.let {
+                    putExtra(Intent.EXTRA_STREAM, it)
+                    addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
+                }
             }
             startActivity(intent)
         } catch (e: NameNotFoundException) {
