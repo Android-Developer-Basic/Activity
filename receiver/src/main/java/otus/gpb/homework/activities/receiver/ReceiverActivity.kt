@@ -12,13 +12,11 @@ class ReceiverActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_receiver)
 
-       val title = intent.extras?.getString("title")
+        intent.extras?.getString("title")
         intent.extras?.getString("year")
         intent.extras?.getString("description")
 
 
-
-        Log.e("MYLOG", "DATA$title")
 
     }
 }
