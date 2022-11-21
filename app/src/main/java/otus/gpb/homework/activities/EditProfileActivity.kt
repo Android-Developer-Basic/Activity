@@ -1,19 +1,15 @@
 package otus.gpb.homework.activities
 
 import android.content.Intent
-import android.content.pm.PackageManager
+
 import android.content.pm.PackageManager.NameNotFoundException
 import android.graphics.BitmapFactory
 import android.net.Uri
 import android.os.Bundle
-import android.widget.Button
-import android.widget.ImageView
-import android.widget.TextView
 import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts.*
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.content.res.AppCompatResources
-import androidx.appcompat.widget.Toolbar
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import otus.gpb.homework.activities.databinding.ActivityEditProfileBinding
 import otus.gpb.homework.activities.dto.User
