@@ -4,7 +4,7 @@ import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.Button
-import com.example.homework.R
+
 
 
 class ActivityC : AppCompatActivity() {
@@ -29,7 +29,7 @@ class ActivityC : AppCompatActivity() {
 
         findViewById<Button>(R.id.b_closeST).setOnClickListener {
             val intent = Intent( this, ActivityA::class.java)
-            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK)
+            finishAffinity()
             startActivity(intent)
         }
 
