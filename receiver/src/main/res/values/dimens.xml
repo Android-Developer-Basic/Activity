@@ -1,12 +1,21 @@
 <resources>
 
     <dimen name="button_text">25sp</dimen>
+    <dimen name="text_24">24sp</dimen>
+    <dimen name="text_16">16sp</dimen>
 
 
     <dimen name="padding">10dp</dimen>
     <dimen name="margin_chain">60dp</dimen>
     <dimen name="from_top">130dp</dimen>
     <dimen name="button_width">300dp</dimen>
+
+
+    <dimen name="image_width">120dp</dimen>
+    <dimen name="image_height">180dp</dimen>
+    <dimen name="image_margin">16dp</dimen>
+    <dimen name="text_top">8dp</dimen>
+    <dimen name="text_start">32dp</dimen>
 
 
 

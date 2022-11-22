@@ -1,22 +1,53 @@
 package otus.gpb.homework.activities.receiver
 
+import android.content.Intent
 import android.os.Bundle
-import android.service.controls.ControlsProviderService.TAG
-import android.util.Log
+import android.widget.ImageView
+import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 
 
 class ReceiverActivity : AppCompatActivity() {
 
+    private lateinit var poster: ImageView
+    private lateinit var titleTv: TextView
+    private lateinit var descTv: TextView
+    private lateinit var yearTv: TextView
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_receiver)
 
-        intent.extras?.getString("title")
-        intent.extras?.getString("year")
-        intent.extras?.getString("description")
+        poster = findViewById<ImageView>(R.id.posterImageView)
+        titleTv = findViewById<TextView>(R.id.titleTextView)
+        descTv = findViewById<TextView>(R.id.descriptionTextView)
+        yearTv = findViewById<TextView>(R.id.yearTextView)
+
+        }
+
+    override fun onNewIntent(intent: Intent?) {
+        super.onNewIntent(intent)
 
 
+        val title = intent?.extras?.getString("title", EMPTY_STRING)
+        val year = intent?.extras?.getString("year", EMPTY_STRING)
+        val description = intent?.extras?.getString("description", EMPTY_STRING)
+
+        poster.setImageResource(R.drawable.niceguys)
+        titleTv.text = title
+        descTv.text = description
+        yearTv.text = year
 
     }
+
+
+
+    companion object {
+
+        private const val EMPTY_STRING = ""
+    }
+
+
 }
+
+// Не получается переход на вторую активити, не понимаю, что где упустила, эмулятор даже не дает ее выбрать

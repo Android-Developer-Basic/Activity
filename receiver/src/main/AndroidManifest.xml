@@ -11,11 +11,10 @@
         android:theme="@style/Theme.Activities">
         <activity
             android:name=".ReceiverActivity"
-            android:exported="true"
-            android:label="singleTask launchMode">
+            android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.SEND" />
-                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.DEFAULT"/>
                 <category android:name="android.intent.category.LAUNCHER" />
                 <data android:mimeType="text/plain" />
 
