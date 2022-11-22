@@ -28,9 +28,8 @@ class ActivityC : AppCompatActivity() {
         }
 
         findViewById<Button>(R.id.b_closeST).setOnClickListener {
-            val intent = Intent( this, ActivityA::class.java)
             finishAffinity()
-            startActivity(intent)
+
         }
 
     }
