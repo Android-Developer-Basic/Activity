@@ -21,6 +21,10 @@ class EditProfileActivity : AppCompatActivity() {
         ::permissionResult
     )
 
+    private val resultContract = registerForActivityResult(ActivityResultContracts.GetContent()) { it
+        if (it != null) populateImage(it)
+    }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_edit_profile)
@@ -93,8 +97,8 @@ class EditProfileActivity : AppCompatActivity() {
             setTitle(resources.getString(R.string.title))
             setItems(singleItems) { _, index: Int ->
                 when (index) {
+                    0 -> {choosePhotoFromGallery()}
                     1 -> requestCameraPermission()
-                    2 -> {}
                     else -> {}
                 }
             }
@@ -104,6 +108,10 @@ class EditProfileActivity : AppCompatActivity() {
 
     private fun requestCameraPermission() {
         requestCameraPermissionLauncher.launch(android.Manifest.permission.CAMERA)
+    }
+
+    private fun choosePhotoFromGallery() {
+        resultContract.launch("image/*")
     }
 
     /**
