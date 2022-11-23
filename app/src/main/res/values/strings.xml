@@ -11,4 +11,15 @@
     <string name="settings_title">Настройки доступа</string>
     <string name="open_settings">Открыть настройки</string>
     <string name="settings_message">Чтобы дать приложению доступ к камере нажмите кнопку "Открыть настройки" и выберите пункт "Permissions" -> "Camera" -> "Allow".</string>
+    <string name="apply_bt">Применить</string>
+    <string name="edit_profile">Редактировать профиль</string>
+    <string name="name">Имя</string>
+    <string name="surname">Фамилия</string>
+    <string name="age">Возраст</string>
+    <string name="set_name">Введите имя...</string>
+    <string name="set_surname">Введите фамилию...</string>
+    <string name="set_age">Введите возраст...</string>
+    <string name="backpressed_title">Предупреждение</string>
+    <string name="backpressed_message">Вы уверены, что вы хотите выйти? В таком случае ваши данные не сохранятся. Чтобы сохранить данные нажмите Отмена и Применить.</string>
+    <string name="backpressed_exit">Выйти</string>
 </resources>
