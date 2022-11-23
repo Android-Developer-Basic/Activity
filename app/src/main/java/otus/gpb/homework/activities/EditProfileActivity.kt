@@ -6,6 +6,7 @@ import android.content.pm.PackageManager.NameNotFoundException
 import android.graphics.BitmapFactory
 import android.net.Uri
 import android.os.Bundle
+import android.provider.Settings
 import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts.*
 import androidx.appcompat.app.AppCompatActivity
@@ -70,16 +71,22 @@ class EditProfileActivity : AppCompatActivity() {
         if (granted) {
             setDefaultPicture()
         } else {
-            if (shouldShowRequestPermissionRationale(android.Manifest.permission.CAMERA)) {
+            // if deny forever show dialog with btn on click redirect to settings
+            if (!shouldShowRequestPermissionRationale(android.Manifest.permission.CAMERA)) {
                 MaterialAlertDialogBuilder(this)
                     .setTitle(R.string.why_we_need_permission)
-                    .setPositiveButton(
-                        R.string.give_permission
-                    ) { _, _ -> requestCameraPermissionLauncher.launch(android.Manifest.permission.CAMERA) }
-                    .setNegativeButton(R.string.cancel_give_permission, null)
+                    .setNeutralButton(R.string.go_to_setting_btn) { _, _ -> goToSettings() }
                     .show()
             }
         }
+    }
+
+    private fun goToSettings() {
+        val intent = Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS)
+        intent.apply {
+            data = Uri.fromParts("package", packageName, null)
+        }
+        startActivity(intent)
     }
 
     private fun setDefaultPicture() {
@@ -97,11 +104,25 @@ class EditProfileActivity : AppCompatActivity() {
             .setItems(alertChoices) { _, index: Int ->
                 when (index) {
                     0 -> getPictureFromLocalLibrary.launch("image/*")
-                    1 -> requestCameraPermissionLauncher.launch(android.Manifest.permission.CAMERA)
+                    1 -> openCamera()
                     else -> {}
                 }
             }
             .show()
+    }
+
+    private fun openCamera() {
+        if (shouldShowRequestPermissionRationale(android.Manifest.permission.CAMERA)) {
+            MaterialAlertDialogBuilder(this)
+                .setTitle(R.string.why_we_need_permission)
+                .setPositiveButton(
+                    R.string.give_permission
+                ) { _, _ -> requestCameraPermissionLauncher.launch(android.Manifest.permission.CAMERA) }
+                .setNegativeButton(R.string.cancel_give_permission, null)
+                .show()
+        } else {
+            requestCameraPermissionLauncher.launch(android.Manifest.permission.CAMERA)
+        }
     }
 
     /**

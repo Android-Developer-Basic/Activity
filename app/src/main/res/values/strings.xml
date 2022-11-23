@@ -8,4 +8,5 @@
     <string name="give_permission">Дать разрешение</string>
     <string name="cancel_give_permission">Отменить</string>
     <string name="send_btn">Применить</string>
+    <string name="go_to_setting_btn">Перейти в настройки</string>
 </resources>
