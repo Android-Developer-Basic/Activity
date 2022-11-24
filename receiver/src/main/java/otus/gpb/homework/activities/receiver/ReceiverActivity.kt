@@ -1,6 +1,5 @@
 package otus.gpb.homework.activities.receiver
 
-import android.content.Intent
 import android.os.Bundle
 import android.widget.ImageView
 import android.widget.TextView
@@ -23,12 +22,6 @@ class ReceiverActivity : AppCompatActivity() {
         descTv = findViewById<TextView>(R.id.descriptionTextView)
         yearTv = findViewById<TextView>(R.id.yearTextView)
 
-        }
-
-    override fun onNewIntent(intent: Intent?) {
-        super.onNewIntent(intent)
-
-
         val title = intent?.extras?.getString("title", EMPTY_STRING)
         val year = intent?.extras?.getString("year", EMPTY_STRING)
         val description = intent?.extras?.getString("description", EMPTY_STRING)
@@ -38,7 +31,9 @@ class ReceiverActivity : AppCompatActivity() {
         descTv.text = description
         yearTv.text = year
 
-    }
+        }
+
+
 
 
 
@@ -49,5 +44,3 @@ class ReceiverActivity : AppCompatActivity() {
 
 
 }
-
-// Не получается переход на вторую активити, не понимаю, что где упустила, эмулятор даже не дает ее выбрать
