@@ -1,3 +1,8 @@
 <resources>
     <string name="app_name">Sender</string>
+    <string name="map">To Google Maps</string>
+    <string name="email">Send Email</string>
+    <string name="open">Open Receiver</string>
+
 </resources>
+
