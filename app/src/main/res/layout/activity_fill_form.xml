@@ -14,19 +14,19 @@
         android:id="@+id/name"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Имя"/>
+        android:hint="Имя"/>
 
     <EditText
         android:id="@+id/lastName"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Фамилия"/>
+        android:hint="Фамилия"/>
 
     <EditText
         android:id="@+id/age"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Возраст"/>
+        android:hint="Возраст"/>
 
     <Button
         android:id="@+id/button_send"

@@ -34,11 +34,16 @@ class EditProfileActivity : AppCompatActivity() {
                     }
                     .setNegativeButton("Отмена") { dialogInterface, i ->
                         dialogInterface.cancel()
-                        val intent = Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS).apply {
-                            val uri = Uri.fromParts("package", packageName, null)
-                            data = uri
-                        }
-                        startActivity(intent)
+                        AlertDialog.Builder(this@EditProfileActivity)
+                            .setMessage("Открыть настройки?")
+                            .setPositiveButton("Открыть") { dialogInterface, i ->
+                                val intent = Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS).apply {
+                                    val uri = Uri.fromParts("package", packageName, null)
+                                    data = uri
+                                }
+                                startActivity(intent)
+                            }
+                            .show()
                     }
                     .show()
             }
@@ -106,15 +111,23 @@ class EditProfileActivity : AppCompatActivity() {
     }
 
     private fun openSenderApp() {
-        val intent = Intent(Intent.ACTION_VIEW)
-        intent.data = Uri.parse("http://telegram.me/azamat8720")
-        intent.putExtra("name", findViewById<TextView>(R.id.textview_surname).text.toString())
-        intent.putExtra("lastName", findViewById<TextView>(R.id.textview_surname).text.toString())
-        intent.putExtra("age", findViewById<TextView>(R.id.textview_age).text.toString())
-        val path = Uri.parse("android.resource://my.package.name/" + findViewById<ImageView>(R.id.imageview_photo).drawable).toString()
-        intent.putExtra("image", path)
-        //val appName = "org.telegram.messenger"
-        startActivity(intent)
+        val uri = Uri.parse("android.resource://otus.gpb.homework.activities/" + findViewById<ImageView>(R.id.imageview_photo).drawable)
+        val userData: ArrayList<String> = arrayListOf(
+            //uri,
+            findViewById<TextView>(R.id.textview_surname).text.toString(),
+            findViewById<TextView>(R.id.textview_name).text.toString(),
+            findViewById<TextView>(R.id.textview_age).text.toString(),
+            uri.toString()
+        )
+
+        val shareIntent = Intent().apply {
+            action = Intent.ACTION_SEND_MULTIPLE
+            setPackage("org.telegram.messenger")
+            putStringArrayListExtra(Intent.EXTRA_STREAM, userData)
+            type = "text/*"
+        }
+        startActivity(Intent.createChooser(shareIntent, null))
+
         //TODO("В качестве реализации метода отправьте неявный Intent чтобы поделиться профилем. В качестве extras передайте заполненные строки и картинку")
     }
 }
