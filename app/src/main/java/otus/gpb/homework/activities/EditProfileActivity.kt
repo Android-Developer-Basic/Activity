@@ -54,11 +54,12 @@ class EditProfileActivity : AppCompatActivity() {
                 populateImage(uri)
         }
     }
+    var saveUri = ""
     val resultContract = registerForActivityResult(ActivityResultContracts.GetContent()){result ->
         populateImage(Uri.parse(result.toString()))
+        saveUri = result.toString()
     }
     val fillFormActivityContract = registerForActivityResult(MyActivityContract()){result ->
-        val user = result
         findViewById<TextView>(R.id.textview_name).text = result?.name.toString()
         findViewById<TextView>(R.id.textview_surname).text = result?.lastName.toString()
         findViewById<TextView>(R.id.textview_age).text = result?.age.toString()
@@ -111,23 +112,35 @@ class EditProfileActivity : AppCompatActivity() {
     }
 
     private fun openSenderApp() {
-        val uri = Uri.parse("android.resource://otus.gpb.homework.activities/" + findViewById<ImageView>(R.id.imageview_photo).drawable)
+        var uri: Uri?
+        if(saveUri != "")
+        {
+            uri = Uri.parse(saveUri)
+        }
+        else
+        {
+            uri = Uri.parse("android.resource://$packageName/${R.drawable.cat}")
+        }
         val userData: ArrayList<String> = arrayListOf(
-            //uri,
             findViewById<TextView>(R.id.textview_surname).text.toString(),
             findViewById<TextView>(R.id.textview_name).text.toString(),
             findViewById<TextView>(R.id.textview_age).text.toString(),
-            uri.toString()
-        )
+            )
 
-        val shareIntent = Intent().apply {
-            action = Intent.ACTION_SEND_MULTIPLE
+        val shareIntent = Intent(Intent.ACTION_SEND).apply {
             setPackage("org.telegram.messenger")
-            putStringArrayListExtra(Intent.EXTRA_STREAM, userData)
-            type = "text/*"
-        }
-        startActivity(Intent.createChooser(shareIntent, null))
+            type = "image/*"
 
-        //TODO("В качестве реализации метода отправьте неявный Intent чтобы поделиться профилем. В качестве extras передайте заполненные строки и картинку")
+            putExtra(Intent.EXTRA_TEXT, userData.toString())
+            uri?.let {
+                putExtra(Intent.EXTRA_STREAM, it)
+                addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
+            }
+
+        }
+        startActivity(shareIntent)
+
     }
+        //TODO("В качестве реализации метода отправьте неявный Intent чтобы поделиться профилем. В качестве extras передайте заполненные строки и картинку")
+
 }
