@@ -4,6 +4,7 @@ plugins {
 }
 
 android {
+    namespace 'otus.gpb.homework.activities.receiver'
     compileSdk 32
 
     defaultConfig {
@@ -28,6 +29,9 @@ android {
     }
     kotlinOptions {
         jvmTarget = '1.8'
+    }
+    viewBinding {
+        enabled = true
     }
 }
 

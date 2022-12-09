@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <array name="movie_1">
+        <item>@string/title_movie_1</item>
+        <item>@string/year_movie_1</item>
+        <item>@string/description_movie_1</item>
+        <item>movie_1</item>
+    </array>
+    <array name="movie_2">
+        <item>@string/title_movie_2</item>
+        <item>@string/year_movie_2</item>
+        <item>@string/description_movie_2</item>
+        <item>movie_2</item>
+    </array>
+</resources>
