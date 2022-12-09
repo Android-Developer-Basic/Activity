@@ -1,3 +1,18 @@
 <resources>
     <string name="app_name">Sender</string>
+    <string name="b_map">To Google Maps</string>
+    <string name="b_email">Send Email</string>
+    <string name="b_receiver">Open Receiver</string>
+    <string name="corporate_mail">android@otus.ru</string>
+    <string name="topic">Homework #2</string>
+    <string name="message">Hello Homework#2</string>
+
+
+    <string name="title_movie_1">Славные парни</string>
+    <string name="year_movie_1">2016</string>
+    <string name="description_movie_1">Что бывает, когда напарником брутального костолома становится субтильный лопух? Наемный охранник Джексон Хили и частный детектив Холланд Марч вынуждены работать в паре, чтобы распутать плевое дело о пропавшей девушке, которое оборачивается преступлением века. Смогут ли парни разгадать сложный ребус, если у каждого из них – свои, весьма индивидуальные методы.</string>
+
+    <string name="title_movie_2">Интерстеллар</string>
+    <string name="year_movie_2">2014</string>
+    <string name="description_movie_2">Когда засуха, пыльные бури и вымирание растений приводят человечество к продовольственному кризису, коллектив исследователей и учёных отправляется сквозь червоточину (которая предположительно соединяет области пространства-времени через большое расстояние) в путешествие, чтобы превзойти прежние ограничения для космических путешествий человека и найти планету с подходящими для человечества условиями.</string>
 </resources>
