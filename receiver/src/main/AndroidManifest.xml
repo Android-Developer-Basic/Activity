@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     package="otus.gpb.homework.activities.receiver">
 
     <application
@@ -8,6 +9,25 @@
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
-        android:theme="@style/Theme.Activities" />
+        android:theme="@style/Theme.Activities" >
 
+        <activity
+            android:name=".ReceiverActivity"
+            android:exported="false">
+
+            <intent-filter>
+                <action android:name="ru.alexanderklimov.helloworld.second.SECOND" />
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+
+            <intent-filter>
+                <action android:name="otus.homework.receiver" />
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+            <meta-data
+                android:name="android.app.lib_name"
+                android:value="" />
+        </activity>
+
+    </application>
 </manifest>
