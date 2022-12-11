@@ -1,3 +1,9 @@
 <resources>
     <string name="app_name">Sender</string>
+    <string name="google_maps">To Google Maps</string>
+    <string name="email_sender">Send Email</string>
+    <string name="receiver">Open Receiver</string>
+    <string name="mail_to">android@otus.ru</string>
+    <string name="mail_subject">Homework II</string>
+    <string name="mail_text">Привет! Пожалуйста, проверьте мою домашнюю работу.</string>
 </resources>

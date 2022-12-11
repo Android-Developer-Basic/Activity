@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_height="match_parent"
+    android:layout_width="match_parent"
+    android:layout_weight="90"
+    android:background="@color/black">
+
+
+    <Button
+        android:id="@+id/maps_button"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_weight="30"
+        android:text="@string/google_maps"
+        android:textAppearance="@style/TextAppearance.AppCompat.Body1"
+        android:backgroundTint="@color/maps_color"
+        android:textColor="@color/button_text_color"
+        android:textSize="22sp"
+        android:textStyle="bold"
+        android:typeface="normal" />
+
+    <Button
+        android:id="@+id/email_button"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_weight="30"
+        android:textAppearance="@style/TextAppearance.AppCompat.Body1"
+        android:backgroundTint="@color/mail_blue"
+        android:text="@string/email_sender"
+        android:textColor="@color/button_text_color"
+        android:textSize="22sp"
+        android:textStyle="bold"
+        android:typeface="normal"/>
+
+    <Button
+        android:id="@+id/receiver_button"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:text="@string/receiver"
+        android:textAppearance="@style/TextAppearance.AppCompat.Body1"
+        android:backgroundTint="@color/receiver_dream"
+        android:layout_weight="30"
+        android:textColor="@color/button_text_color"
+        android:textSize="22sp"
+        android:textStyle="bold"
+        android:typeface="normal"
+        />
+
+</LinearLayout>
