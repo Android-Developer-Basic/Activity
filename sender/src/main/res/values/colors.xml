@@ -7,4 +7,8 @@
     <color name="teal_700">#FF018786</color>
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
+    <color name="button_text_color">#263238</color>
+    <color name="maps_color">#C3ECB2</color>
+    <color name="mail_blue">#1E90FF</color>
+    <color name="receiver_dream">#BB35EC</color>
 </resources>
