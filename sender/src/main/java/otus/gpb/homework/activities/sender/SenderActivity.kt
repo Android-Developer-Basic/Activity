@@ -13,7 +13,6 @@ import java.util.*
 
 class SenderActivity : AppCompatActivity() {
 
-    private lateinit var appBarConfiguration: AppBarConfiguration
     private lateinit var binding: ActivitySenderBinding
 
     @SuppressLint("IntentReset")
@@ -27,7 +26,7 @@ class SenderActivity : AppCompatActivity() {
 
         binding.sendEmail.setOnClickListener {
 
-            val intent = Intent(Intent.ACTION_SEND)
+            val intent = Intent(Intent.ACTION_SENDTO)
             intent.data = Uri.parse("mailto:")
             intent.putExtra(Intent.EXTRA_EMAIL, arrayOf("idzayu@mail.ru"))
             intent.putExtra(Intent.EXTRA_SUBJECT, "Проверка интента")

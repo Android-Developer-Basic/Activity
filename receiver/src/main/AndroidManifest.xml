@@ -13,17 +13,14 @@
 
         <activity
             android:name=".ReceiverActivity"
-            android:exported="false">
+            android:exported="true">
 
             <intent-filter>
-                <action android:name="ru.alexanderklimov.helloworld.second.SECOND" />
+                <action android:name="android.intent.action.SEND" />
+                <data android:mimeType="text/plain"/>
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
 
-            <intent-filter>
-                <action android:name="otus.homework.receiver" />
-                <category android:name="android.intent.category.DEFAULT" />
-            </intent-filter>
             <meta-data
                 android:name="android.app.lib_name"
                 android:value="" />
