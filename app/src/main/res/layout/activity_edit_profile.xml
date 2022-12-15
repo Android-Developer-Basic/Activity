@@ -21,22 +21,23 @@
 
     <ImageView
         android:id="@+id/imageview_photo"
-        android:layout_width="120dp"
-        android:layout_height="160dp"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="16dp"
+        android:layout_width="@dimen/image_width"
+        android:layout_height="@dimen/image_height"
+        android:layout_marginStart="@dimen/margin_16"
+        android:layout_marginTop="@dimen/margin_16"
         android:scaleType="centerCrop"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/toolbar"
-        app:srcCompat="@drawable/ic_baseline_add_photo_alternate_24" />
+        app:srcCompat="@drawable/ic_baseline_add_photo_alternate_24"
+        android:contentDescription="@string/descript" />
 
     <TextView
         android:id="@+id/textview_name"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="12dp"
-        android:hint="Имя"
-        android:textSize="18dp"
+        android:layout_marginStart="@dimen/margin_12"
+        android:hint="@string/name"
+        android:textSize="@dimen/text_18"
         app:layout_constraintStart_toEndOf="@+id/imageview_photo"
         app:layout_constraintTop_toTopOf="@+id/imageview_photo" />
 
@@ -44,9 +45,9 @@
         android:id="@+id/textview_surname"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="4dp"
-        android:hint="Фамилия"
-        android:textSize="18dp"
+        android:layout_marginTop="@dimen/margin_4"
+        android:hint="@string/surname"
+        android:textSize="@dimen/text_18"
         app:layout_constraintStart_toStartOf="@+id/textview_name"
         app:layout_constraintTop_toBottomOf="@+id/textview_name" />
 
@@ -54,19 +55,19 @@
         android:id="@+id/textview_age"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="4dp"
-        android:hint="Возраст"
-        android:textSize="18dp"
+        android:layout_marginTop="@dimen/margin_4"
+        android:hint="@string/age"
+        android:textSize="@dimen/text_18"
         app:layout_constraintStart_toStartOf="@+id/textview_surname"
         app:layout_constraintTop_toBottomOf="@+id/textview_surname" />
 
     <Button
-        android:id="@+id/button4"
+        android:id="@+id/button"
         style="@style/Widget.MaterialComponents.Button.TextButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
-        android:text="Редактировать профиль"
+        android:layout_marginTop="@dimen/margin_16"
+        android:text="@string/edit"
         app:layout_constraintStart_toStartOf="@+id/textview_age"
         app:layout_constraintTop_toBottomOf="@+id/textview_age" />
 
