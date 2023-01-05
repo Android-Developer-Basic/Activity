@@ -136,7 +136,7 @@ class EditProfileActivity : AppCompatActivity() {
         fun innerCheck(s: String) {
             if (grantResults.isEmpty() || grantResults[0] != PackageManager.PERMISSION_GRANTED) {
 
-            }  else {
+            } else {
                 binding.imageviewPhoto.setImageResource(R.drawable.cat)
 
             }
@@ -197,11 +197,13 @@ class EditProfileActivity : AppCompatActivity() {
         val sendIntent = Intent()
 
         sendIntent.action = Intent.ACTION_SEND
-        sendIntent.putExtra(Intent.EXTRA_TEXT, "Фамилия: " +
-            binding.textviewSurname.text.toString() + System.lineSeparator().toString() +
-            "Имя: "    + binding.textviewName.text + System.lineSeparator().toString() +
-            "Возраст: "    + binding.textviewAge.text)
-        sendIntent.putExtra(Intent.EXTRA_STREAM, utis )
+        sendIntent.putExtra(
+            Intent.EXTRA_TEXT, "Фамилия: " +
+                    binding.textviewSurname.text.toString() + System.lineSeparator().toString() +
+                    "Имя: " + binding.textviewName.text + System.lineSeparator().toString() +
+                    "Возраст: " + binding.textviewAge.text
+        )
+        sendIntent.putExtra(Intent.EXTRA_STREAM, utis)
         sendIntent.type = "image/jpeg"
         sendIntent.setPackage("org.telegram.messenger")
         sendIntent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
