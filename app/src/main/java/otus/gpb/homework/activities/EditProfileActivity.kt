@@ -2,29 +2,22 @@ package otus.gpb.homework.activities
 
 
 import android.Manifest
-import android.R.attr.bitmap
 import android.app.Activity
 import android.content.Intent
 import android.content.pm.PackageManager
-import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.net.Uri
 import android.os.Build
 import android.os.Bundle
-import android.provider.MediaStore.Images
 import android.provider.Settings
-import android.widget.Toast
 import androidx.activity.result.ActivityResult
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
-import androidx.compose.ui.graphics.asImageBitmap
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
-import androidx.core.graphics.drawable.toBitmap
-import androidx.core.graphics.drawable.toIcon
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import otus.gpb.homework.activities.databinding.ActivityEditProfileBinding
 
@@ -73,16 +66,11 @@ class EditProfileActivity : AppCompatActivity() {
                         )
 
                     } else {
-                        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-                            if (checkSelfPermission(Manifest.permission.READ_EXTERNAL_STORAGE) == PackageManager.PERMISSION_DENIED) {
-                                val permissions = arrayOf(Manifest.permission.READ_EXTERNAL_STORAGE)
-                                requestPermissions(permissions, PERMISSION_STORAGE_CODE)
-                            } else {
-                                chooseImageGallery();
-                            }
+                        if (checkSelfPermission(Manifest.permission.READ_EXTERNAL_STORAGE) == PackageManager.PERMISSION_DENIED) {
+                            val permissions = arrayOf(Manifest.permission.READ_EXTERNAL_STORAGE)
+                            requestPermissions(permissions, PERMISSION_STORAGE_CODE)
                         } else {
                             chooseImageGallery();
-
                         }
                     }
 
@@ -95,7 +83,6 @@ class EditProfileActivity : AppCompatActivity() {
                 if (result.resultCode == Activity.RESULT_OK) {
                     val r = result.data
                     binding.textviewAge.text = r?.getStringExtra("age")
-                    Toast.makeText(this, r?.getStringExtra("age").toString(), Toast.LENGTH_SHORT).show()
                     binding.textviewName.text = r?.getStringExtra("textviewName")
                     binding.textviewSurname.text = r?.getStringExtra("textviewSurname")
 
@@ -125,22 +112,19 @@ class EditProfileActivity : AppCompatActivity() {
 
 
     private fun checkForPermissions(permissiom: String, name: String, requestCode: Int) {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-            when {
-                ContextCompat.checkSelfPermission(
-                    applicationContext,
-                    permissiom
-                ) == PackageManager.PERMISSION_GRANTED -> {
-                    Toast.makeText(this, "$name permission granted", Toast.LENGTH_SHORT).show()
+        when {
+            ContextCompat.checkSelfPermission(
+                applicationContext,
+                permissiom
+            ) == PackageManager.PERMISSION_GRANTED -> {
 
-                }
-                shouldShowRequestPermissionRationale(permissiom) -> showDialog(
-                    permissiom,
-                    requestCode
-                )
-
-                else -> ActivityCompat.requestPermissions(this, arrayOf(permissiom), requestCode)
             }
+            shouldShowRequestPermissionRationale(permissiom) -> showDialog(
+                permissiom,
+                requestCode
+            )
+
+            else -> ActivityCompat.requestPermissions(this, arrayOf(permissiom), requestCode)
         }
     }
 
@@ -149,13 +133,11 @@ class EditProfileActivity : AppCompatActivity() {
         permissions: Array<out String>,
         grantResults: IntArray
     ) {
-        fun innerCheck(name: String) {
+        fun innerCheck(s: String) {
             if (grantResults.isEmpty() || grantResults[0] != PackageManager.PERMISSION_GRANTED) {
-                Toast.makeText(this, "$name permission refused", Toast.LENGTH_SHORT).show()
-                showDialogSettings()
-            } else {
+
+            }  else {
                 binding.imageviewPhoto.setImageResource(R.drawable.cat)
-                Toast.makeText(this, "$name permission granted", Toast.LENGTH_SHORT).show()
 
             }
         }
@@ -163,6 +145,7 @@ class EditProfileActivity : AppCompatActivity() {
             CAMERA_REQUEST_CODE -> innerCheck("camera")
         }
         super.onRequestPermissionsResult(requestCode, permissions, grantResults)
+
     }
 
     private fun showDialog(permissiom: String, requestCode: Int) {
@@ -180,7 +163,7 @@ class EditProfileActivity : AppCompatActivity() {
 
             }
             setNegativeButton("Отмена") { dialog, which ->
-
+                showDialogSettings()
             }
         }
         val dialog = builder.create()
@@ -219,8 +202,9 @@ class EditProfileActivity : AppCompatActivity() {
             "Имя: "    + binding.textviewName.text + System.lineSeparator().toString() +
             "Возраст: "    + binding.textviewAge.text)
         sendIntent.putExtra(Intent.EXTRA_STREAM, utis )
-        sendIntent.type = "image/jpeg";
-        sendIntent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
+        sendIntent.type = "image/jpeg"
+        sendIntent.setPackage("org.telegram.messenger")
+        sendIntent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
         startActivity(Intent.createChooser(sendIntent, "send"))
     }
 }
