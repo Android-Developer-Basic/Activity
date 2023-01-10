@@ -30,11 +30,26 @@ class EditProfileActivity : AppCompatActivity() {
     lateinit var binding: ActivityEditProfileBinding
     lateinit var utis: Uri
 
+    private val resultCameraContract =
+        registerForActivityResult(ActivityResultContracts.RequestPermission()) { granted ->
+            if (granted) {
+                binding.imageviewPhoto.setImageResource(R.drawable.cat)
+            } else {
+                if (!shouldShowRequestPermissionRationale(Manifest.permission.CAMERA)) {
+                    showDialogSettings()
+                }
+            }
+
+
+        }
+
     @RequiresApi(Build.VERSION_CODES.P)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityEditProfileBinding.inflate(layoutInflater)
         setContentView(binding.root)
+
+
 
         findViewById<Toolbar>(binding.toolbar.id).apply {
             inflateMenu(R.menu.menu)
@@ -59,11 +74,12 @@ class EditProfileActivity : AppCompatActivity() {
                 .setItems(items) { dialog, which ->
                     val item = items[which]
                     if (item.equals("Сделать фото")) {
-                        checkForPermissions(
-                            Manifest.permission.CAMERA,
-                            "camera",
-                            CAMERA_REQUEST_CODE
-                        )
+                        val state = shouldShowRequestPermissionRationale(Manifest.permission.CAMERA)
+                        if (state) {
+                            showDialog(Manifest.permission.CAMERA, CAMERA_REQUEST_CODE)
+                        } else {
+                            resultCameraContract.launch(Manifest.permission.CAMERA)
+                        }
 
                     } else {
                         if (checkSelfPermission(Manifest.permission.READ_EXTERNAL_STORAGE) == PackageManager.PERMISSION_DENIED) {
@@ -110,24 +126,6 @@ class EditProfileActivity : AppCompatActivity() {
         }
     }
 
-
-    private fun checkForPermissions(permissiom: String, name: String, requestCode: Int) {
-        when {
-            ContextCompat.checkSelfPermission(
-                applicationContext,
-                permissiom
-            ) == PackageManager.PERMISSION_GRANTED -> {
-
-            }
-            shouldShowRequestPermissionRationale(permissiom) -> showDialog(
-                permissiom,
-                requestCode
-            )
-
-            else -> ActivityCompat.requestPermissions(this, arrayOf(permissiom), requestCode)
-        }
-    }
-
     override fun onRequestPermissionsResult(
         requestCode: Int,
         permissions: Array<out String>,
@@ -137,7 +135,6 @@ class EditProfileActivity : AppCompatActivity() {
             if (grantResults.isEmpty() || grantResults[0] != PackageManager.PERMISSION_GRANTED) {
 
             } else {
-                binding.imageviewPhoto.setImageResource(R.drawable.cat)
 
             }
         }
@@ -155,15 +152,10 @@ class EditProfileActivity : AppCompatActivity() {
             setMessage("Нам нужна ваша КАМЕРА!(пожалуйста)")
             setTitle("Дай камеру")
             setPositiveButton("Дать доступ") { dialog, which ->
-                ActivityCompat.requestPermissions(
-                    this@EditProfileActivity,
-                    arrayOf(permissiom),
-                    requestCode
-                )
+                resultCameraContract.launch(Manifest.permission.CAMERA)
 
             }
             setNegativeButton("Отмена") { dialog, which ->
-                showDialogSettings()
             }
         }
         val dialog = builder.create()
@@ -175,7 +167,15 @@ class EditProfileActivity : AppCompatActivity() {
 
         builder.apply {
             setPositiveButton("Открыть настройки") { dialog, which ->
-                startActivity(Intent(Settings.ACTION_SETTINGS))
+                startActivity(
+                    Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS,
+                        Uri.fromParts(
+                            "package",
+                            getPackageName(),
+                            null
+                        )
+                    )
+                )
 
             }
         }
