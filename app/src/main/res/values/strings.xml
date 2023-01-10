@@ -1,4 +1,10 @@
 <resources>
     <string name="app_name">Activities</string>
     <string name="title_send">Отправить</string>
+    <string name="title_activity_add_photo">AddPhoto</string>
+    <string name="titleDialog"> Фотография</string>
+    <string name="lastName">Фамилия</string>
+    <string name="name">Имя</string>
+    <string name="age">Возраст</string>
+    <string name="apply">Применить</string>
 </resources>
