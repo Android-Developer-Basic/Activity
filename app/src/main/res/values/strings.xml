@@ -1,4 +1,9 @@
 <resources>
     <string name="app_name">Activities</string>
     <string name="title_send">Отправить</string>
+    <string name="accept" />
+    <string name="cancel" />
+    <string name="title" />
+    <string name="supporting_text" />
+    <string name="decline" />
 </resources>

@@ -2,6 +2,8 @@ plugins {
     id 'com.android.application'
     id 'org.jetbrains.kotlin.android'
     id("io.gitlab.arturbosch.detekt")
+    id 'kotlin-parcelize'
+
 }
 
 android {
@@ -30,6 +32,7 @@ android {
     kotlinOptions {
         jvmTarget = '1.8'
     }
+    namespace 'otus.gpb.homework.activities'
 }
 
 detekt {
