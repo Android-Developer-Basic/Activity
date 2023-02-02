@@ -1,4 +1,22 @@
 <resources>
     <string name="app_name">Activities</string>
     <string name="title_send">Отправить</string>
+    <string name="take_photo">Сделать фото</string>
+    <string name="set_photo">Установить фото</string>
+    <string name="pick_photo">Выбрать фото</string>
+    <string name="open_setting">Настройки</string>
+    <string name="rationale_dialog">Разрешите доступ к камере</string>
+    <string name="give_access">Дать доступ</string>
+    <string name="cancel">Отмена</string>
+    <string name="yes">Да</string>
+    <string name="repeat_request_c">Повторный запрос доступа к камере</string>
+
+    <string name="t_first_name">Введите имя</string>
+    <string name="t_last_name">Введите фамилию</string>
+    <string name="t_age">Введите возраст</string>
+    <string name="accept">Применить</string>
+
+    <string name="back_fill_form_title">Введенные данные не сохранятся</string>
+    <string name="back_fill_form_message">Вы правда хотите уйти?</string>
+    <string name="app_absent">Приложение Telegram не установлено на вашем утройстве</string>
 </resources>
