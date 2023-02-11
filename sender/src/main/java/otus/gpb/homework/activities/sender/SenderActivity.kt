@@ -29,27 +29,17 @@ class SenderActivity : AppCompatActivity() {
         receiverButton.setOnClickListener { onReceiverButtonClickListener() }
     }
 
-    private fun onMapsButtonClickListener(query:String) {
+    private fun onMapsButtonClickListener(query: String) {
         val gmmIntentUri = Uri.parse("geo:0,0?q=$query")
         val mapIntent = Intent(Intent.ACTION_VIEW, gmmIntentUri)
-        mapIntent.setPackage("com.google.android.apps.maps")
-        try {
-            startActivity(mapIntent)
-        } catch (e: ActivityNotFoundException) {
-            Toast.makeText(this, "Не установлены Гугл карты", Toast.LENGTH_SHORT).show()
-            Log.d("SENDER log", "toMaps: ActivityNotFoundException")
-        }
+        mapIntent.setPackage("com.google.android.apps.mapsxxx")
+        start(mapIntent, "Не установлены Гугл карты")
     }
 
     private fun onMailButtonClickListener() {
         val uri = Uri.parse("mailto:android@otus.ru?subject=тема&body=Ну,%20привет")
         val intent = Intent(Intent.ACTION_SENDTO, uri)
-        try {
-            startActivity(intent)
-        } catch (e: ActivityNotFoundException) {
-            Toast.makeText(this, "Не установлена почта", Toast.LENGTH_SHORT).show()
-            Log.d("SENDER log", "toMail: ActivityNotFoundException")
-        }
+        start(intent, "Не установлена почта")
     }
 
     private fun onReceiverButtonClickListener() {
@@ -58,11 +48,15 @@ class SenderActivity : AppCompatActivity() {
             putExtra("year", payload.year)
             putExtra("description", payload.description)
         }
+        start(intent, "Не установлен ресивер")
+    }
+
+    private fun start(intent: Intent, errorMessage: String) {
         try {
             startActivity(intent)
         } catch (e: ActivityNotFoundException) {
-            Toast.makeText(this, "Не установлен ресивер", Toast.LENGTH_SHORT).show()
-            Log.d("SENDER log", "toReceiver: ActivityNotFoundException")
+            Toast.makeText(this, errorMessage, Toast.LENGTH_SHORT).show()
+            Log.d("SENDER log", "$errorMessage: ActivityNotFoundException")
         }
     }
 }
