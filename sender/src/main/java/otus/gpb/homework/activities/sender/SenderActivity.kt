@@ -24,13 +24,13 @@ class SenderActivity : AppCompatActivity() {
         val mailButton = findViewById<Button>(R.id.toMail)
         val receiverButton = findViewById<Button>(R.id.toReceiver)
 
-        mapsButton.setOnClickListener { onMapsButtonClickListener() }
+        mapsButton.setOnClickListener { onMapsButtonClickListener("рестораны") }
         mailButton.setOnClickListener { onMailButtonClickListener() }
         receiverButton.setOnClickListener { onReceiverButtonClickListener() }
     }
 
-    private fun onMapsButtonClickListener() {
-        val gmmIntentUri = Uri.parse("geo:0,0?q=рестораны")
+    private fun onMapsButtonClickListener(query:String) {
+        val gmmIntentUri = Uri.parse("geo:0,0?q=$query")
         val mapIntent = Intent(Intent.ACTION_VIEW, gmmIntentUri)
         mapIntent.setPackage("com.google.android.apps.maps")
         try {
