@@ -29,12 +29,15 @@ class SenderActivity : AppCompatActivity() {
         }
 
         toSendEmailButton.setOnClickListener {
+            val email = "android@otus.ru"
+            val body = "Hello, OTS"
+            val subject = "Greetings"
             try {
                 val emailIntent = Intent().apply {
                     action = Intent.ACTION_SENDTO
-                    data = Uri.parse("mailto:android@otus.ru")
-                    putExtra(Intent.EXTRA_TEXT, "Hello, OTS")
-                    putExtra(Intent.EXTRA_SUBJECT, "Greetings")
+                    data = Uri.parse("mailto:$email?subject=$subject&body=$body")
+//                    putExtra(Intent.EXTRA_TEXT, "Hello, OTS")
+//                    putExtra(Intent.EXTRA_SUBJECT, "Greetings")
                 }
             val emailIntentWithChooser = Intent.createChooser(emailIntent, "Send to..")
                 startActivity(emailIntentWithChooser)
