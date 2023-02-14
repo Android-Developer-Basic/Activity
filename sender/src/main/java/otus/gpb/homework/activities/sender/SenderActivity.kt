@@ -129,7 +129,7 @@ class SenderActivity : AppCompatActivity() {
 
         }
         catch (e:Exception){
-            Toast.makeText(this, "Файл не $path найден", Toast.LENGTH_SHORT).show()
+            Toast.makeText(this, "Файл $path не найден", Toast.LENGTH_SHORT).show()
 
         }
         return payloadList
