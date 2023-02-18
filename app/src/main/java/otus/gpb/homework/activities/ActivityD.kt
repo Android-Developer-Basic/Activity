@@ -6,5 +6,7 @@ class ActivityD : BaseActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_d)
+        if(intent.getBooleanExtra("needFinish", false))
+            finish()
     }
 }

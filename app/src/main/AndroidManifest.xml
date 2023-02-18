@@ -20,11 +20,12 @@
         <activity
             android:name=".ActivityC"
             android:exported="false"
-            android:taskAffinity="second.task"/>
+            android:taskAffinity="second.task" />
         <activity
             android:name=".ActivityB"
             android:exported="false"
-            android:taskAffinity="second.task"/>
+            android:taskAffinity="second.task"
+            android:launchMode="singleTask" />
         <activity
             android:name=".ActivityA"
             android:exported="true"
