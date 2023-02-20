@@ -88,7 +88,7 @@ class EditProfileActivity : AppCompatActivity() {
     private fun showAlertDialog(isFirst:Boolean = true){
         val alert = AlertDialog.Builder(this)
         if(isFirst) {
-            alert.setTitle(resources.getString(R.string.textForAlertDialog))
+            alert.setTitle(resources.getString(R.string.text_for_alert_dialog))
             alert.setNegativeButton("Deny") { dialog, index ->
                 dialog.dismiss()
             }
@@ -113,7 +113,7 @@ class EditProfileActivity : AppCompatActivity() {
         dialog.setContentView(R.layout.dialog_layout)
         dialog.window?.setLayout(width, ViewGroup.LayoutParams.WRAP_CONTENT)
         dialog.window?.setBackgroundDrawableResource(R.drawable.dialog_window_shape)
-        val dialogList = dialog.findViewById<ListView>(R.id.listView)
+        val dialogList = dialog.findViewById<ListView>(R.id.list_view)
         val dialogArray = resources.getStringArray(R.array.dialogWindowArray)
         val dialogAdapter = ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, dialogArray)
         dialogList.adapter = dialogAdapter
@@ -121,11 +121,11 @@ class EditProfileActivity : AppCompatActivity() {
             parent, view, position, id ->
             val selectedText = parent.getItemAtPosition(position)
             when(selectedText.toString()){
-                resources.getString(R.string.takePhoto) -> {
+                resources.getString(R.string.take_photo) -> {
                     clickOnTakePhoto(isFirstClickOnImg)
                     dialog.dismiss()
                 }
-                resources.getString(R.string.chosePhoto) -> {
+                resources.getString(R.string.chose_photo) -> {
                     getImgContract.launch("image/*")
                     dialog.dismiss()
 

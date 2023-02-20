@@ -28,7 +28,7 @@
             android:text="Name: "/>
 
         <EditText
-            android:id="@+id/nameET"
+            android:id="@+id/edit_name"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_weight="1"/>
@@ -47,7 +47,7 @@
             android:text="Name: "/>
 
         <EditText
-            android:id="@+id/surnameET"
+            android:id="@+id/edit_surname"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_weight="1"/>
@@ -66,10 +66,18 @@
             android:text="Name: "/>
 
         <EditText
-            android:id="@+id/ageET"
+            android:id="@+id/edit_age"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_weight="1"/>
     </LinearLayout>
+
+    <Button
+        android:id="@+id/save_changes_button"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="10dp"
+        android:text="Save changes"
+        />
 
 </LinearLayout>
