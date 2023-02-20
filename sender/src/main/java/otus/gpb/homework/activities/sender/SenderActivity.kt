@@ -32,7 +32,7 @@ class SenderActivity : AppCompatActivity() {
     private fun onMapsButtonClickListener(query: String) {
         val gmmIntentUri = Uri.parse("geo:0,0?q=$query")
         val mapIntent = Intent(Intent.ACTION_VIEW, gmmIntentUri)
-        mapIntent.setPackage("com.google.android.apps.mapsxxx")
+        mapIntent.setPackage("com.google.android.apps.maps")
         start(mapIntent, "Не установлены Гугл карты")
     }
 
@@ -43,7 +43,10 @@ class SenderActivity : AppCompatActivity() {
     }
 
     private fun onReceiverButtonClickListener() {
-        val intent = Intent(Intent.ACTION_SEND).apply {
+        val intent = Intent(Intent.ACTION_SEND)
+            .setType("text/plain")
+            .addCategory(Intent.CATEGORY_DEFAULT)
+            .apply {
             putExtra("title", payload.title)
             putExtra("year", payload.year)
             putExtra("description", payload.description)
