@@ -17,29 +17,29 @@ import java.io.InputStreamReader
 
 
 class SenderActivity : AppCompatActivity() {
-    private var payloadList:MutableList<Payload> = mutableListOf()
+    private lateinit var payloadList:List<Payload>
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_sender)
 
         //EditText:
-        val searchInGM = findViewById<EditText>(R.id.searchInGM)
+        val searchInGM = findViewById<EditText>(R.id.search_in_gm)
         searchInGM.setText("Рестораны")
-        val addressET = findViewById<EditText>(R.id.addressET)
+        val addressET = findViewById<EditText>(R.id.edit_address)
         addressET.setText("android@otus.ru")
-        val messageET = findViewById<EditText>(R.id.messageET)
+        val messageET = findViewById<EditText>(R.id.edit_message)
 
         //Spinner:
-        val receiverSpinner = findViewById<Spinner>(R.id.receiverSpinner)
+        val receiverSpinner = findViewById<Spinner>(R.id.receiver_spinner)
 
         //Buttons:
 
-        val googleMapsBtn = findViewById<Button>(R.id.googleMapsBtn)
+        val googleMapsBtn = findViewById<Button>(R.id.google_maps_button)
         googleMapsBtn.setOnClickListener { toGoogleMaps(searchInGM) }
-        val sendMailBtn = findViewById<Button>(R.id.sendMailBtn)
+        val sendMailBtn = findViewById<Button>(R.id.send_mail_button)
         sendMailBtn.setOnClickListener { sendMail(addressET,messageET) }
-        val openReceiverBtn = findViewById<Button>(R.id.openReceiverBtn)
+        val openReceiverBtn = findViewById<Button>(R.id.open_receiver_button)
         openReceiverBtn.setOnClickListener { openReceiver(receiverSpinner) }
         fillSpinnerItems(receiverSpinner)
     }
@@ -104,35 +104,32 @@ class SenderActivity : AppCompatActivity() {
 
     }
 
-    private fun parseTxtFile():MutableList<Payload>{
+    private fun parseTxtFile(): List<Payload> {
         val path = "payload.txt"
-        val txtFile:BufferedReader
+        val txtFile: BufferedReader
         val payloadList: MutableList<Payload> = mutableListOf()
         try {
             txtFile = BufferedReader(InputStreamReader(assets.open(path)))
             while (true) {
-               val lineArray = mutableListOf<String>()
-                for (i in 0 until 4){
+                val lineArray = mutableListOf<String>()
+                for (i in 0 until 4) {
                     try {
                         lineArray.add(txtFile.readLine().substringAfter(": "))
-                    }
-                    catch (e:Exception){
+                    } catch (e: Exception) {
                         break
                     }
                 }
-                if(lineArray.size == 4){
+                if (lineArray.size == 4) {
                     val newPayLoad = Payload(lineArray[0], lineArray[1], lineArray[2], lineArray[3])
                     payloadList.add(newPayLoad)
-                }
-                else break
+                } else break
             }
 
-        }
-        catch (e:Exception){
+        } catch (e: Exception) {
             Toast.makeText(this, "Файл $path не найден", Toast.LENGTH_SHORT).show()
 
         }
-        return payloadList
+        return payloadList.sortedBy { it.title }
     }
 
     private fun fillSpinnerItems(spinner: Spinner){

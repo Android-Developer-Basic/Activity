@@ -9,13 +9,13 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@color/LightCyan"
+        android:background="@color/light_cyan"
         android:orientation="vertical"
         android:paddingTop="20dp"
         android:paddingBottom="20dp"
         >
         <EditText
-            android:id="@+id/searchInGM"
+            android:id="@+id/search_in_gm"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_margin="10dp"
@@ -24,11 +24,11 @@
             android:textSize="15sp"
             />
         <Button
-            android:id="@+id/googleMapsBtn"
+            android:id="@+id/google_maps_button"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_margin="10dp"
-            android:text="@string/txtForGoogleMapsBtn"
+            android:text="@string/txt_for_google_maps_button"
             />
 
     </LinearLayout>
@@ -36,7 +36,7 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@color/PapayaWhip"
+        android:background="@color/papaya_whip"
         android:orientation="vertical"
         android:paddingTop="20dp"
         android:paddingBottom="20dp"
@@ -50,7 +50,7 @@
             />
 
         <EditText
-            android:id="@+id/addressET"
+            android:id="@+id/edit_address"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_margin="10dp"
@@ -68,7 +68,7 @@
             />
 
         <EditText
-            android:id="@+id/messageET"
+            android:id="@+id/edit_message"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_margin="10dp"
@@ -78,33 +78,33 @@
             />
 
         <Button
-            android:id="@+id/sendMailBtn"
+            android:id="@+id/send_mail_button"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_margin="10dp"
-            android:text="@string/txtForSendMailBtn"
+            android:text="@string/txt_for_send_mail_button"
             />
     </LinearLayout>
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:background="@color/PaleGreen"
+        android:layout_height="wrap_content"
+        android:background="@color/pale_green"
         android:orientation="vertical"
         android:paddingTop="20dp"
         android:paddingBottom="20dp"
         >
         <Spinner
-            android:id="@+id/receiverSpinner"
+            android:id="@+id/receiver_spinner"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             />
         <Button
-            android:id="@+id/openReceiverBtn"
+            android:id="@+id/open_receiver_button"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_margin="10dp"
-            android:text="@string/txtForOpenReceiverBtn"
+            android:text="@string/txt_for_open_receiver_button"
             />
 
     </LinearLayout>
