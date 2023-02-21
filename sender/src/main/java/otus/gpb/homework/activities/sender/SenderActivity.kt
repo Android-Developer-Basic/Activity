@@ -10,7 +10,7 @@ import android.widget.Toast
 
 class SenderActivity : AppCompatActivity() {
 
-    private val listFilm = listOf<FilmDTO>(
+    private val listFilm = listOf(
         FilmDTO(
             "Славные парни",
             "2016",
@@ -27,20 +27,22 @@ class SenderActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_sender)
 
-        val buttonToGoogleMap = findViewById<Button>(R.id.toGoogleMaps)
-        val buttonSendEmail = findViewById<Button>(R.id.sendEmail)
-        val buttonOpenReceiver = findViewById<Button>(R.id.openReceiver)
+        val buttonToGoogleMap = findViewById<Button>(R.id.to_google_maps)
+        val buttonSendEmail = findViewById<Button>(R.id.send_email)
+        val buttonOpenReceiver = findViewById<Button>(R.id.open_receiver)
 
         buttonToGoogleMap.setOnClickListener {
             val uri = Uri.parse("geo:0.0?q=Рестораны")
             val intent = Intent(Intent.ACTION_VIEW, uri)
             intent.setPackage("com.google.android.apps.maps")
-            startActivity(intent)
+            if (intent.resolveActivity(packageManager) != null) {
+                startActivity(intent)
+            }
         }
 
         buttonSendEmail.setOnClickListener {
             val uri =
-                Uri.parse("mailto:" + "android@otus.ru" + "?subject=" + "Test massage" + "&body=" + "Hello. This is test post by android intent.")
+                Uri.parse("mailto: android@otus.ru ?subject= Test massage &body= Hello. This is test post by android intent.")
             val intent = Intent(Intent.ACTION_SENDTO, uri)
             try {
                 startActivity(intent)
@@ -64,7 +66,7 @@ class SenderActivity : AppCompatActivity() {
                     putExtra("year", film.year)
                     putExtra("description", film.description)
                 }
-            try{
+            try {
                 startActivity(intent)
             } catch (e: Exception) {
                 Toast.makeText(

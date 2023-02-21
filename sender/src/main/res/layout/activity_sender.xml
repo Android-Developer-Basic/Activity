@@ -9,35 +9,35 @@
     tools:context=".SenderActivity">
 
     <Button
-        android:id="@+id/toGoogleMaps"
+        android:id="@+id/to_google_maps"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:backgroundTint="@android:color/holo_orange_light"
         android:text="@string/to_google_maps"
         android:textColor="@android:color/holo_red_dark"
         android:textSize="20sp"
-        app:layout_constraintBottom_toTopOf="@+id/sendEmail"
+        app:layout_constraintBottom_toTopOf="@+id/send_email"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
     <Button
-        android:id="@+id/sendEmail"
+        android:id="@+id/send_email"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:backgroundTint="#DA73D0"
         android:text="@string/send_email"
         android:textColor="#1A237E"
         android:textSize="20sp"
-        app:layout_constraintBottom_toTopOf="@+id/openReceiver"
+        app:layout_constraintBottom_toTopOf="@+id/open_receiver"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/toGoogleMaps" />
+        app:layout_constraintTop_toBottomOf="@+id/to_google_maps" />
 
     <Button
-        android:id="@+id/openReceiver"
+        android:id="@+id/open_receiver"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:backgroundTint="@color/teal_200"
@@ -48,5 +48,5 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/sendEmail" />
+        app:layout_constraintTop_toBottomOf="@+id/send_email" />
 </androidx.constraintlayout.widget.ConstraintLayout>
