@@ -11,7 +11,6 @@ import android.widget.Button
 import android.widget.EditText
 import android.widget.Spinner
 import android.widget.Toast
-import java.io.BufferedReader
 import java.io.InputStreamReader
 
 
@@ -106,23 +105,16 @@ class SenderActivity : AppCompatActivity() {
 
     private fun parseTxtFile(): List<Payload> {
         val path = "payload.txt"
-        val txtFile: BufferedReader
         val payloadList: MutableList<Payload> = mutableListOf()
         try {
-            txtFile = BufferedReader(InputStreamReader(assets.open(path)))
-            while (true) {
-                val lineArray = mutableListOf<String>()
-                for (i in 0 until 4) {
-                    try {
-                        lineArray.add(txtFile.readLine().substringAfter(": "))
-                    } catch (e: Exception) {
-                        break
-                    }
+            val txt = InputStreamReader(assets.open(path))
+            val list:MutableList<String> = mutableListOf()
+            txt.forEachLine {
+                list.add(it.substringAfter(": "))
+                if(list.size == 4){
+                    payloadList.add(Payload(list[0], list[1], list[2], list[3]))
+                    list.clear()
                 }
-                if (lineArray.size == 4) {
-                    val newPayLoad = Payload(lineArray[0], lineArray[1], lineArray[2], lineArray[3])
-                    payloadList.add(newPayLoad)
-                } else break
             }
 
         } catch (e: Exception) {
