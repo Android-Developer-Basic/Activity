@@ -22,7 +22,7 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="32dp"
         android:textColor="#212121"
-        android:textSize="24dp"
+        android:textSize="24sp"
         app:layout_constraintStart_toEndOf="@+id/posterImageView"
         app:layout_constraintTop_toTopOf="@+id/posterImageView"
         tools:text="Interstellar" />

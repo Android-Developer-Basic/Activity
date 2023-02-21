@@ -1,3 +1,6 @@
 <resources>
     <string name="app_name">Sender</string>
+    <string name="txt_for_google_maps_button">To Google Maps</string>
+    <string name="txt_for_send_mail_button">Send Email</string>
+    <string name="txt_for_open_receiver_button">Open Receiver</string>
 </resources>
