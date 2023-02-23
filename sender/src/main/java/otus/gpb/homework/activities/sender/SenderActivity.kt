@@ -35,8 +35,14 @@ class SenderActivity : AppCompatActivity() {
             val uri = Uri.parse("geo:0.0?q=Рестораны")
             val intent = Intent(Intent.ACTION_VIEW, uri)
             intent.setPackage("com.google.android.apps.maps")
-            if (intent.resolveActivity(packageManager) != null) {
+            try {
                 startActivity(intent)
+            } catch(e: ActivityNotFoundException) {
+                Toast.makeText(
+                    this,
+                    "На устройстве не обнаружено подходящего приложения!",
+                    Toast.LENGTH_LONG
+                ).show()
             }
         }
 
