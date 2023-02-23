@@ -1,5 +1,6 @@
 package otus.gpb.homework.activities
 
+import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.Button
@@ -11,8 +12,21 @@ class FillFormActivity : AppCompatActivity() {
         setContentView(R.layout.activity_fill_form)
 
         val name = findViewById<EditText>(R.id.edit_name)
+        name.setText(intent.extras?.getString("name"))
         val surname = findViewById<EditText>(R.id.edit_surname)
+        surname.setText(intent.extras?.getString("surname"))
         val age = findViewById<EditText>(R.id.edit_age)
+        age.setText(intent.extras?.getString("age"))
         val saveChangesButton = findViewById<Button>(R.id.save_changes_button)
+        saveChangesButton.setOnClickListener{sendData(name, surname, age) }
+    }
+
+    private fun sendData(name: EditText, surname: EditText, age: EditText){
+        intent = Intent().apply {
+            val result = "${name.text.toString()}*_*${surname.text.toString()}*_*${age.text.toString()}"
+            putExtra("result", result)
+        }
+        setResult(RESULT_OK, intent)
+        finish()
     }
 }
