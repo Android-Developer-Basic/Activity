@@ -1,28 +1,62 @@
 package otus.gpb.homework.activities
 
 import android.Manifest
+import android.content.ActivityNotFoundException
 import android.content.Intent
 import android.graphics.BitmapFactory
 import android.net.Uri
 import android.os.Bundle
 import android.provider.Settings
+import android.widget.Button
 import android.widget.ImageView
+import android.widget.TextView
 import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.content.res.AppCompatResources
 import androidx.appcompat.widget.Toolbar
-import androidx.core.app.ActivityCompat
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 
 class EditProfileActivity : AppCompatActivity() {
 
     private lateinit var imageView: ImageView
+    private lateinit var userName: TextView
+    private lateinit var userSurname: TextView
+    private lateinit var userAge: TextView
+    private var imageUri: Uri? = null
+
+    private var userDTO = UserDTO(null, null, null)
+
+    private val contractGallery =
+        registerForActivityResult(ActivityResultContracts.GetContent()) { result ->
+            if (result != null) {
+                populateImage(result)
+                imageUri = result
+            }
+        }
+
+    private val contractFillForm = registerForActivityResult(FillFormContract()) { result ->
+        if (result != null) {
+            userName.text = result.name
+            userSurname.text = result.surname
+            userAge.text = result.age
+
+            userDTO = UserDTO(
+                userName.text.toString(),
+                userSurname.text.toString(),
+                userAge.text.toString()
+            )
+        }
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_edit_profile)
+
         imageView = findViewById(R.id.imageview_photo)
+        userName = findViewById(R.id.textview_name)
+        userSurname = findViewById(R.id.textview_surname)
+        userAge = findViewById(R.id.textview_age)
 
         imageView.setOnClickListener {
             MaterialAlertDialogBuilder(this)
@@ -31,8 +65,14 @@ class EditProfileActivity : AppCompatActivity() {
                 .setNegativeButton("Сделать фото") { _, _ ->
                     getPhotoFromCamera()
                 }
-                .setPositiveButton("Выбрать фото") { _, _ -> }
+                .setPositiveButton("Выбрать фото") { _, _ ->
+                    contractGallery.launch("image/*")
+                }
                 .show()
+        }
+
+        findViewById<Button>(R.id.button4).setOnClickListener {
+            contractFillForm.launch(userDTO)
         }
 
         findViewById<Toolbar>(R.id.toolbar).apply {
@@ -49,20 +89,32 @@ class EditProfileActivity : AppCompatActivity() {
         }
     }
 
-    /**
-     * Используйте этот метод чтобы отобразить картинку полученную из медиатеки в ImageView
-     */
     private fun populateImage(uri: Uri) {
         val bitmap = BitmapFactory.decodeStream(contentResolver.openInputStream(uri))
         imageView.setImageBitmap(bitmap)
     }
 
     private fun openSenderApp() {
-        TODO("В качестве реализации метода отправьте неявный Intent чтобы поделиться профилем. В качестве extras передайте заполненные строки и картинку")
+        val intent = Intent(Intent.ACTION_SEND)
+            .apply {
+                putExtra(
+                    Intent.EXTRA_TEXT,
+                    "ИМЯ: ${userDTO.name}\nФАМИЛИЯ: ${userDTO.surname}\nВОЗРАСТ: ${userDTO.age}"
+                )
+                type = "image/*"
+                putExtra(Intent.EXTRA_STREAM, imageUri)
+                setPackage("org.telegram.messenger")
+            }
+        try {
+            startActivity(intent)
+        } catch (e: ActivityNotFoundException) {
+            Toast.makeText(
+                this,
+                "Приложение Telegram не установлено на ваш телефон!",
+                Toast.LENGTH_LONG
+            ).show()
+        }
     }
-
-
-    // всё что ниже хотел в отдельный класс
 
     private fun getPhotoFromCamera() {
         if (shouldShowRequestPermissionRationale(Manifest.permission.CAMERA)) {
@@ -109,8 +161,6 @@ class EditProfileActivity : AppCompatActivity() {
         findViewById<ImageView>(R.id.imageview_photo).setImageDrawable(
             AppCompatResources.getDrawable(applicationContext, R.drawable.cat)
         )
+        imageUri = Uri.parse("android.resource://$packageName/${R.drawable.cat}")
     }
 }
-
-
-//Toast.makeText(this, "СРАБОТАЛО", Toast.LENGTH_LONG).show()

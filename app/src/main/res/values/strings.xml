@@ -1,4 +1,9 @@
 <resources>
     <string name="app_name">Activities</string>
     <string name="title_send">Отправить</string>
+    <string name="edite_profile">Отредактируйте данные профиля:</string>
+    <string name="edit_name">Введите имя:</string>
+    <string name="edit_surname">Введите фамилию:</string>
+    <string name="edit_age">Введите возраст:</string>
+    <string name="apply">Применить</string>
 </resources>
