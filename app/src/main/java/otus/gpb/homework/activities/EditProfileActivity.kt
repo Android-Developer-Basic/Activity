@@ -8,17 +8,27 @@ import android.content.Intent
 import android.graphics.BitmapFactory
 import android.net.Uri
 import android.os.Bundle
-import android.provider.MediaStore.Images.Media
+import android.os.Environment
 import android.provider.Settings
 import android.view.ViewGroup
 import android.widget.*
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
-import androidx.core.graphics.drawable.toBitmap
+import java.io.File
+import java.io.IOException
+import java.util.*
+
+//Глобальные переменные
+internal var agePostfix = ""
+internal const val DATA_DELIMITERS = "*_*"
+internal const val TELEGRAM_PACKAGE = "org.telegram.messenger"
+internal const val IMAGE_PACKAGE = "otus.gpb.homework.activities.fileprovider"
+internal var userPhotoUri: Uri? = null
+internal var imgFile:File? = null
 
 class EditProfileActivity : AppCompatActivity() {
-    //Variables:
+    //Переменнные класса
     private lateinit var imageView: ImageView
     private val userProfile:User = User()
     private var isFirstClickOnImg = true
@@ -27,15 +37,14 @@ class EditProfileActivity : AppCompatActivity() {
     private lateinit var nameTextView:TextView
     private lateinit var surnameTextView:TextView
     private lateinit var ageTextView:TextView
-    private var userPhoto: Uri? = null
 
-    //Contracts:
+    //Контракты:
 
     //EditProfile <-> FillFromActivity:
     private val userContract = registerForActivityResult(DataContract()){
-        if(it == null) Toast.makeText(this, "Null", Toast.LENGTH_SHORT).show()
+        if(it == null) {}
         else {
-            val resultArray = it.split("*_*")
+            val resultArray = it.split(DATA_DELIMITERS)
             userProfile.name = resultArray[0]
             userProfile.surname = resultArray[1]
             userProfile.age = resultArray[2]
@@ -43,24 +52,21 @@ class EditProfileActivity : AppCompatActivity() {
         }
     }
 
-    //Images from gallery:
+    //Получение изображений из галереи:
     private val getImgContract = registerForActivityResult(ActivityResultContracts.GetContent()){
         it?.let {
-            userPhoto = it
+            userPhotoUri = it
             populateImage(it)
         }
     }
 
-    //Take photo:
-    private val camera = registerForActivityResult(ActivityResultContracts.TakePicturePreview()){
-        it?.let{
-            userProfile.image = it
-            imageView.setImageBitmap(it)
-            setUri()
-        }
+    //Камера:
+    private val camera = registerForActivityResult(CameraContract()){
+            populateImage(Uri.fromFile(imgFile))
+
     }
 
-    //Permissions to use the camera:
+    //Разрешение на использование камеры:
     private val permissionForCamera = registerForActivityResult(ActivityResultContracts.RequestPermission()) {
         when {
             it -> {
@@ -103,16 +109,27 @@ class EditProfileActivity : AppCompatActivity() {
         }
     }
 
-    //Functions:
+    //Функции:
 
-    //Set user data:
+    //Заполнение данных профиля:
     private fun setProfileProperties(){
         nameTextView.text = userProfile.name
         surnameTextView.text = userProfile.surname
-        ageTextView.text = userProfile.age
+        ageTextView.text = userProfile.age + agePostfix
     }
 
-    //Click on ImageView:
+    private fun createImgFile(): File?{
+        val dateStamp = java.text.SimpleDateFormat("yyyyMMdd_HHmmss").format(Date())
+        val storage = getExternalFilesDir(Environment.DIRECTORY_PICTURES)
+        return try{
+            File.createTempFile("IMG_${dateStamp}_", ".jpg", storage)
+
+        }catch (e:IOException){
+            null
+        }
+    }
+
+    //Клик по imageView:
     private fun clickOnTakePhoto(isFirst: Boolean){
         if(deny){
             permissionForCamera.launch(Manifest.permission.CAMERA)
@@ -122,20 +139,21 @@ class EditProfileActivity : AppCompatActivity() {
         else showAlertDialog(isFirstAlertDialogCall)
     }
 
-    //Permissions alert dialog:
+    //Алерт-диалог, вызываемый при запросе разрешения на использование камеры:
     private fun showAlertDialog(isFirst:Boolean = true){
         val alert = AlertDialog.Builder(this)
         if(isFirst) {
-            alert.setTitle(resources.getString(R.string.text_for_alert_dialog))
-            alert.setNegativeButton("Deny") { dialog, _ ->
+            alert.setTitle(R.string.alert)
+            alert.setMessage(R.string.text_for_alert_dialog)
+            alert.setNegativeButton(R.string.deny) { dialog, _ ->
                 dialog.dismiss()
             }
 
-            alert.setPositiveButton("Access") { _, _ ->
+            alert.setPositiveButton(R.string.access) { _, _ ->
                 permissionForCamera.launch(Manifest.permission.CAMERA)
             }
         }
-        else alert.setPositiveButton("Settings"){ _, _ ->
+        else alert.setPositiveButton(R.string.settings){ _, _ ->
             val intent = Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS).apply{
                 val uri = Uri.fromParts("package", packageName, null)
                 data = uri
@@ -146,25 +164,23 @@ class EditProfileActivity : AppCompatActivity() {
         alert.show()
     }
 
-    //Choice (take photo, or get default image):
+    //Дополнительный алерт-диалог, в котором можно выбрать: открыть камеру, либо установить дефолтное изображение:
     private fun showChoice(){
         val alert = AlertDialog.Builder(this)
-        alert.setPositiveButton("Camera"){_, _ ->
-            camera.launch(null)
+        alert.setPositiveButton(R.string.Camera){_, _ ->
+            imgFile = createImgFile()
+            if(imgFile == null) {}
+            else camera.launch(null)
         }
 
-        alert.setNegativeButton("Cat"){_, _ ->
-            val img = getDrawable(R.drawable.cat)
-            img?.let{
-                userProfile.image = img.toBitmap()
-                imageView.setImageBitmap(userProfile.image)
-                setUri()
-            }
+        alert.setNegativeButton(R.string.cat){_, _ ->
+            setCat()
+
         }
         alert.show()
     }
 
-    //Take photo, or chose photo:
+    //Кастомный диалог, вызываемый при клике по imageView:
     private fun showDialog(){
         val dialog = Dialog(this)
         val width = (resources.displayMetrics.widthPixels * 0.90).toInt()
@@ -173,10 +189,10 @@ class EditProfileActivity : AppCompatActivity() {
         dialog.window?.setBackgroundDrawableResource(R.drawable.dialog_window_shape)
         val dialogList = dialog.findViewById<ListView>(R.id.list_view)
         val dialogArray = resources.getStringArray(R.array.dialogWindowArray)
-        val dialogAdapter = ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, dialogArray)
+        val dialogAdapter = ArrayAdapter(this, android.R.layout.simple_list_item_1, dialogArray)
         dialogList.adapter = dialogAdapter
         dialogList.onItemClickListener = AdapterView.OnItemClickListener{
-            parent, view, position, id ->
+            parent, _, position, _ ->
             val selectedText = parent.getItemAtPosition(position)
             when(selectedText.toString()){
                 resources.getString(R.string.take_photo) -> {
@@ -203,23 +219,25 @@ class EditProfileActivity : AppCompatActivity() {
 
         val telegramMessage = Intent(Intent.ACTION_SEND).apply {
             type = "image/jpeg"
-            if(userPhoto != null) putExtra(Intent.EXTRA_STREAM, userPhoto)
-            putExtra(Intent.EXTRA_TEXT, "${userProfile.name}\n${userProfile.surname}\n${userProfile.age}")
+            if(userPhotoUri != null) putExtra(Intent.EXTRA_STREAM, userPhotoUri)
+            putExtra(Intent.EXTRA_TEXT, "${userProfile.name}\n${userProfile.surname}\n${userProfile.age+ agePostfix}")
         }
-        telegramMessage.setPackage("org.telegram.messenger")
+        telegramMessage.setPackage(TELEGRAM_PACKAGE)
 
         try{
             startActivity(telegramMessage)
         }
         catch (e: ActivityNotFoundException){
-            Toast.makeText(this, "Telegram is not installed", Toast.LENGTH_SHORT).show()
+            Toast.makeText(this, R.string.app_not_installed, Toast.LENGTH_SHORT).show()
         }
     }
-
-    //Set uri for image if was clicked on "Take photo":
-    private fun setUri(){
-        val path = Media.insertImage(application.contentResolver,userProfile.image,"user_photo", null)
-        userPhoto = Uri.parse(path)
+    //Функция, вызывающая котейку из ресурсов))
+    private fun setCat(){
+        val catImageResourceString = "android.resource://${packageName}/${R.drawable.cat}"
+        userPhotoUri = Uri.parse(catImageResourceString)
+        imageView.setImageURI(userPhotoUri)
     }
+
+
 
 }

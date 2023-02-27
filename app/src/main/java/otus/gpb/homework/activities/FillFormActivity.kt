@@ -22,6 +22,22 @@ class FillFormActivity : AppCompatActivity() {
     }
 
     private fun sendData(name: EditText, surname: EditText, age: EditText){
+        val ageString = age.text.toString()
+        if(ageString != ""){
+            try{
+                val lastNum = ageString.toInt()
+                if(lastNum < 0) lastNum * (-1)
+                agePostfix = if(lastNum in 11..19) " лет."
+                else {
+                    when (lastNum % 10) {
+                        1 -> " год."
+                        in 2..4 -> " года."
+                        else -> " лет."
+                    }
+                }
+
+            }catch (e: java.lang.NumberFormatException){}
+        }
         intent = Intent().apply {
             val result = "${name.text.toString()}*_*${surname.text.toString()}*_*${age.text.toString()}"
             putExtra("result", result)
