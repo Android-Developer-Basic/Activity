@@ -22,7 +22,7 @@ import java.util.*
 
 //Глобальные переменные
 internal var agePostfix = ""
-internal const val DATA_DELIMITERS = "*_*"
+internal const val DATA_STRING_SEPARATOR = "*_*"
 internal const val TELEGRAM_PACKAGE = "org.telegram.messenger"
 internal const val IMAGE_PACKAGE = "otus.gpb.homework.activities.fileprovider"
 internal var userPhotoUri: Uri? = null
@@ -45,7 +45,7 @@ class EditProfileActivity : AppCompatActivity() {
     private val userContract = registerForActivityResult(DataContract()){
         if(it == null) {}
         else {
-            val resultArray = it.split(DATA_DELIMITERS)
+            val resultArray = it.split(DATA_STRING_SEPARATOR)
             userProfile.name = resultArray[0]
             userProfile.surname = resultArray[1]
             userProfile.age = resultArray[2]
