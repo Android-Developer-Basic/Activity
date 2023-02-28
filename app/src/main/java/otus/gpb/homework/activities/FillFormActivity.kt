@@ -25,11 +25,11 @@ class FillFormActivity : AppCompatActivity() {
         val ageString = age.text.toString()
         if(ageString != ""){
             try{
-                val lastNum = ageString.toInt()
-                if(lastNum < 0) lastNum * (-1)
-                agePostfix = if(lastNum in 11..19) " лет."
+                val ageNum = ageString.toInt()
+                if(ageNum < 0) ageNum * (-1)
+                agePostfix = if(ageNum in 11..19 || (ageNum % 100) in 11..19) " лет."
                 else {
-                    when (lastNum % 10) {
+                    when (ageNum % 10) {
                         1 -> " год."
                         in 2..4 -> " года."
                         else -> " лет."
