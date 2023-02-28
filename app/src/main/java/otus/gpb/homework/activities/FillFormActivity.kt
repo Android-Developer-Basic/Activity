@@ -43,7 +43,8 @@ class FillFormActivity : AppCompatActivity() {
                     }
                 }
 
-            }catch (e: java.lang.NumberFormatException){}
+            }catch (e: java.lang.NumberFormatException){
+                agePostfix = ""}
         }
         intent = Intent().apply {
             val result = array.joinToString(DATA_STRING_SEPARATOR,"", "")

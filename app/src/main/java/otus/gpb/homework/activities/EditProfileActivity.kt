@@ -172,8 +172,7 @@ class EditProfileActivity : AppCompatActivity() {
         //Открыть камеру
         alert.setPositiveButton(R.string.Camera){_, _ ->
             imgFile = createImgFile()
-            if(imgFile == null) {}
-            else camera.launch(null)
+            imgFile?.let{camera.launch(null)}
         }
 
         //Поставить котейку на аватар
