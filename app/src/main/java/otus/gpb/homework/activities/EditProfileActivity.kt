@@ -34,7 +34,7 @@ class EditProfileActivity : AppCompatActivity() {
     private val userProfile:User = User()
     private var isFirstClickOnImg = true
     private var isFirstAlertDialogCall = true
-    private var deny = false
+    private var isCameraAccess = false
     private lateinit var nameTextView:TextView
     private lateinit var surnameTextView:TextView
     private lateinit var ageTextView:TextView
@@ -72,7 +72,7 @@ class EditProfileActivity : AppCompatActivity() {
         when {
             it -> {
                 showChoice()
-                deny = true
+                isCameraAccess = true
             }
             !shouldShowRequestPermissionRationale(Manifest.permission.CAMERA) -> {
                 val intent = Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS).apply {
@@ -132,7 +132,7 @@ class EditProfileActivity : AppCompatActivity() {
 
     //Клик по imageView:
     private fun clickOnTakePhoto(isFirst: Boolean){
-        if(deny){
+        if(isCameraAccess){
             permissionForCamera.launch(Manifest.permission.CAMERA)
             return
         }
@@ -237,6 +237,7 @@ class EditProfileActivity : AppCompatActivity() {
 
         try{
             startActivity(telegramMessage)
+            //startActivity(Intent.createChooser(telegramMessage,""))
         }
         catch (e: ActivityNotFoundException){
             Toast.makeText(this, R.string.app_not_installed, Toast.LENGTH_SHORT).show()
