@@ -18,13 +18,16 @@ class SenderActivity : AppCompatActivity() {
         val toOpenReceiverButton = findViewById<Button>(R.id.toOpenReceiver)
 
         toGoogleMapsButton.setOnClickListener {
-            try {
+//            С гулкартами интент явный, но что, если они не установлены, в трай-кетч?
+//            Да, на данный момент актуален try catch, ранее была возможность проверки через
+//            intent.resolveActivity(packageManager), но с sdk 30 данное действие просит разрешение
                 val uri = Uri.parse("geo:0.0?q=restaurants")
                 val mapsIntent = Intent(Intent.ACTION_VIEW, uri)
                 mapsIntent.setPackage("com.google.android.apps.maps")
+            try {
                 startActivity(mapsIntent)
             } catch (e: ActivityNotFoundException) {
-                Toast.makeText(this, "No GoogleMaps on yourdevice", Toast.LENGTH_SHORT).show()
+                Toast.makeText(this, "No GoogleMaps on your device", Toast.LENGTH_SHORT).show()
             }
         }
 
@@ -32,14 +35,16 @@ class SenderActivity : AppCompatActivity() {
             val email = "android@otus.ru"
             val body = "Hello, OTS"
             val subject = "Greetings"
-            try {
+
                 val emailIntent = Intent().apply {
                     action = Intent.ACTION_SENDTO
                     data = Uri.parse("mailto:$email?subject=$subject&body=$body")
+//                    the following doesn't work with gmail, though with yandex.mail works well
 //                    putExtra(Intent.EXTRA_TEXT, "Hello, OTS")
 //                    putExtra(Intent.EXTRA_SUBJECT, "Greetings")
                 }
             val emailIntentWithChooser = Intent.createChooser(emailIntent, "Send to..")
+            try {
                 startActivity(emailIntentWithChooser)
             } catch (e: ActivityNotFoundException) {
                 Toast.makeText(this, "Something went wrong", Toast.LENGTH_SHORT).show()
@@ -47,7 +52,6 @@ class SenderActivity : AppCompatActivity() {
         }
 
         toOpenReceiverButton.setOnClickListener {
-                try {
                     val intent = Intent().apply {
                         action = Intent.ACTION_SEND
                         addCategory(Intent.CATEGORY_DEFAULT)
@@ -56,8 +60,12 @@ class SenderActivity : AppCompatActivity() {
                         putExtra("description", "Что бывает, когда напарником брутального костолома становится субтильный лопух? Наемный охранник Джексон Хили и частный детектив Холланд Марч вынуждены работать в паре, чтобы распутать плевое дело о пропавшей девушке, которое оборачивается преступлением века. Смогут ли парни разгадать сложный ребус, если у каждого из них – свои, весьма индивидуальные методы.Что бывает, когда напарником брутального костолома становится субтильный лопух? Наемный охранник Джексон Хили и частный детектив Холланд Марч вынуждены работать в паре, чтобы распутать плевое дело о пропавшей девушке, которое оборачивается преступлением века. Смогут ли парни разгадать сложный ребус, если у каждого из них – свои, весьма индивидуальные методы.")
                         type= "text/plain"
                     }
+                try {
+//              в случае с toOpenReceiver не выводится заголовок в чузере, пишет просто share, в чем причина может быть?
+//              В документации метода указано, что это опциональное свойство , которое не будет показываться для данного действия
+//              title – Optional title that will be displayed in the chooser,
+//              only when the target action is not ACTION_SEND or ACTION_SEND_MULTIPLE.
                     startActivity(Intent.createChooser(intent, "Choose wisely..."))
-//                    startActivity(intent)
                 } catch (e: ActivityNotFoundException) {
                     Toast.makeText(this, "No such app", Toast.LENGTH_SHORT).show()
                 }
