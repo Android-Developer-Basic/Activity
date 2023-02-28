@@ -9,6 +9,7 @@ import android.graphics.BitmapFactory
 import android.net.Uri
 import android.os.Bundle
 import android.os.Environment
+import android.provider.MediaStore.Images.Media.insertImage
 import android.provider.Settings
 import android.view.ViewGroup
 import android.widget.*
@@ -167,14 +168,24 @@ class EditProfileActivity : AppCompatActivity() {
     //Дополнительный алерт-диалог, в котором можно выбрать: открыть камеру, либо установить дефолтное изображение:
     private fun showChoice(){
         val alert = AlertDialog.Builder(this)
+
+        //Открыть камеру
         alert.setPositiveButton(R.string.Camera){_, _ ->
             imgFile = createImgFile()
             if(imgFile == null) {}
             else camera.launch(null)
         }
 
+        //Поставить котейку на аватар
         alert.setNegativeButton(R.string.cat){_, _ ->
-            setCat()
+            userPhotoUri = Uri.parse("android.resource://${this.packageName}/${R.drawable.cat}")
+            userPhotoUri?.let {
+                populateImage(it)
+                @Suppress("DEPRECATION")
+                val path = insertImage(application.contentResolver, userProfile.image, "Cat", null)
+                userPhotoUri = Uri.parse(path)
+            }
+
 
         }
         alert.show()
@@ -219,7 +230,7 @@ class EditProfileActivity : AppCompatActivity() {
 
         val telegramMessage = Intent(Intent.ACTION_SEND).apply {
             type = "image/jpeg"
-            if(userPhotoUri != null) putExtra(Intent.EXTRA_STREAM, userPhotoUri)
+            if(userPhotoUri != null) putExtra(Intent.EXTRA_STREAM, userPhotoUri )
             putExtra(Intent.EXTRA_TEXT, "${userProfile.name}\n${userProfile.surname}\n${userProfile.age+ agePostfix}")
         }
         telegramMessage.setPackage(TELEGRAM_PACKAGE)
@@ -231,13 +242,5 @@ class EditProfileActivity : AppCompatActivity() {
             Toast.makeText(this, R.string.app_not_installed, Toast.LENGTH_SHORT).show()
         }
     }
-    //Функция, вызывающая котейку из ресурсов))
-    private fun setCat(){
-        val catImageResourceString = "android.resource://${packageName}/${R.drawable.cat}"
-        userPhotoUri = Uri.parse(catImageResourceString)
-        imageView.setImageURI(userPhotoUri)
-    }
-
-
 
 }
