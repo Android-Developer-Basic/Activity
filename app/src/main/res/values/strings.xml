@@ -10,6 +10,7 @@
     <string name="fill_age">Возраст: </string>
     <string name="save_changes">Сохранить изменения</string>
     <string name="text_for_alert_dialog">Чтобы сделать фотографию, вы должны разрешить приложению доступ к камере.</string>
+    <string name="text_for_alert_dialog2">Чтобы установить дефолтное приложение, вы должны дать доступ к карте памяти.</string>
     <string name="cat">Котейка</string>
     <string name="Camera">Камера</string>
     <string name="app_not_installed">Нет подходящего приложения</string>
