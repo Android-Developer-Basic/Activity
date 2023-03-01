@@ -1,12 +1,15 @@
 package otus.gpb.homework.activities
 
 import android.Manifest
+import android.annotation.SuppressLint
 import android.app.AlertDialog
 import android.app.Dialog
 import android.content.ActivityNotFoundException
 import android.content.Intent
 import android.graphics.BitmapFactory
+import android.icu.text.SimpleDateFormat
 import android.net.Uri
+import android.os.Build
 import android.os.Bundle
 import android.os.Environment
 import android.provider.MediaStore.Images.Media.insertImage
@@ -16,6 +19,7 @@ import android.widget.*
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
+import androidx.core.content.ContextCompat
 import java.io.File
 import java.io.IOException
 import java.util.*
@@ -67,6 +71,24 @@ class EditProfileActivity : AppCompatActivity() {
 
     }
 
+    //Память
+    private  val writeStoragePermission = registerForActivityResult(ActivityResultContracts.RequestPermission()){
+        when{
+            it -> setCat()
+
+            !shouldShowRequestPermissionRationale(Manifest.permission.WRITE_EXTERNAL_STORAGE) ->{
+                val intent = Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS).apply {
+                    val uri = Uri.fromParts("package", packageName, null)
+                    data = uri
+                }
+                startActivity(intent)
+            }
+
+            else ->{}
+
+        }
+    }
+
     //Разрешение на использование камеры:
     private val permissionForCamera = registerForActivityResult(ActivityResultContracts.RequestPermission()) {
         when {
@@ -113,14 +135,20 @@ class EditProfileActivity : AppCompatActivity() {
     //Функции:
 
     //Заполнение данных профиля:
+    @SuppressLint("SetTextI18n")
     private fun setProfileProperties(){
         nameTextView.text = userProfile.name
         surnameTextView.text = userProfile.surname
         ageTextView.text = userProfile.age + agePostfix
     }
 
+    @SuppressLint("SimpleDateFormat")
     private fun createImgFile(): File?{
-        val dateStamp = java.text.SimpleDateFormat("yyyyMMdd_HHmmss").format(Date())
+        val dateStamp = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+            SimpleDateFormat("yyyyMMdd_HHmmss").format(Date())
+        } else {
+            java.text.SimpleDateFormat("yyyyMMdd_HHmmss").format(Date())
+        }
         val storage = getExternalFilesDir(Environment.DIRECTORY_PICTURES)
         return try{
             File.createTempFile("IMG_${dateStamp}_", ".jpg", storage)
@@ -158,6 +186,7 @@ class EditProfileActivity : AppCompatActivity() {
             val intent = Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS).apply{
                 val uri = Uri.fromParts("package", packageName, null)
                 data = uri
+
             }
             startActivity(intent)
         }
@@ -177,14 +206,8 @@ class EditProfileActivity : AppCompatActivity() {
 
         //Поставить котейку на аватар
         alert.setNegativeButton(R.string.cat){_, _ ->
-            userPhotoUri = Uri.parse("android.resource://${this.packageName}/${R.drawable.cat}")
-            userPhotoUri?.let {
-                populateImage(it)
-                @Suppress("DEPRECATION")
-                val path = insertImage(application.contentResolver, userProfile.image, "Cat", null)
-                userPhotoUri = Uri.parse(path)
-            }
-
+            if(Build.VERSION.SDK_INT <= 28) writeStoragePermission.launch(Manifest.permission.WRITE_EXTERNAL_STORAGE)
+            else setCat()
 
         }
         alert.show()
@@ -240,6 +263,16 @@ class EditProfileActivity : AppCompatActivity() {
         }
         catch (e: ActivityNotFoundException){
             Toast.makeText(this, R.string.app_not_installed, Toast.LENGTH_SHORT).show()
+        }
+    }
+
+    private fun setCat(){
+        userPhotoUri = Uri.parse("android.resource://${this.packageName}/${R.drawable.cat}")
+        userPhotoUri?.let {
+            populateImage(it)
+            @Suppress("DEPRECATION")
+            val path = insertImage(application.contentResolver, userProfile.image, "Cat", null)
+            userPhotoUri = Uri.parse(path)
         }
     }
 
