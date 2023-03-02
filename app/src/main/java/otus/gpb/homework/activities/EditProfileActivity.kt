@@ -175,7 +175,7 @@ class EditProfileActivity : AppCompatActivity() {
 
     }
 
-    //Алерт-диалог, вызываемый при запросе разрешения на использование камеры:
+    //Алерт-диалог, вызываемый при запросе разрешения:
     private fun showAlertDialog(isFirst:Boolean, permission:String){
         val alert = AlertDialog.Builder(this)
         var alertMessage = -1
@@ -192,7 +192,10 @@ class EditProfileActivity : AppCompatActivity() {
             }
 
             alert.setPositiveButton(R.string.access) { _, _ ->
-               cameraPermission.launch(permission)
+                when(permission) {
+                    cameraP -> cameraPermission.launch(permission)
+                    storageP -> writeStoragePermission.launch(permission)
+                }
             }
         }
         else alert.setPositiveButton(R.string.settings){ _, _ ->
@@ -273,7 +276,7 @@ class EditProfileActivity : AppCompatActivity() {
             if(userPhotoUri != null) putExtra(Intent.EXTRA_STREAM, userPhotoUri )
             putExtra(Intent.EXTRA_TEXT, "${userProfile.name}\n${userProfile.surname}\n${userProfile.age+ agePostfix}")
         }
-        telegramMessage.setPackage(TELEGRAM_PACKAGE)
+            telegramMessage.setPackage(TELEGRAM_PACKAGE)
 
         try{
             startActivity(telegramMessage)
