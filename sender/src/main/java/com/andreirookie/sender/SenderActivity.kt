@@ -18,6 +18,8 @@ class SenderActivity : AppCompatActivity() {
         val toOpenReceiverButton = findViewById<Button>(R.id.toOpenReceiver)
 
         toGoogleMapsButton.setOnClickListener {
+//            С гулкартами интент явный, но что, если они не установлены, в трай-кетч?Да, на данный момент актуален try catch, ранее была возможность проверки через
+//            intent.resolveActivity(packageManager), но с sdk 30 данное действие просит разрешение
                 val uri = Uri.parse("geo:0.0?q=restaurants")
                 val mapsIntent = Intent(Intent.ACTION_VIEW, uri)
                 mapsIntent.setPackage("com.google.android.apps.maps")
@@ -37,7 +39,7 @@ class SenderActivity : AppCompatActivity() {
                     action = Intent.ACTION_SENDTO
                     data = Uri.parse("mailto:$email?subject=$subject&body=$body")
 
-//                    following doesnt work with gmail, with yandexmail works well
+//                    following doesn't work with gmail, though with yandexmail works well
 //                    putExtra(Intent.EXTRA_TEXT, "Hello, OTS")
 //                    putExtra(Intent.EXTRA_SUBJECT, "Greetings")
                 }
