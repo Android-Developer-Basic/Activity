@@ -103,7 +103,7 @@ class EditProfileActivity : AppCompatActivity() {
     private  val writeStoragePermission = registerForActivityResult(ActivityResultContracts.RequestPermission()){
         if(it) setCat()
         else{
-            if(!isFirstCameraPermissionDialog){
+            if(!isFirstStoragePermissionDialog){
                 showAlertDialog(isFirstStoragePermissionDialog, storageP)
             }
         }
