@@ -1,3 +1,11 @@
 <resources>
     <string name="app_name">Sender</string>
+
+    <string name="to_google_maps">To Google Maps</string>
+    <string name="send_email">Send Email</string>
+    <string name="open_receiver">Open Receiver</string>
+
+    <string name="google_maps_not_installed">Google Maps is not installed</string>
+    <string name="email_clients_not_installed">Email clients are not installed</string>
+    <string name="receiver_not_installed">Receiver is not installed</string>
 </resources>
