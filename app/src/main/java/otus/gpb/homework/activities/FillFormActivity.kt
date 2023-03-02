@@ -31,10 +31,10 @@ class FillFormActivity : AppCompatActivity() {
 
     private fun sendData(array: Array<String>){
         if(array.last() != ""){
-            try{
+            agePostfix = try{
                 val ageNum = array.last().toInt()
                 if(ageNum < 0) ageNum * (-1)
-                agePostfix = if(ageNum in 11..19 || (ageNum % 100) in 11..19) " лет."
+                if(ageNum in 11..19 || (ageNum % 100) in 11..19) " лет."
                 else {
                     when (ageNum % 10) {
                         1 -> " год."
@@ -44,7 +44,8 @@ class FillFormActivity : AppCompatActivity() {
                 }
 
             }catch (e: java.lang.NumberFormatException){
-                agePostfix = ""}
+                ""
+            }
         }
         intent = Intent().apply {
             val result = array.joinToString(DATA_STRING_SEPARATOR,"", "")
