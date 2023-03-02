@@ -7,4 +7,5 @@
 
     <string name="google_maps_not_installed">Google Maps is not installed</string>
     <string name="email_clients_not_installed">Email clients are not installed</string>
+    <string name="receiver_not_installed">Receiver is not installed</string>
 </resources>
