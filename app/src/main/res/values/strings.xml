@@ -1,3 +1,8 @@
 <resources>
     <string name="app_name">Activities</string>
+    <string name="title_send">Отправить</string>
+    <string name="enter_name">Введите имя</string>
+    <string name="enter_surname">Введите фамилию</string>
+    <string name="enter_age">Введите возраст</string>
+    <string name="apply_button_text">Применить</string>
 </resources>
