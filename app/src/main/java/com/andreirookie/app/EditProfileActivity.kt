@@ -15,7 +15,6 @@ import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
 import com.andreirookie.app.dto.User
-import com.andreirookie.app.util.ContractCameraResult
 import com.andreirookie.app.util.ContractEditProfileAndFillForm
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import otus.gpb.homework.activities.R
@@ -29,7 +28,7 @@ class EditProfileActivity : AppCompatActivity() {
     private lateinit var surname: TextView
     private lateinit var age: TextView
 
-    private val dummyUser = User(
+    private var dummyUser = User(
         name = "Ivan",
         surname = "Ivanov",
         age = 15
@@ -62,14 +61,8 @@ class EditProfileActivity : AppCompatActivity() {
 
         editProfileButton = findViewById(R.id.editProfileButton)
         editProfileButton.setOnClickListener {
-            val user = User(
-                name = name.text.toString(),
-                surname = surname.text.toString(),
-                age = age.text.toString().toInt()
-            )
-            fillFormLauncher.launch(user)
+            fillFormActivityResultContract.launch(dummyUser)
         }
-
 
         findViewById<Toolbar>(R.id.toolbar).apply {
             inflateMenu(R.menu.menu)
@@ -96,11 +89,14 @@ class EditProfileActivity : AppCompatActivity() {
     private fun openSenderApp() {
 //        TODO("В качестве реализации метода отправьте неявный Intent чтобы поделиться профилем. В качестве extras передайте заполненные строки и картинку")
 
-        val intent = Intent(Intent.ACTION_VIEW)
-            .setPackage("org.telegram.messenger")
-            .setType("*/*")
-//            .putExtra("image", imageView.setImageURI())
-
+        val intent = Intent().apply {
+            action = Intent.ACTION_SEND
+            setPackage("org.telegram.messenger")
+                .addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
+                .addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+                .putExtra(Intent.EXTRA_TEXT, "${dummyUser.name} ${dummyUser.surname}, ${dummyUser.age}")
+                .putExtra(Intent.EXTRA_STREAM, dummyUser.image).type = "image/*"
+        }
         try {
             startActivity(intent)
         } catch (e: ActivityNotFoundException) {
@@ -108,24 +104,23 @@ class EditProfileActivity : AppCompatActivity() {
         }
     }
 
-    private val fillFormLauncher =
+    private val fillFormActivityResultContract =
         registerForActivityResult(ContractEditProfileAndFillForm()) { user ->
             user ?: return@registerForActivityResult
-            populateUserInfo(user)
+            fillDummyUserTextData(user)
+            populateUserInfo()
         }
 
-    private fun populateUserInfo(user: User) {
-        name.text = user.name
-        surname.text = user.surname
-        age.text = user.age.toString()
-    }
-
-    private val cameraPermissionRequest =
+    private val cameraPermissionRequestContract =
         registerForActivityResult(ActivityResultContracts.RequestPermission()) { granted ->
             when {
                 granted -> {
 //                    imageView.setImageDrawable(getDrawable(R.drawable.cat))
-                    populateImage(Uri.parse("android.resource://$packageName/${R.drawable.cat}"))
+                    fillDummyUserImageData(Uri.parse("android.resource://$packageName/${R.drawable.cat}"))
+                    dummyUser.image?.let { populateImage(it)}
+
+//                    val shouldShowRequestAgain = !shouldShowRequestPermissionRationale(Manifest.permission.CAMERA)
+//                    if (shouldShowRequestAgain) {  }
                 }
                 !shouldShowRequestPermissionRationale(Manifest.permission.CAMERA) -> {
                     openSettingsViaAlertDialog()
@@ -151,7 +146,7 @@ class EditProfileActivity : AppCompatActivity() {
         if (shouldShowRequestPermissionRationale(Manifest.permission.CAMERA)) {
             grantCameraAccessViaAlertDialog()
         } else {
-            cameraPermissionRequest.launch(Manifest.permission.CAMERA)
+            cameraPermissionRequestContract.launch(Manifest.permission.CAMERA)
         }
     }
 
@@ -160,7 +155,7 @@ class EditProfileActivity : AppCompatActivity() {
             .setTitle("Warning")
             .setMessage("Для использования камеры необходимо получить разрешение")
             .setPositiveButton("Дать доступ") { _, _ ->
-                cameraPermissionRequest.launch(Manifest.permission.CAMERA)
+                cameraPermissionRequestContract.launch(Manifest.permission.CAMERA)
             }
             .setNegativeButton("Отмена") { text, _ ->
 //                text.dismiss() / cancel
@@ -170,9 +165,28 @@ class EditProfileActivity : AppCompatActivity() {
     private val galleryResultContract =
         registerForActivityResult(ActivityResultContracts.GetContent()) { result ->
             result ?: return@registerForActivityResult
-            populateImage(result)
+            fillDummyUserImageData(result)
+            dummyUser.image?.let { populateImage(it)}
         }
 
+    private fun populateUserInfo() {
+        name.text = dummyUser.name
+        surname.text = dummyUser.surname
+        age.text = dummyUser.age.toString()
+//        dummyUser.image?.let { populateImage(it) }
+    }
+    private fun fillDummyUserTextData(user: User){
+        dummyUser = dummyUser.copy(
+            name = user.name,
+            surname = user.surname,
+            age = user.age
+        )
+    }
+    private fun fillDummyUserImageData(uri: Uri){
+        dummyUser = dummyUser.copy(
+            image = uri
+        )
+    }
     companion object {
         const val EXTRA_USER = "EXTRA_USER"
     }
@@ -182,7 +196,6 @@ class EditProfileActivity : AppCompatActivity() {
 //            result ?: return@registerForActivityResult
 //            populateImage(result)
 //        }
-
 
 //        private val cameraResultContract =
 //        registerForActivityResult(ActivityResultContracts.TakePicturePreview()) { result ->
