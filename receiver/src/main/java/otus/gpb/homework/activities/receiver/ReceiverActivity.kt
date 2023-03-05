@@ -1,11 +1,10 @@
 package otus.gpb.homework.activities.receiver
 
-import android.content.Context
 import android.os.Bundle
-import android.widget.Button
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
+import androidx.appcompat.content.res.AppCompatResources
 
 class ReceiverActivity : AppCompatActivity() {
 
@@ -22,7 +21,12 @@ class ReceiverActivity : AppCompatActivity() {
             titleTextView.text = it.getString("title", ":( no title")
             descriptionTextView.text = it.getString("description", ":( no description")
             yearTextView.text = it.getString("year", ":( no year")
-            posterImageView.setImageDrawable(getDrawable(R.drawable.interstellar))
+
+            when (it.getString("title", "").lowercase())
+            {
+                "интерстеллар" -> posterImageView.setImageDrawable(AppCompatResources.getDrawable(this, R.drawable.interstellar))
+                "славные парни" -> posterImageView.setImageDrawable(AppCompatResources.getDrawable(this, R.drawable.niceguys))
+            }
         }
     }
 }

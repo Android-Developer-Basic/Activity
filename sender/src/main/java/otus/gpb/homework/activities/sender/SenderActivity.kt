@@ -3,10 +3,10 @@ package otus.gpb.homework.activities.sender
 import android.content.ActivityNotFoundException
 import android.content.Intent
 import android.net.Uri
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.Button
 import android.widget.Toast
+import androidx.appcompat.app.AppCompatActivity
 
 class SenderActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -30,11 +30,10 @@ class SenderActivity : AppCompatActivity() {
 
         val buttonSendEmail = findViewById<Button>(R.id.button_SendEmail)
         buttonSendEmail.setOnClickListener {
-            val emailURI = Uri.parse("mailto:android@otus.ru")
-            val intent = Intent(Intent.ACTION_SENDTO, emailURI).apply {
-                putExtra(Intent.EXTRA_SUBJECT, "Hello")
-                putExtra(Intent.EXTRA_TEXT, "Hello, people!")
-            }
+            val emailURI = Uri.parse("mailto:" + Uri.encode("android@otus.ru") +
+                    "?subject=" + Uri.encode("Hello") +
+                    "&body=" + Uri.encode("Hello, people!"))
+            val intent = Intent(Intent.ACTION_SENDTO, emailURI)
             try {
                 startActivity(intent)
             }
