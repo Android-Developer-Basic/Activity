@@ -1,13 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="app_name">Activities</string>
-    <string name="title_send">Отправить</string>
-    <string name="edite_profile">Отредактируйте данные профиля:</string>
-    <string name="edit_name">Введите имя:</string>
-    <string name="edit_surname">Введите фамилию:</string>
-    <string name="edit_age">Введите возраст:</string>
-    <string name="apply">Применить</string>
     <string name="photo">Фотография</string>
-    <string name="need_select_image_source">Необходимо выбрать источник изображения</string>
     <string name="make_photo">Сделать фото</string>
     <string name="choose_photo">Выбрать фото</string>
     <string name="you_need_TG_app">Приложение Telegram не установлено на ваш телефон!</string>
