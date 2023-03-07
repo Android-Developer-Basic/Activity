@@ -2,6 +2,7 @@ plugins {
     id 'com.android.application'
     id 'org.jetbrains.kotlin.android'
     id("io.gitlab.arturbosch.detekt")
+    id 'kotlin-parcelize'
 }
 
 android {
@@ -39,8 +40,8 @@ detekt {
 
 tasks.named("detekt").configure {
     reports {
-        txt.required.set(true)
-        html.required.set(false)
+        txt.required.set(false)
+        html.required.set(true)
         md.required.set(false)
         xml.required.set(false)
         sarif.required.set(false)
@@ -52,4 +53,8 @@ dependencies {
     implementation 'androidx.core:core-ktx:1.8.0'
     implementation 'androidx.appcompat:appcompat:1.5.0'
     implementation 'com.google.android.material:material:1.6.1'
+    implementation 'androidx.constraintlayout:constraintlayout:2.1.4'
+    implementation 'androidx.activity:activity-ktx:1.5.1'
+    implementation 'androidx.fragment:fragment-ktx:1.5.2'
+    implementation 'com.squareup.picasso:picasso:2.71828'
 }
