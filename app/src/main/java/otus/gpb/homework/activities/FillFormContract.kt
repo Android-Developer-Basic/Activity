@@ -8,9 +8,11 @@ import androidx.activity.result.contract.ActivityResultContract
 
 class FillFormContract : ActivityResultContract<UserDTO, UserDTO?>() {
 
+    private val keyDTO = "userDTO"
+
     override fun createIntent(context: Context, input: UserDTO): Intent {
         val intent = Intent(context, FillFormActivity::class.java)
-        intent.putExtra("userDTO", input)
+        intent.putExtra(keyDTO, input)
         return intent
     }
 
@@ -18,9 +20,9 @@ class FillFormContract : ActivityResultContract<UserDTO, UserDTO?>() {
         if (intent == null) return null
         if (resultCode != Activity.RESULT_OK) return null
         return if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
-            intent.extras?.getParcelable("userDTO", UserDTO::class.java)
+            intent.extras?.getParcelable(keyDTO, UserDTO::class.java)
         } else {
-            intent.extras?.getParcelable("userDTO")
+            intent.extras?.getParcelable(keyDTO)
         }
     }
 }

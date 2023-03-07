@@ -8,14 +8,17 @@ import android.widget.Button
 import android.widget.EditText
 
 class FillFormActivity : Activity() {
+
+    private val keyDTO = "userDTO"
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_fill_form)
 
         val userData = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
-            intent.extras?.getParcelable("userDTO", UserDTO::class.java)
+            intent.extras?.getParcelable(keyDTO, UserDTO::class.java)
         } else {
-            intent.extras?.getParcelable("userDTO")
+            intent.extras?.getParcelable(keyDTO)
         }
 
         val editName = findViewById<EditText>(R.id.edit_name)
@@ -29,7 +32,7 @@ class FillFormActivity : Activity() {
         findViewById<Button>(R.id.button_apply).setOnClickListener {
             val intent = Intent()
             intent.putExtra(
-                "userDTO", UserDTO(
+                keyDTO, UserDTO(
                     editName.text.toString(),
                     editSurname.text.toString(),
                     editAge.text.toString()

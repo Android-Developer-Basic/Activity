@@ -11,11 +11,15 @@ import android.widget.Button
 import android.widget.ImageView
 import android.widget.TextView
 import android.widget.Toast
+import androidx.activity.result.*
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.activity.result.contract.ActivityResultContracts.PickVisualMedia.ImageOnly
+import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.content.res.AppCompatResources
 import androidx.appcompat.widget.Toolbar
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
+
 
 class EditProfileActivity : AppCompatActivity() {
 
@@ -28,7 +32,7 @@ class EditProfileActivity : AppCompatActivity() {
     private var userDTO = UserDTO(null, null, null)
 
     private val contractGallery =
-        registerForActivityResult(ActivityResultContracts.GetContent()) { result ->
+        registerForActivityResult(ActivityResultContracts.PickVisualMedia()) { result ->
             if (result != null) {
                 populateImage(result)
                 imageUri = result
@@ -60,13 +64,18 @@ class EditProfileActivity : AppCompatActivity() {
 
         imageView.setOnClickListener {
             MaterialAlertDialogBuilder(this)
-                .setTitle("Фотография")
-                .setMessage("Необходимо выбрать источник изображения")
-                .setNegativeButton("Сделать фото") { _, _ ->
+                .setTitle(getString(R.string.photo))
+                .setMessage(getString(R.string.need_select_image_source))
+                .setNegativeButton(getString(R.string.make_photo)) { _, _ ->
                     getPhotoFromCamera()
                 }
-                .setPositiveButton("Выбрать фото") { _, _ ->
-                    contractGallery.launch("image/*")
+                .setPositiveButton(getString(R.string.choose_photo)) { _, _ ->
+                    val mediaType: ActivityResultContracts.PickVisualMedia.VisualMediaType =
+                        ImageOnly
+                    val request: PickVisualMediaRequest = PickVisualMediaRequest.Builder()
+                        .setMediaType(mediaType)
+                        .build()
+                    contractGallery.launch(request)
                 }
                 .show()
         }
@@ -110,7 +119,7 @@ class EditProfileActivity : AppCompatActivity() {
         } catch (e: ActivityNotFoundException) {
             Toast.makeText(
                 this,
-                "Приложение Telegram не установлено на ваш телефон!",
+                getString(R.string.you_need_TG_app),
                 Toast.LENGTH_LONG
             ).show()
         }
@@ -125,13 +134,13 @@ class EditProfileActivity : AppCompatActivity() {
     }
 
     private fun rationaleDialog() {
-        MaterialAlertDialogBuilder(this)
-            .setTitle("ВАЖНО")
-            .setMessage("Для дальнейшего функционирования приложение необходимо предаставить разрешение. Это безопасно и ваши данные не будут предоставлены третей стороне.")
-            .setPositiveButton("Дать доступ") { _, _ ->
+        AlertDialog.Builder(this)
+            .setTitle(getString(R.string.important))
+            .setMessage(getString(R.string.you_need_permission))
+            .setPositiveButton(getString(R.string.give_permission)) { _, _ ->
                 permissionCamera.launch(Manifest.permission.CAMERA)
             }
-            .setNegativeButton("Отмена") { _, _ -> }
+            .setNegativeButton(getString(R.string.cancel)) { _, _ -> }
             .show()
     }
 
@@ -149,9 +158,10 @@ class EditProfileActivity : AppCompatActivity() {
 
     private fun openSettings() {
         MaterialAlertDialogBuilder(this)
-            .setPositiveButton("Открыть настройки") { _, _ ->
+            .setPositiveButton(getString(R.string.open_settings)) { _, _ ->
                 val uri = Uri.fromParts("package", packageName, null)
                 val intent = Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS, uri)
+                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
                 startActivity(intent)
             }
             .show()
