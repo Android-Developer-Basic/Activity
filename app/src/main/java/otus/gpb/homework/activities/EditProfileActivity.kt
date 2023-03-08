@@ -21,6 +21,7 @@ import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
 import androidx.core.content.ContextCompat
+import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import java.io.File
 import java.io.IOException
 import java.util.*
@@ -37,8 +38,6 @@ class EditProfileActivity : AppCompatActivity() {
     //Переменнные класса
     private lateinit var imageView: ImageView
     private val userProfile:User = User()
-    private var isFirstCameraPermissionDialog = true
-    private var isFirstStoragePermissionDialog = true
     private lateinit var nameTextView:TextView
     private lateinit var surnameTextView:TextView
     private lateinit var ageTextView:TextView
@@ -94,28 +93,29 @@ class EditProfileActivity : AppCompatActivity() {
     }
 
     //Камера:
-    private val camera = registerForActivityResult(CameraContract()){
-            populateImage(Uri.fromFile(imgFile))
+//    private val camera = registerForActivityResult(CameraContract()){
+//            populateImage(Uri.fromFile(imgFile))
+//
+//    }
+    private val camera = registerForActivityResult(ActivityResultContracts.TakePicture()){
 
     }
 
     // Разрешение на получение Uri котейки, если  версия SDK - 28 и меньше"
-    private  val writeStoragePermission = registerForActivityResult(ActivityResultContracts.RequestPermission()){
-        if(it) setCat()
-        else{
-            if(!isFirstStoragePermissionDialog){
-                showAlertDialog(isFirstStoragePermissionDialog, storageP)
-            }
+    private  var writeStoragePermission = registerForActivityResult(ActivityResultContracts.RequestPermission()){
+        when{
+            it -> setCat()
+            !shouldShowRequestPermissionRationale(storageP) -> showAlertDialog(false, permission = storageP)
         }
     }
     // Разрешение на доступ к камере
-    private val cameraPermission = registerForActivityResult(ActivityResultContracts.RequestPermission()){
-        if(it) showChoice()
-        else{
-            if(!isFirstCameraPermissionDialog){
-                showAlertDialog(isFirstCameraPermissionDialog, cameraP)
-            }
+    private var cameraPermission = registerForActivityResult(ActivityResultContracts.RequestPermission()){
+        when{
+            it -> showChoice()
+            !shouldShowRequestPermissionRationale(cameraP) -> showAlertDialog(false, permission = cameraP)
+
         }
+
     }
 
     //Проверка разрешений:
@@ -127,17 +127,20 @@ class EditProfileActivity : AppCompatActivity() {
                    storageP -> setCat()
                }
            }
-           shouldShowRequestPermissionRationale(permission) -> {
-               when (permission) {
-                   cameraP -> showAlertDialog(isFirstCameraPermissionDialog, permission)
-                   storageP -> showAlertDialog(isFirstStoragePermissionDialog, permission)
+           shouldShowRequestPermissionRationale(permission) ->{
+               when(permission){
+                   cameraP -> showAlertDialog(permission = permission)
+                   storageP -> showAlertDialog(permission = permission)
                }
            }
-           else ->{
+
+
+           else -> {
                when(permission){
                    cameraP -> cameraPermission.launch(permission)
                    storageP -> writeStoragePermission.launch(permission)
                }
+
            }
        }
    }
@@ -176,43 +179,43 @@ class EditProfileActivity : AppCompatActivity() {
     }
 
     //Алерт-диалог, вызываемый при запросе разрешения:
-    private fun showAlertDialog(isFirst:Boolean, permission:String){
-        val alert = AlertDialog.Builder(this)
-        var alertMessage = -1
-        when(permission){
-            cameraP -> {alertMessage = R.string.text_for_alert_dialog
-            }
-            storageP ->{alertMessage = R.string.text_for_alert_dialog2}
-        }
-        if(isFirst) {
-            alert.setTitle(R.string.alert)
-            alert.setMessage(alertMessage)
-            alert.setNegativeButton(R.string.deny) { dialog, _ ->
-                dialog.dismiss()
-            }
+    private fun showAlertDialog(isFirstShowDialog: Boolean = true, permission:String){
 
-            alert.setPositiveButton(R.string.access) { _, _ ->
-                when(permission) {
-                    cameraP -> cameraPermission.launch(permission)
-                    storageP -> writeStoragePermission.launch(permission)
+            val alert = MaterialAlertDialogBuilder(this)
+            var alertMessage = -1
+            when (permission) {
+                cameraP -> {
+                    alertMessage = R.string.text_for_alert_dialog
+                }
+                storageP -> {
+                    alertMessage = R.string.text_for_alert_dialog2
                 }
             }
-        }
-        else alert.setPositiveButton(R.string.settings){ _, _ ->
-            val intent = Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS).apply{
-                val uri = Uri.fromParts("package", packageName, null)
-                data = uri
+            if (!isFirstShowDialog) alert.setPositiveButton(R.string.settings) { _, _ ->
+                val intent = Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS).apply {
+                    val uri = Uri.fromParts("package", packageName, null)
+                    data = uri
+                }
+                startActivity(intent)
 
             }
-            startActivity(intent)
+            else {
+                alert.setTitle(R.string.alert)
+                alert.setMessage(alertMessage)
+                alert.setNegativeButton(R.string.deny) { dialog, _ ->
 
-        }
-        when(permission) {
-            cameraP -> isFirstCameraPermissionDialog = false
-            storageP -> isFirstStoragePermissionDialog = false
-        }
+                }
 
-        alert.show()
+                alert.setPositiveButton(R.string.access) { _, _ ->
+                    when (permission) {
+                        cameraP -> cameraPermission.launch(permission)
+                        storageP -> writeStoragePermission.launch(permission)
+                    }
+                }
+
+            }
+            alert.show()
+
     }
 
     //Дополнительный алерт-диалог, в котором можно выбрать: открыть камеру, либо установить дефолтное изображение:
