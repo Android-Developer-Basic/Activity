@@ -21,6 +21,7 @@ import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
 import androidx.core.content.ContextCompat
+import androidx.core.content.FileProvider
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import java.io.File
 import java.io.IOException
@@ -31,8 +32,6 @@ internal var agePostfix = ""
 internal const val DATA_STRING_SEPARATOR = "*_*"
 internal const val TELEGRAM_PACKAGE = "org.telegram.messenger"
 internal const val IMAGE_PACKAGE = "otus.gpb.homework.activities.fileprovider"
-internal var userPhotoUri: Uri? = null
-internal var imgFile:File? = null
 
 class EditProfileActivity : AppCompatActivity() {
     //Переменнные класса
@@ -43,6 +42,9 @@ class EditProfileActivity : AppCompatActivity() {
     private lateinit var ageTextView:TextView
     private val cameraP = Manifest.permission.CAMERA
     private val storageP = Manifest.permission.WRITE_EXTERNAL_STORAGE
+    private var userPhotoUri: Uri? = null
+    private var imgFile:File? = null
+    private var catImagePath = ""
 
     //OnCreate fun:
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -93,14 +95,10 @@ class EditProfileActivity : AppCompatActivity() {
     }
 
     //Камера:
-//    private val camera = registerForActivityResult(CameraContract()){
-//            populateImage(Uri.fromFile(imgFile))
-//
-//    }
-    private val camera = registerForActivityResult(ActivityResultContracts.TakePicture()){
+    private val camera = registerForActivityResult(ActivityResultContracts.TakePicture()){ result->
+        if(result) userPhotoUri?.let { imageView.setImageURI(it) }
 
     }
-
     // Разрешение на получение Uri котейки, если  версия SDK - 28 и меньше"
     private  var writeStoragePermission = registerForActivityResult(ActivityResultContracts.RequestPermission()){
         when{
@@ -113,9 +111,7 @@ class EditProfileActivity : AppCompatActivity() {
         when{
             it -> showChoice()
             !shouldShowRequestPermissionRationale(cameraP) -> showAlertDialog(false, permission = cameraP)
-
         }
-
     }
 
     //Проверка разрешений:
@@ -133,7 +129,6 @@ class EditProfileActivity : AppCompatActivity() {
                    storageP -> showAlertDialog(permission = permission)
                }
            }
-
 
            else -> {
                when(permission){
@@ -225,7 +220,11 @@ class EditProfileActivity : AppCompatActivity() {
         //Открыть камеру
         alert.setPositiveButton(R.string.Camera){_, _ ->
             imgFile = createImgFile()
-            imgFile?.let{camera.launch(null)}
+            imgFile?.let{
+                userPhotoUri = FileProvider.getUriForFile(this, IMAGE_PACKAGE, it)
+                camera.launch(userPhotoUri)
+            }
+
         }
 
         //Поставить котейку на аватар
@@ -295,8 +294,8 @@ class EditProfileActivity : AppCompatActivity() {
         userPhotoUri?.let {
             populateImage(it)
             @Suppress("DEPRECATION")
-            val path = insertImage(application.contentResolver, userProfile.image, "Cat", null)
-            userPhotoUri = Uri.parse(path)
+            catImagePath = insertImage(application.contentResolver, userProfile.image, "Cat", null)
+            userPhotoUri = Uri.parse(catImagePath)
         }
     }
 
