@@ -1,28 +1,25 @@
 package otus.gpb.homework.activities
 
+import Profile
 import android.Manifest
+import android.app.Activity
 import android.content.ActivityNotFoundException
 import android.content.Context
 import android.content.Intent
 import android.graphics.BitmapFactory
 import android.net.Uri
 import android.os.Bundle
-import android.os.Parcelable
 import android.provider.Settings
+import android.widget.Button
 import android.widget.ImageView
+import android.widget.TextView
 import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContract
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
+import androidx.appcompat.content.res.AppCompatResources
 import androidx.appcompat.widget.Toolbar
-
-import Profile
-import android.app.Activity
-import android.widget.Button
-import android.widget.TextView
-import androidx.activity.result.ActivityResult
-import androidx.activity.result.ActivityResultLauncher
 
 
 class ProfileContract: ActivityResultContract<Profile, Profile?>()
@@ -34,7 +31,7 @@ class ProfileContract: ActivityResultContract<Profile, Profile?>()
     }
 
     override fun parseResult(resultCode: Int, intent: Intent?): Profile? =
-        intent?.let { if (resultCode == Activity.RESULT_OK) intent.extras?.getParcelable<Profile>("profile") else null } ?: null
+        if (resultCode == Activity.RESULT_OK) intent?.extras?.getParcelable("profile") else null
 }
 
 
@@ -64,7 +61,7 @@ class EditProfileActivity : AppCompatActivity() {
 
         val cameraPerm = registerForActivityResult(ActivityResultContracts.RequestPermission()) {
                 isGranted ->
-            if (isGranted) imageView.setImageDrawable(getDrawable(R.drawable.cat))
+            if (isGranted) imageView.setImageDrawable(AppCompatResources.getDrawable(this, R.drawable.cat))
             else
                 if (!shouldShowRequestPermissionRationale(Manifest.permission.CAMERA)) {
                     val builderSettings = AlertDialog.Builder(this@EditProfileActivity).apply {
@@ -76,7 +73,7 @@ class EditProfileActivity : AppCompatActivity() {
                             dialog.cancel()
                             val intent = Intent(
                                 Settings.ACTION_APPLICATION_DETAILS_SETTINGS,
-                                Uri.fromParts("package", getPackageName(), null)
+                                Uri.fromParts("package", this@EditProfileActivity.packageName, null)
                             )
                             startActivity(intent)
                         }
@@ -108,53 +105,48 @@ class EditProfileActivity : AppCompatActivity() {
         imageView.setOnClickListener {
 
             val builderChoiceSource = AlertDialog.Builder(this).apply {
-                setTitle("Фото")
-                setMessage("Выберите источник фотографии")
+                setTitle("Выберите действие")
                 setCancelable(true)
-                setPositiveButton("Камера") {dialog, _ ->
-                    dialog.cancel()
-                    if (shouldShowRequestPermissionRationale(Manifest.permission.CAMERA)) {
-
-                        val builderInfo = AlertDialog.Builder(this@EditProfileActivity).apply {
-                            setTitle("Ну разрешите же")
-                            setMessage("Доступ к камере необходим, чтобы запечатлить Вашу прекрасную физиономию!")
-                            setCancelable(false)
-                            setPositiveButton(
-                                "Дать доступ"
-                            ) { dialog, _ ->
-                                dialog.cancel()
-                                cameraPerm.launch(Manifest.permission.CAMERA)
-                            }
-                            setNegativeButton(
-                                "Отмена")
-                            { dialog, _ ->
-                                dialog.cancel()
+                setItems(arrayOf("Сделать фото", "Выбрать фото")) { _, choice ->
+                    when (choice) {
+                        0 -> {
+                            if (shouldShowRequestPermissionRationale(Manifest.permission.CAMERA)) {
+                                val builderInfo = AlertDialog.Builder(this@EditProfileActivity).apply {
+                                    setTitle("Ну разрешите же")
+                                    setMessage("Доступ к камере необходим, чтобы запечатлить Вашу прекрасную физиономию!")
+                                    setCancelable(false)
+                                    setPositiveButton(
+                                        "Дать доступ"
+                                    ) { dialog, _ ->
+                                        dialog.cancel()
+                                        cameraPerm.launch(Manifest.permission.CAMERA)
+                                    }
+                                    setNegativeButton(
+                                        "Отмена")
+                                    { dialog, _ ->
+                                        dialog.cancel()
+                                    }
+                                }
+                                with(builderInfo)
+                                {
+                                    create()
+                                    show()
+                                }
+                            } else cameraPerm.launch(Manifest.permission.CAMERA)
+                        }
+                        1 -> {
+                            try {
+                                galleryContract.launch("image/*")
+                            } catch (e: ActivityNotFoundException) {
+                                Toast.makeText(this@EditProfileActivity,"Что-то пошло нет так...",Toast.LENGTH_SHORT).show()
                             }
                         }
-                        with(builderInfo)
-                        {
-                            create()
-                            show()
-                        }
 
-
-                    } else cameraPerm.launch(Manifest.permission.CAMERA)
-                }
-
-                setNegativeButton("Галерея") { dialog, _ ->
-                    dialog.cancel()
-                    try {
-                        galleryContract.launch("image/*")
-                    }
-                    catch (e: ActivityNotFoundException)
-                    {
-                        Toast.makeText(this@EditProfileActivity, "Что-то пошло нет так...", Toast.LENGTH_SHORT).show()
                     }
                 }
-
-                setNeutralButton("Отмена")
-                    { dialog, _ ->  dialog.cancel()}
             }
+
+
 
             with(builderChoiceSource)
             {
@@ -186,14 +178,20 @@ class EditProfileActivity : AppCompatActivity() {
 
         if ((imageUri != null) && (profile != null))
         {
+            val b = Bundle().apply {
+                putStringArray("data", arrayOf(imageUri.toString(), profile!!.name, profile!!.surname, profile!!.age.toString()))
+            }
             val intent = Intent(Intent.ACTION_SEND).apply {
-                setPackage("org.telegram.messenger")
+                setClassName("org.telegram.messenger", "org.telegram.ui.LaunchActivity")
+                putExtras(b)
+                /*
                 putExtra("imageUri", imageUri)
                 putExtra("name", profile!!.name)
                 putExtra("surname", profile!!.surname)
                 putExtra("age", profile!!.age.toInt())
-            }
 
+                 */
+            }
             try {
                 startActivity(intent)
             }
@@ -204,4 +202,5 @@ class EditProfileActivity : AppCompatActivity() {
         } else Toast.makeText(this, "Выберите фото и заполните профиль", Toast.LENGTH_SHORT).show()
 
     }
+
 }
