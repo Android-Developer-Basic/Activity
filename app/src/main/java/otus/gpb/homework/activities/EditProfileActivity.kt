@@ -146,8 +146,6 @@ class EditProfileActivity : AppCompatActivity() {
                 }
             }
 
-
-
             with(builderChoiceSource)
             {
                 create()
@@ -160,9 +158,6 @@ class EditProfileActivity : AppCompatActivity() {
         editProfile.setOnClickListener {
             profileContract.launch(Profile())
         }
-
-
-
 
     }
 
@@ -189,8 +184,7 @@ class EditProfileActivity : AppCompatActivity() {
                 putExtra("name", profile!!.name)
                 putExtra("surname", profile!!.surname)
                 putExtra("age", profile!!.age.toInt())
-
-                 */
+                */
             }
             try {
                 startActivity(intent)
