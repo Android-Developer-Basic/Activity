@@ -100,14 +100,14 @@ class EditProfileActivity : AppCompatActivity() {
 
     }
     // Разрешение на получение Uri котейки, если  версия SDK - 28 и меньше"
-    private  var writeStoragePermission = registerForActivityResult(ActivityResultContracts.RequestPermission()){
+    private  val writeStoragePermission = registerForActivityResult(ActivityResultContracts.RequestPermission()){
         when{
             it -> setCat()
             !shouldShowRequestPermissionRationale(storageP) -> showAlertDialog(false, permission = storageP)
         }
     }
     // Разрешение на доступ к камере
-    private var cameraPermission = registerForActivityResult(ActivityResultContracts.RequestPermission()){
+    private val cameraPermission = registerForActivityResult(ActivityResultContracts.RequestPermission()){
         when{
             it -> showChoice()
             !shouldShowRequestPermissionRationale(cameraP) -> showAlertDialog(false, permission = cameraP)
