@@ -1,26 +1,36 @@
 <resources>
     <string name="app_name">Activities</string>
-    <string name="title_send">Отправить</string>
-    <string name="take_photo">Сделать фото</string>
-    <string name="chose_photo">Выбрать фото из галереи</string>
-    <string name="alert">Предупреждение!</string>
-    <string name="fill_form_title">Заполните информацию</string>
-    <string name="fill_name">Имя: </string>
-    <string name="fill_surname">Фамилия: </string>
-    <string name="fill_age">Возраст: </string>
-    <string name="save_changes">Сохранить изменения</string>
-    <string name="text_for_alert_dialog">Чтобы сделать фотографию, вы должны разрешить приложению доступ к камере.</string>
-    <string name="text_for_alert_dialog2">Чтобы установить дефолтное изображение, вы должны дать доступ к карте памяти.</string>
-    <string name="cat">Котейка</string>
-    <string name="Camera">Камера</string>
-    <string name="app_not_installed">Нет подходящего приложения</string>
-    <string name="deny">Запретить</string>
-    <string name="access">Разрешить</string>
-    <string name="settings">Настройки</string>
+    <string name="profile">Profile</string>
+    <string name="edit_profile">Edit profile</string>
+    <string name="title_send">Send</string>
+    <string name="take_photo">Take photo</string>
+    <string name="chose_photo">Open gallery</string>
+    <string name="alert">Attention!</string>
+    <string name="fill_form_title">Fill in information</string>
+    <string name="fill_name">Name: </string>
+    <string name="fill_surname">Surname: </string>
+    <string name="fill_age">Age: </string>
+    <string name="name">Name</string>
+    <string name="surname">Surname</string>
+    <string name="age">Age</string>
+    <string name="save_changes">Save changes</string>
+    <string name="text_for_alert_dialog">To take a photo You have to give this app access to the camera.</string>
+    <string name="text_for_alert_dialog2">To set the default image You have to give this app access to the storage.</string>
+    <string name="cat">The cat</string>
+    <string name="Camera">Take photo</string>
+    <string name="app_not_installed">There is no suitable application</string>
+    <string name="deny">Deny</string>
+    <string name="access">Access</string>
+    <string name="settings">Settings</string>
+    <string name="one_year">year</string>
+    <string name="few_years">years</string>
+    <string name="many_years">years</string>
 
     <string-array name="dialogWindowArray">
-        <item>Сделать фото</item>
-        <item>Выбрать фото из галереи</item>
+        <item>@string/take_photo</item>
+        <item>@string/chose_photo</item>
     </string-array>
+
+
 </resources>
 

@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources xmlns:tools="http://schemas.android.com/tools">
+    <string name="app_name">Активити-3</string>
+    <string name="title_send">Отправить</string>
+    <string name="profile">Профиль</string>
+    <string name="edit_profile">Редактировать профиль</string>
+    <string name="take_photo">Открыть камеру</string>
+    <string name="chose_photo">Выбрать фото из галереи</string>
+    <string name="alert">Предупреждение!</string>
+    <string name="fill_form_title">Заполните информацию</string>
+    <string name="fill_name">Имя: </string>
+    <string name="fill_surname">Фамилия: </string>
+    <string name="fill_age">Возраст: </string>
+    <string name="name">Имя</string>
+    <string name="surname">Фамилия</string>
+    <string name="age">Возраст</string>
+    <string name="save_changes">Сохранить изменения</string>
+    <string name="text_for_alert_dialog">Чтобы сделать фотографию, вы должны разрешить приложению доступ к камере.</string>
+    <string name="text_for_alert_dialog2">Чтобы установить дефолтное изображение, вы должны дать доступ к карте памяти.</string>
+    <string name="cat">Котейка</string>
+    <string name="Camera">Камера</string>
+    <string name="app_not_installed">Нет подходящего приложения</string>
+    <string name="deny">Запретить</string>
+    <string name="access">Разрешить</string>
+    <string name="settings">Настройки</string>
+    <string name="one_year">год</string>
+    <string name="few_years">года</string>
+    <string name="many_years">лет</string>
+
+    <string-array name="dialogWindowArray">
+        <item>@string/take_photo</item>
+        <item>@string/chose_photo</item>
+    </string-array>
+
+
+</resources>

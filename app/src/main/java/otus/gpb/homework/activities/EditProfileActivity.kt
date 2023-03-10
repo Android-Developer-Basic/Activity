@@ -2,7 +2,6 @@ package otus.gpb.homework.activities
 
 import android.Manifest
 import android.annotation.SuppressLint
-import android.app.AlertDialog
 import android.app.Dialog
 import android.content.ActivityNotFoundException
 import android.content.Intent
@@ -43,7 +42,6 @@ class EditProfileActivity : AppCompatActivity() {
     private val cameraP = Manifest.permission.CAMERA
     private val storageP = Manifest.permission.WRITE_EXTERNAL_STORAGE
     private var userPhotoUri: Uri? = null
-    private var imgFile:File? = null
     private var catImagePath = ""
 
     //OnCreate fun:
@@ -96,18 +94,18 @@ class EditProfileActivity : AppCompatActivity() {
 
     //Камера:
     private val camera = registerForActivityResult(ActivityResultContracts.TakePicture()){ result->
-        if(result) userPhotoUri?.let { imageView.setImageURI(it) }
+        if(result) userPhotoUri?.let { populateImage(it) }
 
     }
     // Разрешение на получение Uri котейки, если  версия SDK - 28 и меньше"
-    private  var writeStoragePermission = registerForActivityResult(ActivityResultContracts.RequestPermission()){
+    private  val writeStoragePermission = registerForActivityResult(ActivityResultContracts.RequestPermission()){
         when{
             it -> setCat()
             !shouldShowRequestPermissionRationale(storageP) -> showAlertDialog(false, permission = storageP)
         }
     }
     // Разрешение на доступ к камере
-    private var cameraPermission = registerForActivityResult(ActivityResultContracts.RequestPermission()){
+    private val cameraPermission = registerForActivityResult(ActivityResultContracts.RequestPermission()){
         when{
             it -> showChoice()
             !shouldShowRequestPermissionRationale(cameraP) -> showAlertDialog(false, permission = cameraP)
@@ -215,11 +213,11 @@ class EditProfileActivity : AppCompatActivity() {
 
     //Дополнительный алерт-диалог, в котором можно выбрать: открыть камеру, либо установить дефолтное изображение:
     private fun showChoice(){
-        val alert = AlertDialog.Builder(this)
+        val alert = MaterialAlertDialogBuilder(this)
 
         //Открыть камеру
         alert.setPositiveButton(R.string.Camera){_, _ ->
-            imgFile = createImgFile()
+            val imgFile = createImgFile()
             imgFile?.let{
                 userPhotoUri = FileProvider.getUriForFile(this, IMAGE_PACKAGE, it)
                 camera.launch(userPhotoUri)

@@ -34,12 +34,12 @@ class FillFormActivity : AppCompatActivity() {
             agePostfix = try{
                 val ageNum = array.last().toInt()
                 if(ageNum < 0) ageNum * (-1)
-                if(ageNum in 11..19 || (ageNum % 100) in 11..19) " лет."
+                if(ageNum in 11..19 || (ageNum % 100) in 11..19) " ${getString(R.string.many_years)}."
                 else {
                     when (ageNum % 10) {
-                        1 -> " год."
-                        in 2..4 -> " года."
-                        else -> " лет."
+                        1 -> " ${getString(R.string.one_year)}."
+                        in 2..4 -> " ${getString(R.string.few_years)}."
+                        else -> " ${getString(R.string.many_years)}."
                     }
                 }
 
