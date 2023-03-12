@@ -2,7 +2,6 @@ package otus.gpb.homework.activities
 
 import android.Manifest
 import android.content.Intent
-import android.content.pm.PackageManager
 import android.graphics.BitmapFactory
 import android.net.Uri
 import android.os.Bundle
@@ -16,7 +15,6 @@ import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
-import androidx.core.content.ContextCompat
 import otus.gpb.homework.utils.PersonDTO
 
 class EditProfileActivity : AppCompatActivity() {
@@ -26,8 +24,6 @@ class EditProfileActivity : AppCompatActivity() {
     private lateinit var imageView: ImageView
 
     private var imageViewUri: Uri? = null
-
-    private var cameraPermissionCounter = 0
 
     private var activityResultLauncher =
         registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result: ActivityResult ->
@@ -43,18 +39,19 @@ class EditProfileActivity : AppCompatActivity() {
 
     private val permissionRequestLauncher = registerForActivityResult(
         ActivityResultContracts.RequestPermission()
-    ) { isGranted ->
-        if (!isGranted) {
-            val notShowAgain = !shouldShowRequestPermissionRationale(Manifest.permission.CAMERA)
-            if (notShowAgain) {
-                cameraPermissionCounter++
-                if (cameraPermissionCounter == 1) {
-                    createSimpleDialog()
-                    ++cameraPermissionCounter
-                } else if (cameraPermissionCounter > 1)
-                    despairDialog()
+    ) { granted ->
+        when {
+            granted -> {
+                imageView.setImageResource(R.drawable.cat)
             }
-        } else imageView.setImageResource(R.drawable.cat)
+            !shouldShowRequestPermissionRationale(Manifest.permission.CAMERA) -> {
+                openSettingsDialog()
+            }
+            else -> {
+                Toast.makeText(this, "Попробуйте позже", Toast.LENGTH_SHORT).show()
+            }
+        }
+
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -112,7 +109,8 @@ class EditProfileActivity : AppCompatActivity() {
         try {
             startActivity(shareIntent)
         } catch (e: Exception) {
-            Toast.makeText(this, getString(R.string.no_telegram_installed), Toast.LENGTH_LONG).show()
+            Toast.makeText(this, getString(R.string.no_telegram_installed), Toast.LENGTH_LONG)
+                .show()
         }
     }
 
@@ -128,12 +126,10 @@ class EditProfileActivity : AppCompatActivity() {
             checkedItem[0] = which
             for (i in checkedItem) {
                 if (i == 0) {
-                    if (ContextCompat.checkSelfPermission(this, Manifest.permission.CAMERA)
-                        != PackageManager.PERMISSION_GRANTED
-                    ) {
-                        permissionRequestLauncher.launch(Manifest.permission.CAMERA)
+                    if (shouldShowRequestPermissionRationale(Manifest.permission.CAMERA)) {
+                        createSimpleDialog()
                     } else {
-                        imageView.setImageResource(R.drawable.cat)
+                        permissionRequestLauncher.launch(Manifest.permission.CAMERA)
                     }
                 } else takePictureLauncher.launch("image/*")
 
@@ -153,16 +149,12 @@ class EditProfileActivity : AppCompatActivity() {
             dialog.dismiss()
         }
         builder.setPositiveButton(getString(R.string.grant_access)) { dialog, i ->
-            if (ContextCompat.checkSelfPermission(this, Manifest.permission.CAMERA)
-                != PackageManager.PERMISSION_GRANTED
-            ) {
-                permissionRequestLauncher.launch(Manifest.permission.CAMERA)
-            }
+            permissionRequestLauncher.launch(Manifest.permission.CAMERA)
         }
         builder.show()
     }
 
-    private fun despairDialog() {
+    private fun openSettingsDialog() {
 
         val builder = AlertDialog.Builder(this)
         builder.setNeutralButton(getString(R.string.open_settings)) { dialog, i ->
@@ -170,6 +162,7 @@ class EditProfileActivity : AppCompatActivity() {
                 val uri = Uri.fromParts("package", packageName, null)
                 data = uri
             }
+            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
             startActivity(intent)
         }
         builder.show()

@@ -22,29 +22,17 @@ class FillFormActivity : AppCompatActivity() {
         applyButton.setOnClickListener {
 
             if (TextUtils.isEmpty(firstName.text)) {
-                Toast.makeText(
-                    this,
-                    getString(R.string.person_first_name_required),
-                    Toast.LENGTH_LONG
-                ).show()
+                showErrorValidationToast(R.string.person_first_name_required)
                 return@setOnClickListener
             }
 
             if (TextUtils.isEmpty(lastName.text)) {
-                Toast.makeText(
-                    this,
-                    getString(R.string.person_last_name_required),
-                    Toast.LENGTH_LONG
-                ).show()
+                showErrorValidationToast(R.string.person_last_name_required)
                 return@setOnClickListener
             }
 
             if (TextUtils.isEmpty(age.text)) {
-                Toast.makeText(
-                    this,
-                    getString(R.string.person_age_name_required),
-                    Toast.LENGTH_LONG
-                ).show()
+                showErrorValidationToast(R.string.person_age_name_required)
                 return@setOnClickListener
             }
 
@@ -59,6 +47,10 @@ class FillFormActivity : AppCompatActivity() {
             setResult(RESULT_OK, intent)
             finish()
         }
+    }
+
+    private fun showErrorValidationToast(resourceName: Int) {
+        Toast.makeText(this, getString(resourceName), Toast.LENGTH_LONG).show()
     }
 
     private fun makeRequired(field: EditText, text: Int) {
