@@ -1,4 +1,24 @@
 <resources>
     <string name="app_name">Activities</string>
     <string name="title_send">Отправить</string>
+    <string name="person_first_name">Имя</string>
+    <string name="person_first_name_required">Имя обязательно</string>
+    <string name="person_last_name">Фамилия</string>
+    <string name="person_last_name_required">Фамилия обязательно</string>
+    <string name="person_age">Возраст</string>
+    <string name="person_age_name_required">Возраст обязательно</string>
+    <string name="apply">Применить</string>
+    <string name="permission_string">Открыть настройки для предосталвния доступа к камере?</string>
+    <string name="to_permissions_title">Требуется разрешение</string>
+    <string name="open_settings">Открыть настройки</string>
+    <string name="no_camera_permission">Недостаточно прав доступа</string>
+    <string name="no_telegram_installed">Телеграм не установлен</string>
+    <string name="cancel_dialog">Отмена</string>
+    <string name="grant_access">Дать доступ</string>
+    <string name="choose_photo">Выбрать фото</string>
+    <string name="make_photo">Сделать фото</string>
+    <string name="firstname">Имя</string>
+    <string name="lastname">Фамилия</string>
+    <string name="age">Возраст</string>
+    <string name="editprofile">Редактировать профиль</string>
 </resources>
