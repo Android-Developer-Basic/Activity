@@ -45,7 +45,7 @@ class SenderActivity : AppCompatActivity() {
 
         val buttonReceiver = findViewById<Button>(R.id.open_receiver)
         buttonReceiver.setOnClickListener{
-            val intent = Intent("otus.gpb.homework.activities.receiver.showReceiverActivity")
+            val intent = Intent(Intent.ACTION_VIEW)
 
             intent.putExtra("title", "Интерстеллар")
             intent.putExtra("year", "2014")
