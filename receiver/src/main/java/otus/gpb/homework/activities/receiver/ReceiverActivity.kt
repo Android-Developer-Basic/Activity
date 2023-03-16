@@ -1,5 +1,6 @@
 package otus.gpb.homework.activities.receiver
 
+import android.annotation.SuppressLint
 import android.os.Bundle
 import android.widget.ImageView
 import android.widget.TextView
@@ -17,6 +18,7 @@ class ReceiverActivity : AppCompatActivity() {
         fillViews()
     }
 
+    @SuppressLint("UseCompatLoadingForDrawables")
     private fun fillViews() {
         findViewById<TextView>(R.id.titleTextView).text = intent.getStringExtra(TITLE_TAG)
         findViewById<TextView>(R.id.descriptionTextView).text =
@@ -24,7 +26,7 @@ class ReceiverActivity : AppCompatActivity() {
         findViewById<TextView>(R.id.yearTextView).text = intent.getStringExtra(YEAR_TAG)
         findViewById<ImageView>(R.id.posterImageView).setImageDrawable(
             getDrawable(
-                if (intent.getStringExtra(TITLE_TAG) == "Интерстеллар")
+                if (intent.getStringExtra(TITLE_TAG).toString().contains("Интерстеллар"))
                     R.drawable.interstellar
                 else
                     R.drawable.niceguys

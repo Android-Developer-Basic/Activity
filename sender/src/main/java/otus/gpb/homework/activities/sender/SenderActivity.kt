@@ -50,9 +50,9 @@ const val YEAR_TAG = "year"
             val filmIntent = Intent("Action.SEND").apply {
                 addCategory(Intent.CATEGORY_DEFAULT)
                 type = "text/plain"
-                putExtra(TITLE_TAG, payload?.title)
-                putExtra(DESCRIPTION_TAG, payload?.description)
-                putExtra(YEAR_TAG, payload?.year)
+                putExtra(TITLE_TAG, payload.title)
+                putExtra(DESCRIPTION_TAG, payload.description)
+                putExtra(YEAR_TAG, payload.year)
 
             }
             try {
@@ -82,6 +82,13 @@ const val YEAR_TAG = "year"
                     targetLines.clear()
                 }
             }
+            payloads.add(
+                Payload(
+                    targetLines[0].substringAfter(":"),
+                    targetLines[1].substringAfter(":"),
+                    targetLines[2].substringAfter(":")
+                )
+            )
 
         } catch (e: Exception) {
             Toast.makeText(this, e.message, Toast.LENGTH_SHORT).show()
