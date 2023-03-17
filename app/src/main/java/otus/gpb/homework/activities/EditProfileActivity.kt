@@ -6,7 +6,6 @@ import android.app.Activity
 import android.content.ActivityNotFoundException
 import android.content.Context
 import android.content.Intent
-import android.graphics.BitmapFactory
 import android.net.Uri
 import android.os.Bundle
 import android.provider.Settings
@@ -165,26 +164,19 @@ class EditProfileActivity : AppCompatActivity() {
      * Используйте этот метод чтобы отобразить картинку полученную из медиатеки в ImageView
      */
     private fun populateImage(uri: Uri) {
-        val bitmap = BitmapFactory.decodeStream(contentResolver.openInputStream(uri))
-        imageView.setImageBitmap(bitmap)
+        //val bitmap = BitmapFactory.decodeStream(contentResolver.openInputStream(uri))
+        imageView.setImageURI(uri)//.setImageBitmap(bitmap)
     }
 
     private fun openSenderApp() {
 
         if ((imageUri != null) && (profile != null))
         {
-            val b = Bundle().apply {
-                putStringArray("data", arrayOf(imageUri.toString(), profile!!.name, profile!!.surname, profile!!.age.toString()))
-            }
             val intent = Intent(Intent.ACTION_SEND).apply {
-                setClassName("org.telegram.messenger", "org.telegram.ui.LaunchActivity")
-                putExtras(b)
-                /*
-                putExtra("imageUri", imageUri)
-                putExtra("name", profile!!.name)
-                putExtra("surname", profile!!.surname)
-                putExtra("age", profile!!.age.toInt())
-                */
+                setPackage("org.telegram.messenger")
+                type = "text/plain"
+                putExtra(Intent.EXTRA_STREAM, imageUri)
+                putExtra(Intent.EXTRA_TEXT, "${profile!!.name} ${profile!!.surname} ${profile!!.age}")
             }
             try {
                 startActivity(intent)
