@@ -1,3 +1,10 @@
 <resources>
     <string name="app_name">Sender</string>
+    <string name="open_receiver">Open Receiver</string>
+    <string name="send_email">Send email</string>
+    <string name="to_google_maps">To Google maps</string>
+    <string name="app_not_found">Suitable application not found</string>
+    <string name="otus_address">android@otus.ru</string>
+    <string name="default_mail_title">Activity-2 HW</string>
+    <string name="default_mail_message">The house cat sits\nAnd smiles and sings.\nHe knows a lot of\nSecret things.</string>
 </resources>
