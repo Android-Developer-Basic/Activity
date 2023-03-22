@@ -1,4 +1,21 @@
 <resources>
     <string name="app_name">Activities</string>
     <string name="title_send">Отправить</string>
+    <string name="open_settings">Open settings</string>
+    <string name="settings_dialog_message">Access to the camera is required for the correct operation of the application. You can provide it in the settings in the permissions section.</string>
+    <string name="settings_dialog_title">Permission is required</string>
+    <string name="cancel_button_name">Cancel</string>
+    <string name="take_photo_option_name">Take photo</string>
+    <string name="open_gallery_option_name">Open gallery</string>
+    <string name="change_photo_dialog_title">Change photo</string>
+    <string name="edit_name_hint">Name</string>
+    <string name="edit_surname_hint">Surname</string>
+    <string name="edit_age_hint">Age</string>
+    <string name="button_save_text">Save</string>
+    <string name="edit_profile_title">Edit profile</string>
+    <string name="profile_title">Профиль</string>
+    <string name="edit_profile_button_text">Редактировать профиль</string>
+    <string name="textview_name_hint">Имя</string>
+    <string name="textview_surname_hint">Фамилия</string>
+    <string name="textview_age_hint">Возраст</string>
 </resources>
