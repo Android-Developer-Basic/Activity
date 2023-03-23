@@ -24,10 +24,7 @@ class ActivityC : BaseActivity() {
         }
 
         findViewById<Button>(R.id.bt_close_stack).setOnClickListener{
-            val intent = Intent(this, ActivityD::class.java)
-            intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK
-            intent.putExtra("needFinish", true)
-            startActivity(intent)
+            finishAffinity()
         }
     }
 
