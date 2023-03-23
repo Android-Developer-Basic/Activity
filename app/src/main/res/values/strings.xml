@@ -18,4 +18,7 @@
     <string name="textview_name_hint">Имя</string>
     <string name="textview_surname_hint">Фамилия</string>
     <string name="textview_age_hint">Возраст</string>
+    <string name="rational_dialog_message">To install a photo, the application needs access to the camera. Your data will not get to third parties</string>
+    <string name="rational_dialog_title">Need permission</string>
+    <string name="access_button_name">Access</string>
 </resources>
