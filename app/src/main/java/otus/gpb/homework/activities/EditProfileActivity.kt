@@ -124,17 +124,7 @@ class EditProfileActivity : AppCompatActivity() {
         editProfileBtn.setOnClickListener {
             fillFromActivity.launch("")
         }
-
-        findViewById<ActionMenuItemView>(R.id.send_item).setOnClickListener {
-            try {
-                openSenderApp()
-            }
-            catch (e: Exception)
-            {
-                Toast.makeText(this, "Не указаны необходимые данные", Toast.LENGTH_LONG).show()
-            }
-        }
-    }
+   }
 
     /**
      * Используйте этот метод чтобы отобразить картинку полученную из медиатеки в ImageView
@@ -159,7 +149,10 @@ class EditProfileActivity : AppCompatActivity() {
             }
             catch (e :ActivityNotFoundException) {
                 Toast.makeText(this, "Telegram app is not installed", Toast.LENGTH_LONG).show()
-        }
+            }
+            catch (e: Exception) {
+                Toast.makeText(this, "Не указаны необходимые данные", Toast.LENGTH_LONG).show()
+            }
     }
 
     private fun showRationaleDialog() {
