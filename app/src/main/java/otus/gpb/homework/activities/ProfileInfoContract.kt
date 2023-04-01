@@ -13,8 +13,7 @@ class ProfileInfoContract : ActivityResultContract<String, Bundle?>(){
     }
 
     override fun parseResult(resultCode: Int, intent: Intent?): Bundle? {
-        if (intent == null) return null
-        if (resultCode != Activity.RESULT_OK) return null
+        if (intent == null || resultCode != Activity.RESULT_OK) return null
 
         return intent.getBundleExtra("data")
     }

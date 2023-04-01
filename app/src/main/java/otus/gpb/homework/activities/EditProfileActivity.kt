@@ -4,6 +4,7 @@ import android.Manifest
 import android.content.ActivityNotFoundException
 import android.content.DialogInterface
 import android.content.Intent
+import android.content.pm.PackageManager
 import android.graphics.BitmapFactory
 import android.net.Uri
 import android.os.Bundle
@@ -15,6 +16,7 @@ import android.widget.TextView
 import android.widget.Toast
 import androidx.activity.result.PickVisualMediaRequest
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.view.menu.ActionMenuItemView
 import androidx.appcompat.widget.Toolbar
@@ -23,6 +25,8 @@ import com.google.android.material.dialog.MaterialAlertDialogBuilder
 
 class EditProfileActivity : AppCompatActivity() {
 
+    private val PERMISSION_REQUEST_CODE: Int = 200
+    private val REQUEST_CAMERA_STATE: Int = 0
     private lateinit var imageView: ImageView
     private lateinit var editProfileBtn: Button
     private lateinit var pickedImageUri: Uri
@@ -31,15 +35,20 @@ class EditProfileActivity : AppCompatActivity() {
     private val resultContract = registerForActivityResult(ActivityResultContracts.RequestPermission()){ granted ->
         if(!granted)
         {
-            val dontShowAgain = !shouldShowRequestPermissionRationale(Manifest.permission.CAMERA)
-
-            if(dontShowAgain)
+            if(!shouldShowRequestPermissionRationale(Manifest.permission.CAMERA))
             {
-                val intent = Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS).apply {
-                    val uri = Uri.fromParts("package", packageName, null)
-                    data = uri
-                }
-                startActivity(intent)
+                MaterialAlertDialogBuilder(this)
+                    .setTitle("Запрос разрешения")
+                    .setMessage("Необходимо разрешение на использование камеры. Для этого перейдите в настройки.")
+                    .setPositiveButton("Открыть настройки") { _, _ ->
+                        val intent =
+                            Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS).apply {
+                                val uri = Uri.fromParts("package", packageName, null)
+                                data = uri
+                            }
+                        startActivity(intent)
+                    }
+                    .show()
             }
         }
         else
@@ -60,7 +69,6 @@ class EditProfileActivity : AppCompatActivity() {
     }
 
     private val fillFromActivity = registerForActivityResult(ProfileInfoContract()){ result->
-
         findViewById<TextView>(R.id.textview_name).text = result?.getString("name")
         findViewById<TextView>(R.id.textview_surname).text = result?.getString("surname")
         findViewById<TextView>(R.id.textview_age).text = result?.getString("age")
@@ -118,7 +126,13 @@ class EditProfileActivity : AppCompatActivity() {
         }
 
         findViewById<ActionMenuItemView>(R.id.send_item).setOnClickListener {
-            openSenderApp()
+            try {
+                openSenderApp()
+            }
+            catch (e: Exception)
+            {
+                Toast.makeText(this, "Не указаны необходимые данные", Toast.LENGTH_LONG).show()
+            }
         }
     }
 
@@ -137,12 +151,39 @@ class EditProfileActivity : AppCompatActivity() {
             val telegram = Intent(Intent.ACTION_SEND).apply {
                 putExtra(Intent.EXTRA_STREAM, pickedImageUri)
                 putExtra(Intent.EXTRA_TEXT, "${user.name}\n${user.surname}\n${user.age}")
-                type="image/*"
+                type = "image/*"
                 setPackage("org.telegram.messenger")
             }
+
             startActivity(telegram)
-        } catch (e: ActivityNotFoundException) {
-            Toast.makeText(this, "Telegram app is not installed", Toast.LENGTH_LONG).show()
+            }
+            catch (e :ActivityNotFoundException) {
+                Toast.makeText(this, "Telegram app is not installed", Toast.LENGTH_LONG).show()
+        }
+    }
+
+    private fun showRationaleDialog() {
+        val builder: AlertDialog.Builder = AlertDialog.Builder(this)
+        builder.setTitle(getString(R.string.rationale_title))
+            .setMessage(getString(R.string.rationale_desc))
+            .setNegativeButton("Отмена"){dialog, which->
+            }
+            .setPositiveButton("Дать доступ") { dialog, which ->
+                requestPermissions(arrayOf(Manifest.permission.CAMERA), REQUEST_CAMERA_STATE)
+            }
+        builder.create().show()
+    }
+
+    override fun onRequestPermissionsResult(requestCode: Int,
+                                            permissions: Array<String>, grantResults: IntArray) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
+
+        if ((grantResults.isNotEmpty() &&
+                    grantResults[0] == PackageManager.PERMISSION_GRANTED)) {
+            Toast.makeText(this, "Permission granted", Toast.LENGTH_SHORT).show()
+        } else {
+            showRationaleDialog()
+            Toast.makeText(this, "Permission denied", Toast.LENGTH_SHORT).show()
         }
     }
 }

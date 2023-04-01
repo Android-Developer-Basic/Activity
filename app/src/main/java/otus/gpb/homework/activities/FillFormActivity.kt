@@ -10,25 +10,25 @@ import android.widget.EditText
 class FillFormActivity : AppCompatActivity() {
 
     private lateinit var acceptBtn : Button
-    private lateinit var name_input : EditText
-    private lateinit var surname_input : EditText
-    private lateinit var age_input : EditText
+    private lateinit var nameInput : EditText
+    private lateinit var surnameInput : EditText
+    private lateinit var ageInput : EditText
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_fill_form)
 
         acceptBtn = findViewById(R.id.accept_btn)
-        name_input = findViewById(R.id.input_name)
-        surname_input = findViewById(R.id.input_surname)
-        age_input = findViewById(R.id.input_age)
+        nameInput = findViewById(R.id.input_name)
+        surnameInput = findViewById(R.id.input_surname)
+        ageInput = findViewById(R.id.input_age)
 
         acceptBtn.setOnClickListener{
 
             val bundle = Bundle().apply {
-                putString("name", name_input.text.toString())
-                putString("surname", surname_input.text.toString())
-                putString("age", age_input.text.toString())
+                putString("name", nameInput.text.toString())
+                putString("surname", surnameInput.text.toString())
+                putString("age", ageInput.text.toString())
             }
 
             val intent = Intent().apply {
