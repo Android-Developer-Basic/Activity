@@ -24,6 +24,9 @@ class EditProfileActivity : AppCompatActivity() {
     private lateinit var imageView: ImageView
     private lateinit var buttonEdit: Button
     private var imageUri: Uri? = null
+    private var alreadyDenied = false
+
+
 
 
     private val permission =
@@ -34,7 +37,12 @@ class EditProfileActivity : AppCompatActivity() {
                     imageUri = Uri.parse("android.resource://$packageName/${R.drawable.cat}")
                 }
                 !shouldShowRequestPermissionRationale(Manifest.permission.CAMERA) -> {
-                    openSettings()
+                    if(alreadyDenied) {
+                        openSettings()
+                    }
+                    else {
+                        alreadyDenied = true
+                    }
                 }
             }
         }
@@ -68,7 +76,6 @@ class EditProfileActivity : AppCompatActivity() {
         buttonEdit.setOnClickListener {
             onEdit()
         }
-
 
         findViewById<Toolbar>(R.id.toolbar).apply {
             inflateMenu(R.menu.menu)
