@@ -41,13 +41,15 @@ class EditProfileActivity : AppCompatActivity() {
 
     private val galleryContract = registerForActivityResult(ActivityResultContracts.GetContent()) {
         imageUri = it
-        it?.let {  populateImage(it) }
+        it?.let { populateImage(it) }
     }
 
     private val fillFormContract = registerForActivityResult(ContractEditProfileAndFillForm()) {
-        nameView.text = it?.name
-        surnameView.text = it?.surname
-        ageView.text = it?.age
+        it?.let {
+            nameView.text = it.name
+            surnameView.text = it.surname
+            ageView.text = it.age
+        }
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -110,10 +112,13 @@ class EditProfileActivity : AppCompatActivity() {
     }
 
     private fun onEdit() {
-        fillFormContract.launch(PersonDTO(
-                                    nameView.text.toString(),
-                                    surnameView.text.toString(),
-                                    ageView.text.toString()))
+        fillFormContract.launch(
+            PersonDTO(
+                nameView.text.toString(),
+                surnameView.text.toString(),
+                ageView.text.toString()
+            )
+        )
     }
 
     private fun onRepeatedPermission() {
@@ -132,6 +137,7 @@ class EditProfileActivity : AppCompatActivity() {
         MaterialAlertDialogBuilder(this)
             .setPositiveButton(getString(R.string.open_settings)) { dialog, which ->
                 startActivity(Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS).apply {
+                    addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
                     data = Uri.fromParts("package", packageName, null)
                 })
             }
@@ -150,7 +156,10 @@ class EditProfileActivity : AppCompatActivity() {
         val telegramIntent = Intent(Intent.ACTION_SEND)
         telegramIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
         telegramIntent.setPackage("org.telegram.messenger")
-        telegramIntent.putExtra(Intent.EXTRA_TEXT, "${nameView.text} ${surnameView.text} ${ageView.text}")
+        telegramIntent.putExtra(
+            Intent.EXTRA_TEXT,
+            "${nameView.text}\n${surnameView.text}\n${ageView.text}"
+        )
         telegramIntent.type = "image/*"
         telegramIntent.putExtra(Intent.EXTRA_STREAM, imageUri)
 

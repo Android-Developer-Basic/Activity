@@ -1,5 +1,6 @@
 package otus.gpb.homework.activities
 
+import android.annotation.SuppressLint
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
@@ -12,26 +13,34 @@ class FillFormActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_fill_form)
 
-        val person :PersonDTO? = intent.extras?.getParcelable(KEY)
+        val person: PersonDTO? = intent.extras?.getParcelable(KEY)
 
         val editNameView = findViewById<EditText>(R.id.edit_name)
         val editSurnameView = findViewById<EditText>(R.id.edit_surname)
         val editAgeView = findViewById<EditText>(R.id.edit_age)
         val editButton = findViewById<Button>(R.id.apply_button)
 
-            editNameView.setText(person?.name)
-            editSurnameView.setText(person?.surname)
-            editAgeView.setText(person?.age)
-
+        editNameView.setText(person?.name)
+        editSurnameView.setText(person?.surname)
+        editAgeView.setText(person?.age)
 
         editButton.setOnClickListener {
-            val intent = Intent().putExtra(KEY,
+            val intent = Intent().putExtra(
+                KEY,
                 PersonDTO(
                     editNameView.text.toString(),
                     editSurnameView.text.toString(),
-                    editAgeView.text.toString()))
+                    editAgeView.text.toString()
+                )
+            )
             setResult(RESULT_OK, intent)
             finish()
         }
+    }
+
+    override fun onBackPressed() {
+        super.onBackPressed()
+        setResult(RESULT_CANCELED)
+        finish()
     }
 }
