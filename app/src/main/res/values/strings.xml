@@ -1,4 +1,17 @@
 <resources>
     <string name="app_name">Activities</string>
     <string name="title_send">Отправить</string>
+    <string name="fill_apply">Применить</string>
+    <string name="make_photo">Сделать фото</string>
+    <string name="choose_photo">Выбрать фото</string>
+    <string name="dialog_cancel">Отмена</string>
+    <string name="alert_title">Нужен доступ к камере, там котик</string>
+    <string name="alert_message">Мяу</string>
+    <string name="alert_cancel">Отмена</string>
+    <string name="alert_positive">Дать доступ</string>
+    <string name="open_settings">Открыть настройки</string>
+    <string name="telegram_error">Не установлен Telegram</string>
+    <string name="hint_name">Name</string>
+    <string name="hint_surname">Surname</string>
+    <string name="hint_age">Age</string>
 </resources>
