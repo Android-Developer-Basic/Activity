@@ -32,22 +32,19 @@ class EditProfileActivity : AppCompatActivity() {
     private val permissionCamera = registerForActivityResult(ActivityResultContracts.RequestPermission()) { granted ->
         when {
             granted -> imageView.setImageResource(R.drawable.cat)
-            shouldShowRequestPermissionRationale(Manifest.permission.CAMERA) -> {
+            !shouldShowRequestPermissionRationale(Manifest.permission.CAMERA) -> {
                 MaterialAlertDialogBuilder(this)
-                    .setMessage("Доступ к камере нужен, чтобы делать фото")
-                    .setPositiveButton("Дать доступ") { _, _ ->
-                        requestPermissionCamera()
+                    .setMessage("Открыть настройки")
+                    .setPositiveButton("Перейти") { _, _ ->
+                        val intent = Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS).apply {
+                            data = Uri.fromParts("package", packageName, null)
+                        }
+                        startActivity(intent)
                     }
                     .setNegativeButton("Отмена") { dialog, _ ->
                         dialog.dismiss()
                     }
                     .show()
-            }
-            !shouldShowRequestPermissionRationale(Manifest.permission.CAMERA) -> {
-                val intent = Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS).apply {
-                    data = Uri.fromParts("package", packageName, null)
-                }
-                startActivity(intent)
             }
         }
     }
@@ -111,7 +108,19 @@ class EditProfileActivity : AppCompatActivity() {
     }
 
     private fun requestPermissionCamera() {
-        permissionCamera.launch(Manifest.permission.CAMERA)
+        if (shouldShowRequestPermissionRationale(Manifest.permission.CAMERA)) {
+            MaterialAlertDialogBuilder(this)
+                .setMessage("Доступ к камере нужен, чтобы делать фото")
+                .setPositiveButton("Дать доступ") { _, _ ->
+                    permissionCamera.launch(Manifest.permission.CAMERA)
+                }
+                .setNegativeButton("Отмена") { dialog, _ ->
+                    dialog.dismiss()
+                }
+                .show()
+        } else {
+            permissionCamera.launch(Manifest.permission.CAMERA)
+        }
     }
 
     /**
