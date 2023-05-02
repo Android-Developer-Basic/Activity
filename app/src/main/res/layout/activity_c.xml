@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:background="#2196f3">
+
+    <Button
+        android:id="@+id/buttonOpenA"
+        android:layout_width="250dp"
+        android:layout_height="100dp"
+        android:layout_gravity="left"
+        android:layout_marginStart="10dp"
+        android:layout_marginLeft="5dp"
+        android:layout_marginTop="10dp"
+        android:layout_marginEnd="1dp"
+        android:text="Open ActivityA" />
+
+    <Button
+        android:id="@+id/buttonOpenD"
+        android:layout_width="250dp"
+        android:layout_height="100dp"
+        android:layout_gravity="left"
+        android:layout_marginStart="10dp"
+        android:layout_marginLeft="5dp"
+        android:layout_marginTop="10dp"
+        android:layout_marginEnd="1dp"
+        android:text="Open ActivityD" />
+
+    <Button
+        android:id="@+id/buttonCloseC"
+        android:layout_width="250dp"
+        android:layout_height="100dp"
+        android:layout_gravity="left"
+        android:layout_marginStart="10dp"
+        android:layout_marginLeft="5dp"
+        android:layout_marginTop="10dp"
+        android:layout_marginEnd="1dp"
+        android:text="Close ActivityC"
+
+        />
+
+    <Button
+        android:id="@+id/buttonCloseStack"
+        android:layout_width="250dp"
+        android:layout_height="100dp"
+        android:layout_gravity="left"
+        android:layout_marginStart="10dp"
+        android:layout_marginLeft="5dp"
+        android:layout_marginTop="10dp"
+        android:layout_marginEnd="1dp"
+        android:text="Close Stack" />
+
+</LinearLayout>
