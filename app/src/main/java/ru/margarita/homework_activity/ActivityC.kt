@@ -2,9 +2,12 @@ package ru.margarita.homework_activity
 
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import android.widget.Button
 import androidx.appcompat.app.AppCompatActivity
+
 import otus.gpb.homework.activities.R
+
 
 class ActivityC: AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -19,12 +22,12 @@ class ActivityC: AppCompatActivity() {
             val intent = Intent(this, ActivityA::class.java)
             intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
             startActivity(intent)
+
         }
 
         // По клику на кнопку “Open ActivityD” запустите ActivityD в том же стеке, где расположены ActivityB и ActivityC, при этом завершите все предыдущие Activity, которые находятся в текущем стеке
         buttonOpenD.setOnClickListener {
             val intent = Intent(this, ActivityD::class.java)
-            intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK
             startActivity(intent)
 
         }
@@ -36,8 +39,8 @@ class ActivityC: AppCompatActivity() {
 
         //По клику на кнопку “Close Stack” завершите текущий стек, в котором находятся ActivityB и ActivityC, и перейдите на ActivityA
         buttonCloseStack.setOnClickListener {
+            finishAffinity()
             val intent = Intent(this, ActivityA::class.java)
-            intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
             startActivity(intent)
 
         }

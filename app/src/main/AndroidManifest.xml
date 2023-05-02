@@ -19,10 +19,13 @@
             android:exported="false" />
         <activity
             android:name="ru.margarita.homework_activity.ActivityC"
+            android:launchMode="singleTask"
+            android:taskAffinity="com.first.task"
             android:exported="false" />
         <activity
             android:name="ru.margarita.homework_activity.ActivityB"
-            android:launchMode="singleInstance"
+            android:launchMode="singleTask"
+            android:taskAffinity="com.second.task"
             android:exported="false" />
 
         <activity
