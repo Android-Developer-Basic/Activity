@@ -1,4 +1,15 @@
 <resources>
     <string name="app_name">Activities</string>
     <string name="title_send">Отправить</string>
+    <string name="fill_form_Label">ProfileEdit</string>
+    <string name="choice_dialog_title">Выберите вариант:</string>
+    <string name="camera_request_dialog_title">Дать доступ к камере?</string>
+    <string name="cancel_button">Отмена</string>
+    <string name="confirm_button">Принять</string>
+    <string name="grant_permission_button">Дать доступ</string>
+    <string name="take_photo">Сделать фото</string>
+    <string name="choose_photo">Выбрать фото</string>
+    <string name="permission_camera_not_granted">Доступ пользователем отклонен!</string>
+    <string name="permission_camera_denied">Доступ к камере не доступен!</string>
+    <string name="image_load_success">Изображение установлено!</string>
 </resources>
