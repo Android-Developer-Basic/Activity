@@ -8,46 +8,48 @@
     tools:context=".ActivityC">
 
     <Button
-        android:id="@+id/buttoncloseactivity"
+        android:id="@+id/close_activity_button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/close_activityc"
-        app:layout_constraintBottom_toTopOf="@+id/buttonclosestack"
+        android:height="55dp"
+        android:text="@string/close_activity_c"
+        app:layout_constraintBottom_toTopOf="@+id/close_stack_button"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/button_d" />
+        app:layout_constraintTop_toBottomOf="@+id/d_activity_button" />
 
     <Button
-        android:id="@+id/button_a"
+        android:id="@+id/a_activity_button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/open_activitya"
-        app:layout_constraintBottom_toTopOf="@+id/button_d"
+        android:height="55dp"
+        android:text="@string/open_activity_a"
+        app:layout_constraintBottom_toTopOf="@+id/d_activity_button"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.501"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
     <Button
-        android:id="@+id/button_d"
+        android:id="@+id/d_activity_button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="48dp"
-        android:layout_marginBottom="39dp"
-        android:text="@string/open_activityd"
-        app:layout_constraintBottom_toTopOf="@+id/buttoncloseactivity"
+        android:height="55dp"
+        android:text="@string/open_activity_d"
+        app:layout_constraintBottom_toTopOf="@+id/close_activity_button"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/button_a" />
+        app:layout_constraintTop_toBottomOf="@+id/a_activity_button" />
 
     <Button
-        android:id="@+id/buttonclosestack"
+        android:id="@+id/close_stack_button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/close_stack"
+        android:height="55dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.501"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/buttoncloseactivity" />
+        app:layout_constraintTop_toBottomOf="@+id/close_activity_button" />
 </androidx.constraintlayout.widget.ConstraintLayout>
