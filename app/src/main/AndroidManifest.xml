@@ -3,6 +3,19 @@
     xmlns:tools="http://schemas.android.com/tools"
     package="otus.gpb.homework.activities">
 
+    <queries>
+        <package android:name="org.telegram.messenger" />
+        <intent>
+            <action android:name="android.intent.action.ACTION_SEND" />
+        </intent>
+    </queries>
+
+    <uses-feature
+        android:name="android.hardware.camera"
+        android:required="false" />
+
+    <uses-permission android:name="android.permission.CAMERA" />
+
     <application
         android:allowBackup="true"
         android:dataExtractionRules="@xml/data_extraction_rules"
@@ -13,7 +26,10 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Activities"
         tools:targetApi="31">
-
+        <activity
+            android:name=".FillFormActivity"
+            android:exported="false"
+            android:launchMode="standard"/>
         <activity
             android:name=".EditProfileActivity"
             android:exported="true">
