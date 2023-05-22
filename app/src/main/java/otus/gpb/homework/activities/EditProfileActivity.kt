@@ -22,10 +22,13 @@ import com.google.android.material.dialog.MaterialAlertDialogBuilder
 class EditProfileActivity : AppCompatActivity() {
 
     private lateinit var imageView: ImageView
+    private lateinit var name: TextView
+    private lateinit var surname: TextView
+    private lateinit var age: TextView
 
     //По клику на кнопку “Выбрать фото” откройте экран выбора фото из галлереи, после того как вы получите URI фотографии в `ActivityResultCallback` вызовите метод `populateImage`, чтобы отобразить полученную фотографию в ImageView
     private val resultImageContent = registerForActivityResult(ActivityResultContracts.GetContent()) { result ->
-        val uri = result ?: Uri.EMPTY
+        val uri = result ?: return@registerForActivityResult
         populateImage(uri)
     }
     private val  permissionCamera = registerForActivityResult(ActivityResultContracts.RequestPermission()){ granted ->
@@ -46,18 +49,20 @@ class EditProfileActivity : AppCompatActivity() {
         result ?: return@registerForActivityResult
         if (result.resultCode == Activity.RESULT_OK){
             result.data?.extras?.let {bundle ->
-                findViewById<TextView>(R.id.textview_name).text = bundle.getString("PROFILE_NAME").toString()
-                findViewById<TextView>(R.id.textview_surname).text = bundle.getString("PROFILE_SURNAME").toString()
-                findViewById<TextView>(R.id.textview_age).text = bundle.getString("PROFILE_AGE").toString()
+                name.text = bundle.getString("PROFILE_NAME").toString()
+                surname.text = bundle.getString("PROFILE_SURNAME").toString()
+                age.text = bundle.getString("PROFILE_AGE").toString()
             }
         }
-
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_edit_profile)
         imageView = findViewById(R.id.imageview_photo)
+        name = findViewById(R.id.textview_name)
+        surname = findViewById(R.id.textview_surname)
+        age = findViewById(R.id.textview_age)
         imageView.setOnClickListener {it ->
             var selectedIndex: Int = -1
             val contextDialog = MaterialAlertDialogBuilder(it.context)
@@ -93,7 +98,11 @@ class EditProfileActivity : AppCompatActivity() {
             }
         }
         findViewById<Button>(R.id.button4).setOnClickListener {
-            updateProfileInformation.launch(Intent(this, FillFormActivity::class.java))
+            updateProfileInformation.launch(Intent(this, FillFormActivity::class.java).apply {
+                putExtra("PROFILE_NAME", name.text.toString())
+                putExtra("PROFILE_SURNAME", surname.text.toString())
+                putExtra("PROFILE_AGE", age.text.toString())
+            })
         }
     }
     private fun showRuntimePermissionCamera() {
@@ -141,10 +150,7 @@ class EditProfileActivity : AppCompatActivity() {
     }
 
     private fun getProfile(): Pair<String, Bitmap> {
-        val name = findViewById<TextView>(R.id.textview_name).text
-        val surname = findViewById<TextView>(R.id.textview_surname).text
-        val age = findViewById<TextView>(R.id.textview_age).text
-        val text = "Name: $name, Surname: $surname, Age: $age"
+        val text = "Name: ${name.text}, Surname: ${surname.text}, Age: ${age.text}"
         val imageView = findViewById<ImageView>(R.id.imageview_photo)
         val image = imageView.drawable.toBitmap()
         return Pair(text, image)
