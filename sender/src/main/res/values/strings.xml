@@ -3,7 +3,12 @@
     <string name="google_maps">To Google Maps</string>
     <string name="email_sender">Send Email</string>
     <string name="receiver">Open Receiver</string>
-    <string name="mail_to">android@otus.ru</string>
-    <string name="mail_subject">Homework II</string>
+    <string name="no_app_toast">Приложение не установлено</string>
+    <string name="mail_subject">Домашняя работа №2</string>
     <string name="mail_text">Привет! Пожалуйста, проверьте мою домашнюю работу.</string>
+    <string name="otus_email">android@otus.ru</string>
+    <string name="nice_guys_description">Что бывает, когда напарником брутального костолома становится субтильный лопух? Наемный охранник Джексон Хили и частный детектив Холланд Марч вынуждены работать в паре, чтобы распутать плевое дело о пропавшей девушке, которое оборачивается преступлением века. Смогут ли парни разгадать сложный ребус, если у каждого из них – свои, весьма индивидуальные методы.</string>
+    <string name="niceguys_title">Славные парни</string>
+    <string name="mail_client_exception_notification">Почтовый клиент не установлен</string>
+
 </resources>

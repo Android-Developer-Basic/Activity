@@ -22,11 +22,11 @@ class ReceiverActivity : AppCompatActivity() {
         findViewById<TextView>(R.id.descriptionTextView).text = description
 
         val drawable = when (title) {
-                "Интерстеллар" -> AppCompatResources.getDrawable(
+                getString(R.string.interstellar) -> AppCompatResources.getDrawable(
                     applicationContext,
                     R.drawable.interstellar
                 )
-                "Славные парни" -> AppCompatResources.getDrawable(
+                getString(R.string.guys) -> AppCompatResources.getDrawable(
                     applicationContext,
                     R.drawable.niceguys
                 )
