@@ -1,5 +1,7 @@
 package otus.gpb.homework.activities.sender
 
+import android.content.Intent
+import android.net.Uri
 import android.os.Bundle
 import android.os.PersistableBundle
 import android.widget.Button
@@ -17,7 +19,9 @@ class SenderActivity : AppCompatActivity() {
         setContentView(R.layout.activity_sender)
 
         toGoogleMaps.setOnClickListener{
-            //todo
+            val intent = Intent(Intent.ACTION_VIEW, Uri.parse("geo:0,0?q=Рестораны"))
+            intent.setPackage("com.google.android.apps.maps")
+            startActivity(intent)
         }
 
         sendEmail.setOnClickListener{
