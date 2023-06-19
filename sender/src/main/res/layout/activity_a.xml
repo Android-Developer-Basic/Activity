@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:fitsSystemWindows="true"
+    tools:context=".SenderActivity">
+
+    <Button
+        android:id="@+id/buttonSecondActivityA"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="To Google Maps"
+        android:layout_margin="50dp"
+        android:layout_gravity="bottom|center_horizontal"/>
+    <Button
+        android:id="@+id/buttonSecondActivityB"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="100dp"
+        android:layout_gravity="bottom|center_horizontal"
+        android:text="Send Email" />
+    <Button
+        android:id="@+id/buttonSecondActivityC"
+        android:layout_width="242dp"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom|center_horizontal"
+        android:layout_margin="150dp"
+        android:text="Open Receiver" />
+
+</androidx.coordinatorlayout.widget.CoordinatorLayout>

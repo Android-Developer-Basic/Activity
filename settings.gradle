@@ -13,4 +13,5 @@ dependencyResolutionManagement {
     }
 }
 rootProject.name = "Activities"
-include ':app'
+include ':sender'
+include ':receiver'
