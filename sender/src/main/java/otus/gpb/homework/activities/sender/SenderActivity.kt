@@ -26,7 +26,11 @@ class SenderActivity : AppCompatActivity() {
         }
 
         sendEmail.setOnClickListener {
-            val emailIntent = Intent(Intent.ACTION_SENDTO, Uri.parse("mailto:android@otus.ru"))
+            val emailIntent = Intent(
+                Intent.ACTION_SENDTO, Uri.parse(
+                    "mailto:android@otus.ru?subject=Subject&body=Letter"
+                )
+            )
             startActivity(emailIntent)
         }
 
