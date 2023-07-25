@@ -2,7 +2,9 @@ package otus.gpb.homework.activities
 
 import android.Manifest
 import android.annotation.SuppressLint
+import android.app.Activity
 import android.content.ActivityNotFoundException
+import android.content.ContentResolver
 import android.content.Intent
 import android.graphics.BitmapFactory
 import android.net.Uri
@@ -19,7 +21,7 @@ import otus.gpb.homework.activities.databinding.ActivityEditProfileBinding
 class EditProfileActivity : AppCompatActivity() {
 
     private val binding by lazy { ActivityEditProfileBinding.inflate(layoutInflater) }
-    private lateinit var imageUri: Uri
+    private var imageUri: Uri? = null
     val userData = PersonData()
 
     private val addPhoto =
@@ -41,14 +43,21 @@ class EditProfileActivity : AppCompatActivity() {
             when {
                 result -> {
                     binding.imageviewPhoto.setImageDrawable(applicationContext.getDrawable(R.drawable.cat))
+                    makePhoto.launch(null)
                 }
-
                 !shouldShowRequestPermissionRationale(Manifest.permission.CAMERA) -> {
-                    startActivity(Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS).apply {
-                        data = Uri.fromParts("package", packageName, null)
-                    })
+                    MaterialAlertDialogBuilder(this)
+                        .setTitle("Права доступа")
+                        .setMessage("Камера нужна для усановки фото.")
+                        .setNeutralButton("Дать доступ") { _, _ ->
+                            startActivity(Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS).apply {
+                                data = Uri.fromParts("package", packageName, null)
+                            })
+                        }
+                        .setPositiveButton("Отмена") { dialog, _ ->
+                            dialog.dismiss()
+                        }.show()
                 }
-
                 else -> {
                     Toast.makeText(this, "Разрешение не было получено", Toast.LENGTH_SHORT).show()
                 }
@@ -70,16 +79,6 @@ class EditProfileActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(binding.root)
 
-        val rationaleDialog = MaterialAlertDialogBuilder(this)
-            .setTitle("Права доступа")
-            .setMessage("Камера нужна для усановки фото.")
-            .setNeutralButton("Дать доступ") { _, _ ->
-                makePhotoPermission.launch(Manifest.permission.CAMERA)
-            }
-            .setPositiveButton("Отмена") { dialog, _ ->
-                dialog.dismiss()
-            }
-
         val allertDialog = MaterialAlertDialogBuilder(this)
             .setTitle("Фото")
             .setMessage("Выберите")
@@ -95,15 +94,17 @@ class EditProfileActivity : AppCompatActivity() {
         }
 
         binding.button4.setOnClickListener {
-            fillFormActivityContract.launch(PersonData(
-                userData.name,
-                userData.surName,
-                userData.age
-            ))
+            fillFormActivityContract.launch(
+                PersonData(
+                    userData.name,
+                    userData.surName,
+                    userData.age
+                )
+            )
         }
 
         binding.toolbar.setOnMenuItemClickListener {
-            if(it.itemId == R.id.send_item) openSenderApp()
+            if (it.itemId == R.id.send_item) openSenderApp()
             true
         }
 
@@ -137,17 +138,26 @@ class EditProfileActivity : AppCompatActivity() {
 
     private fun openSenderApp() {
         try {
-            startActivity(Intent().apply {
+            startActivity(Intent.createChooser(Intent().apply {
                 `package` = "org.telegram.messenger"
-                putExtra(Intent.EXTRA_TEXT, "${userData.name}\n${userData.surName}\n${userData.age}")
+                action = Intent.ACTION_SEND
+                putExtra(
+                    Intent.EXTRA_TEXT,
+                    "Имя: ${userData.name}\nФамилия: ${userData.surName}\nВозраст: ${userData.age}"
+                )
                 type = "image/*"
-                imageUri.let {
-                    intent.putExtra(Intent.EXTRA_STREAM, imageUri)
+                imageUri ?: run {
+                    imageUri = Uri.parse(
+                        ContentResolver.SCHEME_ANDROID_RESOURCE + "://" +
+                                packageName + "/drawable" + '/' +
+                                resources.getResourceEntryName(R.drawable.cat)
+                    )
                 }
-            })
-        }catch (exception: ActivityNotFoundException){
-            Toast.makeText(applicationContext, "Telegram не установлен", Toast.LENGTH_SHORT).show()
+                intent.putExtra(Intent.EXTRA_STREAM, imageUri)
+            }, "Share the profile"))
+        } catch (exception: ActivityNotFoundException) {
+            Toast.makeText(applicationContext, "Стоило бы поставить телегу", Toast.LENGTH_SHORT)
+                .show()
         }
-
     }
 }
