@@ -153,7 +153,7 @@ class EditProfileActivity : AppCompatActivity() {
                                 resources.getResourceEntryName(R.drawable.cat)
                     )
                 }
-                intent.putExtra(Intent.EXTRA_STREAM, imageUri)
+                putExtra(Intent.EXTRA_STREAM, imageUri)
             }, "Share the profile"))
         } catch (exception: ActivityNotFoundException) {
             Toast.makeText(applicationContext, "Стоило бы поставить телегу", Toast.LENGTH_SHORT)
