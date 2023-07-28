@@ -24,11 +24,8 @@ class SenderActivity : AppCompatActivity() {
         }
 
         findViewById<Button>(R.id.act_a_button_to_email).setOnClickListener {
-            val emailIntent = Intent(Intent.ACTION_SEND).apply {
-                type = "text/plain"
-                putExtra(Intent.EXTRA_EMAIL, arrayOf("android@otus.ru"))
-                putExtra(Intent.EXTRA_SUBJECT, "Я к вам пишу")
-                putExtra(Intent.EXTRA_TEXT, "Чего же боле")
+            val emailIntent = Intent(Intent.ACTION_SENDTO).apply {
+                data = Uri.parse("mailto:android@otus.ru?subject=Я к вам пишу&body=Чего же боле")
             }
             handleError(emailIntent)
         }
