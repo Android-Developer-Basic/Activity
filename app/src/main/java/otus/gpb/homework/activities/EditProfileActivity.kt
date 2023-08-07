@@ -170,6 +170,7 @@ class EditProfileActivity : AppCompatActivity() {
     private fun populateImage(uri: Uri) {
         val bitmap = BitmapFactory.decodeStream(contentResolver.openInputStream(uri))
         imageView.setImageBitmap(bitmap)
+        uriImage = uri
     }
 
     private fun openSenderApp() {
@@ -182,6 +183,8 @@ class EditProfileActivity : AppCompatActivity() {
                 if(uriImage!=null){
                     type = "image/*"
                     putExtra(Intent.EXTRA_STREAM, uriImage)
+                }else{
+                    type = "text/plain"
                 }
             }
             startActivity(telegramIntent)
