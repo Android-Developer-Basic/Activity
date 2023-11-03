@@ -25,6 +25,8 @@ class ActivityC : AppCompatActivity(R.layout.activity_c) {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
+        title = "Activity C"
+
         btnOpenActivityA.setOnClickListener {
             val intent = Intent(this, ActivityA::class.java)
             startActivity(intent)
