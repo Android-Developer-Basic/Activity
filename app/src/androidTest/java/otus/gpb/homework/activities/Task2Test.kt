@@ -249,4 +249,74 @@ class Task2Test {
 
         Intents.release()
     }
+
+
+    @Test
+    fun testActivityA_ToActivityB_ToActivityC_CloseActivityC() {
+        Intents.init()
+
+        val appContext = InstrumentationRegistry.getInstrumentation().targetContext
+        val am = appContext.getSystemService(Context.ACTIVITY_SERVICE) as ActivityManager
+
+        //Test ActivityA_ToActivityB Start
+
+        onView(withId(R.id.btnOpenActivityB)).perform(click())
+        Thread.sleep(1000)
+        intended(hasComponent(ActivityB::class.java.name))
+
+        val appTasks = am.appTasks
+
+        assertEquals(2, appTasks.size)
+
+        assertEquals(1, appTasks[0].taskInfo.numActivities)
+        assertEquals(1, appTasks[1].taskInfo.numActivities)
+
+        assertEquals(ActivityB::class.java.name, appTasks[0].taskInfo.topActivity?.className)
+        assertEquals(ActivityB::class.java.name, appTasks[0].taskInfo.baseActivity?.className)
+
+        assertEquals(ActivityA::class.java.name, appTasks[1].taskInfo.topActivity?.className)
+        assertEquals(ActivityA::class.java.name, appTasks[1].taskInfo.baseActivity?.className)
+
+        //Test ActivityA_ToActivityB End
+
+        //Test ActivityB_ToActivityC Start
+
+        onView(withId(R.id.btnOpenActivityC)).perform(click())
+        Thread.sleep(1000)
+        intended(hasComponent(ActivityC::class.java.name))
+
+        assertEquals(2, appTasks.size)
+
+        assertEquals(2, appTasks[0].taskInfo.numActivities)
+        assertEquals(1, appTasks[1].taskInfo.numActivities)
+
+        assertEquals(ActivityC::class.java.name, appTasks[0].taskInfo.topActivity?.className)
+        assertEquals(ActivityB::class.java.name, appTasks[0].taskInfo.baseActivity?.className)
+
+        assertEquals(ActivityA::class.java.name, appTasks[1].taskInfo.topActivity?.className)
+        assertEquals(ActivityA::class.java.name, appTasks[1].taskInfo.baseActivity?.className)
+
+        //Test ActivityB_ToActivityC End
+
+        //Test ActivityC_CloseActivityC Start
+
+        onView(withId(R.id.btnCloseActivityC)).perform(click())
+        Thread.sleep(1000)
+        intended(hasComponent(ActivityB::class.java.name))
+
+        assertEquals(2, appTasks.size)
+
+        assertEquals(1, appTasks[0].taskInfo.numActivities)
+        assertEquals(1, appTasks[1].taskInfo.numActivities)
+
+        assertEquals(ActivityB::class.java.name, appTasks[0].taskInfo.topActivity?.className)
+        assertEquals(ActivityB::class.java.name, appTasks[0].taskInfo.baseActivity?.className)
+
+        assertEquals(ActivityA::class.java.name, appTasks[1].taskInfo.topActivity?.className)
+        assertEquals(ActivityA::class.java.name, appTasks[1].taskInfo.baseActivity?.className)
+
+        //Test ActivityC_CloseActivityC End
+
+        Intents.release()
+    }
 }
