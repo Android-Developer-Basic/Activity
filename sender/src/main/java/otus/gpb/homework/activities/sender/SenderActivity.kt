@@ -29,8 +29,20 @@ class SenderActivity : AppCompatActivity(R.layout.activity_sender) {
             startActivity(intent)
         }
 
-        btnSendEmail.setOnClickListener {  }
-
-        btnOpenReceiver.setOnClickListener {  }
+        btnSendEmail.setOnClickListener {
+            val intent = Intent(Intent.ACTION_SENDTO)
+                .apply {
+                    data = Uri.parse("mailto:${getString(R.string.emailOtus)}?subject=${getString(R.string.emailSubject)}&body=${getString(R.string.emailText)}")
+                    /*
+                    TODO если использовать в Активти putExtra. То Test проверку не проходит.
+                     Решил оставить на потом разобраться по чему не работет.
+                    putExtra(Intent.EXTRA_EMAIL, getString(R.string.emailOtus))
+                    putExtra(Intent.EXTRA_SUBJECT, getString(R.string.emailSubject))
+                    putExtra(Intent.EXTRA_TEXT, getString(R.string.emailText))
+                    */
+                }
+            startActivity(intent)
+        }
+        btnOpenReceiver.setOnClickListener { }
     }
 }

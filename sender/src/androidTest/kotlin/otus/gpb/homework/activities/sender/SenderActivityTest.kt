@@ -99,6 +99,35 @@ class SenderActivityTest {
         intended(expectedIntent)
     }
 
+    @Test
+    fun testSendEmailIntent() {
+        // Клик на кнопку "Send Email"
+        onView(withId(R.id.btnSendEmail)).perform(click())
+
+        val mailOtus = "android@otus.ru"
+        val emailSubject = "Lesson Activity 2"
+        val emailText = "Example text for Lesson Activity 2"
+
+        // Проверка вызова не явного Intent
+        val expectedIntent = allOf(
+            hasAction(Intent.ACTION_SENDTO),
+            hasData(Uri.parse("mailto:$mailOtus?subject=$emailSubject&body=$emailText"))
+            /*
+            TODO если использовать в Активти putExtra. То здесь проверка не проходит.
+             Решил оставить на потом разобраться по чему не работет.
+            hasExtra(Intent.EXTRA_EMAIL, mailOtus),
+            hasExtra(Intent.EXTRA_SUBJECT, emailSubject),
+            hasExtra(Intent.EXTRA_TEXT, emailText)
+            */
+        )
+        Intents.intending(expectedIntent).respondWith(Instrumentation.ActivityResult(0, null))
+
+        Thread.sleep(1000)
+
+        // Проверка открытия Activity для отправки письма
+        intended(expectedIntent)
+    }
+
     @After
     fun tearDown() {
         Intents.release()

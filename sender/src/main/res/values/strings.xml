@@ -3,4 +3,7 @@
     <string name="to_google_maps">To Google Maps</string>
     <string name="send_email">Send Email</string>
     <string name="open_receiver">Open Receiver</string>
+    <string name="emailOtus">android@otus.ru</string>
+    <string name="emailSubject">Lesson Activity 2</string>
+    <string name="emailText">Example text for Lesson Activity 2</string>
 </resources>
