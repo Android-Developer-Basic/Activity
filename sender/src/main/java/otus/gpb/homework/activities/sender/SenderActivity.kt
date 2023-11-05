@@ -20,6 +20,22 @@ class SenderActivity : AppCompatActivity(R.layout.activity_sender) {
         findViewById<Button>(R.id.btnOpenReceiver)
     }
 
+    private val niceGuys by lazy {
+        Payload(
+            getString(R.string.niceGuysTitle),
+            getString(R.string.niceGuysYear),
+            getString(R.string.niceGuysDescription)
+        )
+    }
+
+    private val interstellar by lazy {
+        Payload(
+            getString(R.string.interstellarTitle),
+            getString(R.string.interstellarYear),
+            getString(R.string.interstellarDescription)
+        )
+    }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
@@ -43,6 +59,17 @@ class SenderActivity : AppCompatActivity(R.layout.activity_sender) {
                 }
             startActivity(intent)
         }
-        btnOpenReceiver.setOnClickListener { }
+
+        btnOpenReceiver.setOnClickListener {
+            val intent = Intent(Intent.ACTION_SEND)
+                .addCategory(Intent.CATEGORY_DEFAULT)
+                .setType("text/plain")
+                .putExtra("payLoad", Bundle().apply {
+                    putString("title", interstellar.title)
+                    putString("year", interstellar.year)
+                    putString("description", interstellar.description)
+                })
+            startActivity(intent)
+        }
     }
 }
