@@ -26,11 +26,12 @@ class SenderActivity : AppCompatActivity(R.layout.sender_activity) {
 
         val buttonSendEmail = findViewById<Button>(R.id.buttonSendEmail)
         buttonSendEmail.setOnClickListener {
-            val emailIntent = Intent(Intent.ACTION_SENDTO, Uri.parse("mailto:android@otus.ru"))
-            emailIntent.putExtra(Intent.EXTRA_SUBJECT, "Директору Отуса")
-            emailIntent.putExtra(Intent.EXTRA_TEXT, "Что делаете сегодня вечером?")
+            val emailIntent = Intent(
+                Intent.ACTION_SENDTO,
+                Uri.parse("mailto: android@otus.ru?subject=Otus' President&body=How is it going")
+            )
             startActivity(emailIntent)
-            }
+        }
 
         val buttonOpenReceiver = findViewById<Button>(R.id.buttonOpenReceiver)
         val niceGuy = Payload(
