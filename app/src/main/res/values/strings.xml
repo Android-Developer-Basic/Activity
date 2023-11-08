@@ -1,4 +1,23 @@
 <resources>
     <string name="app_name">Activities</string>
     <string name="title_send">Отправить</string>
+    <string name="permission_camera_alert_title">Очень важно</string>
+    <string name="open_settings_alert_description">Хочешь перейти в настройки и дать нам разрешение на камеру ?</string>
+    <string name="yes">Да</string>
+    <string name="no">Нет</string>
+    <string name="permission_camera_description">Очень нужно разрешение на камеру.</string>
+    <string name="access">Дать доступ</string>
+    <string name="cancel">Отмена</string>
+    <string name="permission_camera_denied">Ты не дал разрешение на камеру. Ой зря...</string>
+    <string name="title_dialog_choice">Выберите действие</string>
+    <string name="make_photo">Сделать фото</string>
+    <string name="choose_photo">Выбрать фото</string>
+    <string name="cant_open_settings">Ок, ищи сам где разрешение дать</string>
+    <string name="editName">Поле для имени</string>
+    <string name="editSurName">Поле для фамилии</string>
+    <string name="editYear">Поле для возраста</string>
+    <string name="apply">Применить</string>
+    <string name="errorValid">Все поля должны быть заполнены</string>
+    <string name="requestError">Ни чего не редактировалось!!!</string>
+    <string name="sendError">Нет данных для передачи</string>
 </resources>
