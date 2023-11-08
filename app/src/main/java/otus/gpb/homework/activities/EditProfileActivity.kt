@@ -7,7 +7,9 @@ import android.graphics.BitmapFactory
 import android.net.Uri
 import android.os.Bundle
 import android.provider.Settings
+import android.widget.Button
 import android.widget.ImageView
+import android.widget.TextView
 import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AlertDialog
@@ -15,11 +17,12 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.content.res.AppCompatResources
 import androidx.appcompat.widget.Toolbar
 import androidx.core.content.ContextCompat
-import androidx.core.content.ContextCompat.startActivity
 
 class EditProfileActivity : AppCompatActivity() {
 
     private var deniedOnce = false
+    private var uriImage: Uri? = null
+    private var content = ""
 
     private val takePictureContract = registerForActivityResult(
         ActivityResultContracts.TakePicturePreview()
@@ -60,12 +63,37 @@ class EditProfileActivity : AppCompatActivity() {
         imageView.setImageDrawable(AppCompatResources.getDrawable(this, R.drawable.cat))
     }
 
+    private val fillFormContract = registerForActivityResult(ContractFillFromActivity()) { result ->
+        if (result != null) {
+            val firstName = result.getStringExtra(NAME_KEY)
+            val lastName = result.getStringExtra(SUR_NAME_KEY)
+            val age = result.getStringExtra(AGE_KEY)
+
+            content = "$firstName \n $lastName \n $age"
+            textviewName.text = firstName
+            textviewSurname.text = lastName
+            textviewAge.text = age
+        }
+        else {
+            showToast(getString(R.string.requestError))
+        }
+    }
+
     private lateinit var imageView: ImageView
+    private lateinit var textviewName: TextView
+    private lateinit var textviewSurname: TextView
+    private lateinit var textviewAge: TextView
+    private lateinit var buttonEditProfile: Button
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_edit_profile)
+
+        buttonEditProfile = findViewById(R.id.buttonEditProfile)
         imageView = findViewById(R.id.imageview_photo)
+        textviewName = findViewById(R.id.textview_name)
+        textviewSurname = findViewById(R.id.textview_surname)
+        textviewAge = findViewById(R.id.textview_age)
 
         findViewById<Toolbar>(R.id.toolbar).apply {
             inflateMenu(R.menu.menu)
@@ -78,6 +106,10 @@ class EditProfileActivity : AppCompatActivity() {
                     else -> false
                 }
             }
+        }
+
+        buttonEditProfile.setOnClickListener {
+            fillFormContract.launch("smth")
         }
 
         imageView.setOnClickListener {
@@ -147,7 +179,7 @@ class EditProfileActivity : AppCompatActivity() {
 
     private fun openSettings(){
         val intent = Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS).apply {
-            val uri =Uri.fromParts("package", packageName, null)
+            val uri = Uri.fromParts("package", packageName, null)
             data = uri
         }
         startActivity(intent)
@@ -157,12 +189,24 @@ class EditProfileActivity : AppCompatActivity() {
      * Используйте этот метод чтобы отобразить картинку полученную из медиатеки в ImageView
      */
     private fun populateImage(uri: Uri) {
+        uriImage = uri
         val bitmap = BitmapFactory.decodeStream(contentResolver.openInputStream(uri))
         imageView.setImageBitmap(bitmap)
     }
 
     private fun openSenderApp() {
-        TODO("В качестве реализации метода отправьте неявный Intent чтобы поделиться профилем. В качестве extras передайте заполненные строки и картинку")
+        if (content.isEmpty() || uriImage == null){
+            showToast(getString(R.string.sendError))
+            return
+        }
+
+        // TODO "В качестве реализации метода отправьте неявный Intent чтобы поделиться профилем. В качестве extras передайте заполненные строки и картинку"
+        val sendIntent = Intent(Intent.ACTION_SEND)
+        sendIntent.type = "image/*"
+        sendIntent.putExtra(Intent.EXTRA_STREAM, uriImage)
+        sendIntent.putExtra(Intent.EXTRA_TEXT, content)
+        sendIntent.setPackage("org.telegram.messenger")
+        startActivity(sendIntent)
     }
 
     private fun showToast(message: String){

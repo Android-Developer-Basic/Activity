@@ -13,4 +13,11 @@
     <string name="make_photo">Сделать фото</string>
     <string name="choose_photo">Выбрать фото</string>
     <string name="cant_open_settings">Ок, ищи сам где разрешение дать</string>
+    <string name="editName">Поле для имени</string>
+    <string name="editSurName">Поле для фамилии</string>
+    <string name="editYear">Поле для возраста</string>
+    <string name="apply">Применить</string>
+    <string name="errorValid">Все поля должны быть заполнены</string>
+    <string name="requestError">Ни чего не редактировалось!!!</string>
+    <string name="sendError">Нет данных для передачи</string>
 </resources>
