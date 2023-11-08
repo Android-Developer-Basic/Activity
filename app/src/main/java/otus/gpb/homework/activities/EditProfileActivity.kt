@@ -27,12 +27,20 @@ class EditProfileActivity : AppCompatActivity() {
         imageView.setImageBitmap(bitmap)
     }
 
+    private val getContentContract = registerForActivityResult(
+        ActivityResultContracts.GetContent()
+    ) { result ->
+        result?.let {
+            populateImage(it)
+        }
+    }
+
     private val permissionCamera = registerForActivityResult(
         ActivityResultContracts.RequestPermission()
     ) { granted ->
         when {
             granted -> {
-                imageView.setImageDrawable(AppCompatResources.getDrawable(this, R.drawable.cat))
+                permissionCameraGranted()
                 //takePictureContract.launch(null)
             }
             !shouldShowRequestPermissionRationale(Manifest.permission.CAMERA) -> {
@@ -45,6 +53,11 @@ class EditProfileActivity : AppCompatActivity() {
                 showToast(getString(R.string.permission_camera_denied))
             }
         }
+    }
+
+    private fun permissionCameraGranted() {
+        //takePictureContract.launch(null)
+        imageView.setImageDrawable(AppCompatResources.getDrawable(this, R.drawable.cat))
     }
 
     private lateinit var imageView: ImageView
@@ -86,13 +99,13 @@ class EditProfileActivity : AppCompatActivity() {
     }
 
     private fun selectPhotoFromGallery(){
-
+        getContentContract.launch("image/*")
     }
 
     private fun requestCameraPermission(){
         val isGranted = ContextCompat.checkSelfPermission(this, Manifest.permission.CAMERA) == PackageManager.PERMISSION_GRANTED
         if (isGranted) {
-            takePictureContract.launch(null)
+            permissionCameraGranted()
             return
         }
 
