@@ -1,4 +1,7 @@
 <resources>
     <string name="app_name">Activities</string>
     <string name="title_send">Отправить</string>
+    <string name="title_dialog_choice">Выберите действие</string>
+    <string name="make_photo">Сделать фото</string>
+    <string name="choose_photo">Выбрать фото</string>
 </resources>
