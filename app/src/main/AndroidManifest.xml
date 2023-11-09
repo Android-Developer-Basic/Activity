@@ -3,6 +3,10 @@
     xmlns:tools="http://schemas.android.com/tools"
     package="otus.gpb.homework.activities">
 
+    <queries>
+        <package android:name="org.telegram.messenger" />
+    </queries>
+
     <uses-feature
         android:name="android.hardware.camera"
         android:required="false" />
@@ -28,6 +32,11 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
+        <activity
+            android:name=".FillFormActivity"
+            android:exported="false"
+            />
     </application>
 
 </manifest>
