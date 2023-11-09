@@ -16,13 +16,13 @@ class SenderActivity : AppCompatActivity(), OnClickListener {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_sender)
 
-        findViewById<Button>(R.id.open_receiver_btn).setOnClickListener { this }
-        findViewById<Button>(R.id.send_email_btn).setOnClickListener { this }
-        findViewById<Button>(R.id.to_google_maps_btn).setOnClickListener { this }
+        findViewById<Button>(R.id.open_receiver_btn).setOnClickListener(this)
+        findViewById<Button>(R.id.send_email_btn).setOnClickListener(this)
+        findViewById<Button>(R.id.to_google_maps_btn).setOnClickListener(this)
     }
 
-    override fun onClick(view: View) {
-        when(view.id) {
+    override fun onClick(view: View?) {
+        when(view?.id) {
             R.id.send_email_btn -> sendEmail()
             R.id.to_google_maps_btn -> openGoogleMaps("restaurants")
             R.id.open_receiver_btn -> openReceiver()
