@@ -2,7 +2,6 @@ package otus.gpb.homework.activities
 
 import android.Manifest
 import android.content.Intent
-import android.content.pm.PackageManager
 import android.graphics.BitmapFactory
 import android.net.Uri
 import android.os.Bundle
@@ -14,7 +13,6 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.content.res.AppCompatResources
 import androidx.appcompat.widget.Toolbar
 import androidx.core.app.ActivityCompat
-import androidx.core.content.ContextCompat
 
 class EditProfileActivity : AppCompatActivity() {
 
@@ -38,6 +36,14 @@ class EditProfileActivity : AppCompatActivity() {
             else -> {
                 showRequiredCamaraPermissionDialog()
             }
+        }
+    }
+
+    private val requestGalleryContentLauncher = registerForActivityResult(
+        ActivityResultContracts.GetContent()
+    ) { result: Uri? ->
+        result?.let {
+            populateImage(result)
         }
     }
 
@@ -132,7 +138,11 @@ class EditProfileActivity : AppCompatActivity() {
     }
 
     private fun choosePhotoForProfileImage() {
+        requestImageFromGallery()
+    }
 
+    private fun requestImageFromGallery() {
+        requestGalleryContentLauncher.launch("image/*")
     }
 
     /**
