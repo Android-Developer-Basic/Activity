@@ -6,18 +6,27 @@ import android.net.Uri
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.View
+import android.view.View.OnClickListener
 import android.widget.Button
 import android.widget.Toast
 
-class SenderActivity : AppCompatActivity() {
+class SenderActivity : AppCompatActivity(), OnClickListener {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_sender)
 
-        findViewById<Button>(R.id.open_receiver_btn).setOnClickListener { openReceiver() }
-        findViewById<Button>(R.id.send_email_btn).setOnClickListener { sendEmail() }
-        findViewById<Button>(R.id.to_google_maps_btn).setOnClickListener { openGoogleMaps("restaurants") }
+        findViewById<Button>(R.id.open_receiver_btn).setOnClickListener { this }
+        findViewById<Button>(R.id.send_email_btn).setOnClickListener { this }
+        findViewById<Button>(R.id.to_google_maps_btn).setOnClickListener { this }
+    }
+
+    override fun onClick(view: View) {
+        when(view.id) {
+            R.id.send_email_btn -> sendEmail()
+            R.id.to_google_maps_btn -> openGoogleMaps("restaurants")
+            R.id.open_receiver_btn -> openReceiver()
+        }
     }
 
     private fun openGoogleMaps(searchParam: String) {
