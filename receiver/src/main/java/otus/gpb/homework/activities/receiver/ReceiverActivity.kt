@@ -4,7 +4,6 @@ import android.os.Bundle
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
-import otus.gpb.homework.activities.sender.SenderActivity
 
 class ReceiverActivity : AppCompatActivity() {
 
@@ -13,11 +12,11 @@ class ReceiverActivity : AppCompatActivity() {
         setContentView(R.layout.activity_receiver)
 
         intent.extras?.let {
-            findViewById<TextView>(R.id.titleTextView).text = it.getString(SenderActivity.payloadTitle)
-            findViewById<TextView>(R.id.descriptionTextView).text = it.getString(SenderActivity.payloadDescription)
-            findViewById<TextView>(R.id.yearTextView).text = it.getString(SenderActivity.payloadYear)
+            findViewById<TextView>(R.id.titleTextView).text = it.getString("payloadTitle")
+            findViewById<TextView>(R.id.descriptionTextView).text = it.getString("payloadDescription")
+            findViewById<TextView>(R.id.yearTextView).text = it.getString("payloadYear")
 
-            setImage(it.getString(SenderActivity.payloadTitle)!!)
+            setImage(it.getString("payloadTitle")!!)
         }
     }
 
