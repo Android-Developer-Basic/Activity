@@ -30,6 +30,7 @@ class EditProfileActivity : AppCompatActivity() {
     private lateinit var surnameView: TextView
     private lateinit var ageView: TextView
     private lateinit var editBtn: Button
+    private lateinit var uriForSend: Uri
 
     private val choosePhoto: ActivityResultLauncher<String> =
         registerForActivityResult(ActivityResultContracts.GetContent()) { imageUri: Uri? ->
@@ -51,16 +52,11 @@ class EditProfileActivity : AppCompatActivity() {
         registerForActivityResult(ActivityResultContracts.RequestPermission()) { granted ->
             when {
                 granted -> {
-                    // Пермишен получен
+                    // Permission получен
                     takePhoto.launch(null)
                 }
 
                 !shouldShowRequestPermissionRationale(Manifest.permission.CAMERA) -> {
-                    // Уже был запрет на камеру
-                    Log.d(
-                        "shouldShowRequestPermissionRationale",
-                        shouldShowRequestPermissionRationale(Manifest.permission.CAMERA).toString()
-                    )
                     MaterialAlertDialogBuilder(this)
                         .setTitle("Вы запретили доступ к камере!")
                         .setMessage(resources.getString(R.string.get_reason))
@@ -74,21 +70,13 @@ class EditProfileActivity : AppCompatActivity() {
                                     data = uri
                                 }
                             startActivity(intent)
-//                        val isGranted = ContextCompat.checkSelfPermission(this, Manifest.permission.CAMERA) == PackageManager.PERMISSION_GRANTED
-//                        if(!isGranted) {
-//                            permissionCamera.launch(android.Manifest.permission.CAMERA)
-//                        }
                         }
                         .show()
                 }
 
                 else -> {
-                    Log.d(
-                        "shouldShowRequestPermissionRationale",
-                        "Пермишен не получен, без \"не спрашивать больше\""
-                    )
                     // Пермишен не получен, без "не спрашивать больше"
-                    Toast.makeText(this, "Ну сорянб не хочешь - не надо", Toast.LENGTH_LONG).show()
+                    Toast.makeText(this, "Без доступа к камере невозможно снять фото", Toast.LENGTH_LONG).show()
                 }
             }
         }
@@ -147,24 +135,28 @@ class EditProfileActivity : AppCompatActivity() {
             }
         }
     }
-
     /**
      * Используйте этот метод чтобы отобразить картинку полученную из медиатеки в ImageView
      */
     private fun populateImage(uri: Uri) {
+        uriForSend = uri
         val bitmap = BitmapFactory.decodeStream(contentResolver.openInputStream(uri))
         imageView.setImageBitmap(bitmap)
     }
 
     private fun openSenderApp() {
         try {
-            intent = Intent(Intent.ACTION_VIEW, Uri.parse("tg://resolve?domain=balashovaai"));
-//            intent.setType("text/plain")
-            intent.setPackage("org.telegram.messenger")
-            intent.putExtra(Intent.EXTRA_TEXT, "test to message");
-//        intent.putExtra("NAME", nameView.text)
-//        intent.putExtra("SURNAME", surnameView.text)
-//        intent.putExtra("AGE", ageView.text)
+//            intent = Intent(Intent.ACTION_VIEW, Uri.parse("tg://resolve?domain=balashovaai"));
+            intent = Intent(Intent.ACTION_SEND) // Нам нужна программа, которая примет наш текст и картинку
+                .apply {
+                    putExtra( // Объединяем наши поля
+                        Intent.EXTRA_TEXT,
+                        "ИМЯ: ${nameView.text}\nФАМИЛИЯ: ${surnameView.text}"
+                    )
+                    type = "image/*" // Указываем, что посылаем картинку
+                    putExtra(Intent.EXTRA_STREAM, uriForSend) // Путь к картинке
+                    setPackage("org.telegram.messenger") // Наш телеграм
+                }
             startActivity(intent);
         } catch (e: Exception) {
             e.message?.let { Log.d("openSenderApp", it) }
