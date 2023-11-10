@@ -1,4 +1,11 @@
 <resources>
-    <string name="app_name">Activities</string>
+    <string name="app_name">HomeWork#3</string>
     <string name="title_send">Отправить</string>
+    <string name="cancel">Отмена</string>
+    <string name="take_photo">Сделать фото</string>
+    <string name="choose_photo">Выбрать фото</string>
+    <string name="choose_avatar">Выбрать способ смены аватара</string>
+    <string name="get_reason">Для возможности сделать снимок для аватара, необходимо в настройках дать доступ к камере!</string>
+    <string name="stop">Ок, понял</string>
+    <string name="open_settings">Дать доступ</string>
 </resources>
