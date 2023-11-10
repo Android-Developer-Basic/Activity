@@ -31,7 +31,7 @@
         app:srcCompat="@drawable/ic_baseline_add_photo_alternate_24" />
 
     <TextView
-        android:id="@+id/textview_name"
+        android:id="@+id/name_view"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="12dp"
@@ -41,33 +41,33 @@
         app:layout_constraintTop_toTopOf="@+id/imageview_photo" />
 
     <TextView
-        android:id="@+id/textview_surname"
+        android:id="@+id/surname_view"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="4dp"
         android:hint="Фамилия"
         android:textSize="18dp"
-        app:layout_constraintStart_toStartOf="@+id/textview_name"
-        app:layout_constraintTop_toBottomOf="@+id/textview_name" />
+        app:layout_constraintStart_toStartOf="@+id/name_view"
+        app:layout_constraintTop_toBottomOf="@+id/name_view" />
 
     <TextView
-        android:id="@+id/textview_age"
+        android:id="@+id/age_view"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="4dp"
         android:hint="Возраст"
         android:textSize="18dp"
-        app:layout_constraintStart_toStartOf="@+id/textview_surname"
-        app:layout_constraintTop_toBottomOf="@+id/textview_surname" />
+        app:layout_constraintStart_toStartOf="@+id/surname_view"
+        app:layout_constraintTop_toBottomOf="@+id/surname_view" />
 
     <Button
-        android:id="@+id/button4"
+        android:id="@+id/editProfileBtn"
         style="@style/Widget.MaterialComponents.Button.TextButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="16dp"
         android:text="Редактировать профиль"
-        app:layout_constraintStart_toStartOf="@+id/textview_age"
-        app:layout_constraintTop_toBottomOf="@+id/textview_age" />
+        app:layout_constraintStart_toStartOf="@+id/age_view"
+        app:layout_constraintTop_toBottomOf="@+id/age_view" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
