@@ -8,7 +8,6 @@ import android.net.Uri
 import android.os.Bundle
 import android.provider.Settings
 import android.widget.Button
-import android.widget.EditText
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.activity.result.contract.ActivityResultContracts
@@ -38,7 +37,7 @@ class EditProfileActivity : AppCompatActivity() {
             }
         }
     }
-
+    var imageUri: Uri? = null
     private lateinit var imageView: ImageView
     private lateinit var textName: TextView
     private lateinit var textSurname: TextView
@@ -53,9 +52,6 @@ class EditProfileActivity : AppCompatActivity() {
         imageView.setOnClickListener {
             createDualDialog(this)
         }
-        textName = findViewById<EditText>(R.id.textview_name)
-        textSurname = findViewById(R.id.textview_surname)
-        textAge = findViewById(R.id.button4)
 
         findViewById<Toolbar>(R.id.toolbar).apply {
             inflateMenu(R.menu.menu)
@@ -69,7 +65,19 @@ class EditProfileActivity : AppCompatActivity() {
                 }
             }
         }
+
+        textName = findViewById(R.id.textview_name)
+        textSurname = findViewById(R.id.textview_surname)
+        textAge = findViewById(R.id.textview_age)
         buttonEdit = findViewById(R.id.button4)
+        val resultContract = registerForActivityResult(ContractActivity()) {result ->
+            textName.text = result?.name
+            textSurname.text = result?.surname
+            textAge.text = result?.age
+        }
+        buttonEdit.setOnClickListener {
+            resultContract.launch("")
+        }
     }
 
     private fun createAccessDialog(context: Context) {
@@ -120,11 +128,22 @@ class EditProfileActivity : AppCompatActivity() {
      */
     private fun populateImage(uri: Uri) {
         val bitmap = BitmapFactory.decodeStream(contentResolver.openInputStream(uri))
+        imageUri = uri
         imageView.setImageBitmap(bitmap)
     }
 
     private fun openSenderApp() {
-        TODO("В качестве реализации метода отправьте неявный Intent чтобы поделиться профилем. В качестве extras передайте заполненные строки и картинку")
+        textName = findViewById(R.id.textview_name)
+        textSurname = findViewById(R.id.textview_surname)
+        textAge = findViewById(R.id.textview_age)
+        buttonEdit = findViewById(R.id.button4)
+        val intent = Intent(Intent.ACTION_SEND).apply {
+            putExtra(Intent.EXTRA_TEXT, "textName.text.toString()"+"textSurname.text.toString()"+"textAge.text.toString()")
+            putExtra(Intent.EXTRA_STREAM, imageUri)
+            type = "image/*"
+            setPackage("org.telegram.messenger")
+        }
+        startActivity(intent)
     }
 }
 
