@@ -55,6 +55,14 @@ class EditProfileActivity : AppCompatActivity() {
         }
     }
 
+    private val requestFillFormLauncher = registerForActivityResult(
+        FillFormResultContract()
+    ) { editData: FillFormActivity.EditData? ->
+        editData?.let {
+            setEditedDataToViews(it)
+        }
+    }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_edit_profile)
@@ -81,20 +89,6 @@ class EditProfileActivity : AppCompatActivity() {
         }
     }
 
-    override fun onActivityResult(
-        requestCode: Int,
-        resultCode: Int,
-        data: Intent?
-    ) {
-        super.onActivityResult(requestCode, resultCode, data)
-
-        if (resultCode == RESULT_OK && requestCode == REQUEST_CODE_FILL_FORM && data != null) {
-            FillFormActivity.getEditDataFromIntent(data)?.let {
-                setEditedDataToViews(it)
-            }
-        }
-    }
-
     private fun setEditedDataToViews(editData: FillFormActivity.EditData) {
         tvName.text = editData.name
         tvSurname.text = editData.surname
@@ -109,9 +103,8 @@ class EditProfileActivity : AppCompatActivity() {
 
     private fun openFillForm() {
         val data = getEditDataFromViews()
-        val intent = FillFormActivity.getIntentToStartForResult(this, data)
 
-        startActivityForResult(intent, REQUEST_CODE_FILL_FORM)
+        requestFillFormLauncher.launch(data)
     }
 
     private fun showProfileImageChangerDialog() {
@@ -231,9 +224,5 @@ class EditProfileActivity : AppCompatActivity() {
             tvSurname.text.toString(),
             tvAge.text.toString(),
         ).joinToString(" ").trim()
-    }
-
-    companion object {
-        private const val REQUEST_CODE_FILL_FORM = 1
     }
 }
