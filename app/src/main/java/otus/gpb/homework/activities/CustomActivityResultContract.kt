@@ -4,12 +4,13 @@ import android.app.Activity
 import android.content.Context
 import android.content.Intent
 import android.net.Uri
-import android.provider.MediaStore
 import androidx.activity.result.contract.ActivityResultContract
 
-class CustomActivityResultContract: ActivityResultContract<Unit, Uri?>() {
-    override fun createIntent(context: Context, input: Unit): Intent {
-        return Intent(MediaStore.ACTION_IMAGE_CAPTURE)
+class CustomActivityResultContract: ActivityResultContract<String, Uri?>() {
+    override fun createIntent(context: Context, input: String): Intent {
+        return Intent(Intent.ACTION_PICK).apply {
+            type = "image/*"
+        }
     }
 
     override fun parseResult(resultCode: Int, intent: Intent?): Uri? {
