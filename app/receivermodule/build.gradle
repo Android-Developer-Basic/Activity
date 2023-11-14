@@ -7,7 +7,7 @@ android {
     compileSdk 32
 
     defaultConfig {
-        applicationId "otus.gpb.homework.activities.sender"
+        applicationId "otus.gpb.homework.activities.receiver"
         minSdk 23
         targetSdk 32
         versionCode 1
