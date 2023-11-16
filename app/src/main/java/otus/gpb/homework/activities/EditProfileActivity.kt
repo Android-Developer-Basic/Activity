@@ -26,6 +26,8 @@ class EditProfileActivity : AppCompatActivity(), OnClickListener {
     private lateinit var imageView: ImageView
     private lateinit var imageUri: Uri
 
+    private var rejectCounter = 0
+
     private val nameTextView by lazy {
         findViewById<TextView>(R.id.textview_name)
     }
@@ -40,15 +42,12 @@ class EditProfileActivity : AppCompatActivity(), OnClickListener {
 
     private val requestCameraPermission =
         registerForActivityResult(ActivityResultContracts.RequestPermission()) { isGranted ->
-            if (isGranted) {
-                openCamera()
-            } else {
-                if (shouldShowRequestPermissionRationale(Manifest.permission.CAMERA)) {
-                    showRationalDialog()
-                } else {
-                    openAppSettings()
-                }
+            when {
+                isGranted -> openCamera()
+                !shouldShowRequestPermissionRationale(Manifest.permission.CAMERA) ->
+                    if (rejectCounter == 1) showRationalDialog() else openAppSettings()
             }
+            rejectCounter++
         }
 
     private val selectFromGallery =
@@ -151,15 +150,24 @@ class EditProfileActivity : AppCompatActivity(), OnClickListener {
 
     private fun openAlertDlg() {
         val customView = layoutInflater.inflate(R.layout.custom_alert_dlg, null)
-        customView.findViewById<Button>(R.id.make_picture_btn).setOnClickListener(this)
-        customView.findViewById<Button>(R.id.choose_photo_btn).setOnClickListener(this)
 
-        MaterialAlertDialogBuilder(this).apply {
+        val dialogBuilder = MaterialAlertDialogBuilder(this).apply {
             setTitle("Choose option")
             setMessage("Create photo or select it from photo gallery")
             setCancelable(false)
             setView(customView)
-        }.create().show()
+        }.create()
+
+        customView.findViewById<Button>(R.id.make_picture_btn).setOnClickListener {
+            dialogBuilder.dismiss()
+            onClick(it)
+        }
+        customView.findViewById<Button>(R.id.choose_photo_btn).setOnClickListener {
+            dialogBuilder.dismiss()
+            onClick(it)
+        }
+
+        dialogBuilder.show()
     }
 
     /**
@@ -176,10 +184,15 @@ class EditProfileActivity : AppCompatActivity(), OnClickListener {
         val age = ageTextView.text
 
         val telegramIntent = Intent().apply {
-            type = "*/*"
+            type = "image/*"
             setPackage("org.telegram.messenger")
-            putExtra(Intent.EXTRA_STREAM, imageUri) // can be non initialized
             putExtra(Intent.EXTRA_TEXT, "$name $lastname $age")
+        }
+
+        if (this::imageUri.isInitialized) {
+            telegramIntent.apply {
+                putExtra(Intent.EXTRA_STREAM, imageUri)
+            }
         }
 
         try {
