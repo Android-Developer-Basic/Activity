@@ -41,8 +41,7 @@ class SenderActivity : AppCompatActivity(R.layout.activity_sender) {
                 )
 
                 startActivity(
-                    Intent()
-                        .apply {
+                    Intent().apply {
                                 action = Intent.ACTION_SEND
                                 type = "text/plain"
                                 addCategory(Intent.CATEGORY_DEFAULT)
