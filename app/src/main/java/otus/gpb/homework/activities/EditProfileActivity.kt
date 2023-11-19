@@ -22,34 +22,147 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
 import androidx.core.content.ContextCompat
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
-import java.time.LocalDate
-import java.time.Period
-
 
 const val tagUserInfo = "user-info"
 enum class PermissionState {
     NOT_ASKED,GRANTED,DENIED
 }
 
-
 class EditProfileActivity : AppCompatActivity(R.layout.activity_edit_profile) {
 
     private val TAG = "EditProfileActivity"
     private lateinit var imageView: ImageView
-    private lateinit var resultImage: ActivityResultLauncher<Intent>
-    private lateinit var permissionLauncher: ActivityResultLauncher<String>
-    private lateinit var resultFillForm: ActivityResultLauncher<Intent>
+
     private var cameraPermissionState: PermissionState = PermissionState.NOT_ASKED
-    private var userData=UserDataSet()
+    private var userData = UserDataSet()
+
+    object Gallery {
+        private lateinit var result: ActivityResultLauncher<Intent>
+        private const val TAG="EditProfileActivity.Gallery"
+        fun create(context: EditProfileActivity) {
+            result = context.registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { r ->
+                if (r.resultCode == Activity.RESULT_OK) {
+                    Log.d(TAG, "Got image from camera or gallery")
+                    r.getData()?.getData()?.let {
+                        Log.d(TAG, "Set image from gallery")
+                        context.populateImage(it)
+                    }
+                }
+            }
+        }
+        fun invoke(context: EditProfileActivity) {
+            val intent = Intent()
+            intent.type = "image/*"
+            intent.action = Intent.ACTION_GET_CONTENT
+            result.launch(intent)
+        }
+    }
+    object Details {
+        private const val TAG="EditProfileActivity.Details"
+        private lateinit var result: ActivityResultLauncher<Intent>
+        fun create(context: EditProfileActivity) {
+            result = context.registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { r ->
+                if (r.resultCode == Activity.RESULT_OK) {
+                    r.data?.getParcelableExtra<UserDataSet>(tagUserInfo)?.let {
+                        Log.d(TAG, "Received data<$tagUserInfo>: {${it.toString()}")
+                        context.updateUserData(it)
+                    }
+                }
+            }
+        }
+        fun invoke(context: EditProfileActivity) {
+            val intent = Intent(context, FillFormActivity::class.java).apply {
+                putExtra(tagUserInfo, context.userData as Parcelable)
+            }
+            result.launch(intent)
+        }
+    }
+    object Camera {
+        private lateinit var result: ActivityResultLauncher<Intent>
+        private lateinit var permissionLauncher: ActivityResultLauncher<String>
+        private const val TAG="EditProfileActivity.Camera"
+        fun create(context: EditProfileActivity) {
+            result = context.registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { r ->
+                if (r.resultCode == Activity.RESULT_OK) {
+                    Log.d(TAG, "Got image from camera")
+                    r.getData()?.getExtras()?.get("data")?.let {
+                        Log.d(TAG, "Set image from camera")
+                        context.populateImage(it as Bitmap)
+                    }
+                }
+            }
+
+            permissionLauncher = context.registerForActivityResult(ActivityResultContracts.RequestPermission()) {
+                if (it) {
+                    context.cameraPermissionState = PermissionState.GRANTED
+                    Log.d(TAG, "Granted")
+                    invoke(context)
+                } else {
+                    Log.d(TAG, "Denied")
+                    Toast
+                        .makeText(context, R.string.camera_access_denied, Toast.LENGTH_SHORT)
+                        .show()
+                    if (context.cameraPermissionState == PermissionState.NOT_ASKED) {
+                        context.cameraPermissionState = PermissionState.DENIED
+                    }
+                }
+            }
+        }
+        fun invoke(context: EditProfileActivity) {
+            if (ContextCompat.checkSelfPermission(
+                    context,
+                    android.Manifest.permission.CAMERA
+                ) == PackageManager.PERMISSION_GRANTED
+            ) {
+                context.cameraPermissionState = PermissionState.GRANTED
+                Log.d(TAG, "Taking photo")
+                val intent = Intent(MediaStore.ACTION_IMAGE_CAPTURE)
+                result.launch(intent)
+            } else {
+                if (context.shouldShowRequestPermissionRationale(android.Manifest.permission.CAMERA)) {
+                    Log.d(TAG, "Show rationale dialogue")
+                    MaterialAlertDialogBuilder(context)
+                        .setTitle(context.resources.getString(R.string.title_need_permission))
+                        .setNeutralButton(context.resources.getString(R.string.cancel)) { dialog, which ->
+                        }
+                        .setPositiveButton(context.resources.getString(R.string.give_permission)) { dialog, which ->
+                            permissionLauncher.launch(android.Manifest.permission.CAMERA)
+                        }
+                        .show()
+                } else {
+                    if (context.cameraPermissionState == PermissionState.NOT_ASKED) {
+                        Log.d(TAG, "Just request permissions")
+                        permissionLauncher.launch(android.Manifest.permission.CAMERA)
+                        Log.d(TAG, "Just request permissions after launcher")
+                    } else {
+                        Log.d(TAG, "Show open settings dialogue")
+                        Toast
+                            .makeText(context, R.string.camera_access_denied, Toast.LENGTH_SHORT)
+                            .show()
+                        MaterialAlertDialogBuilder(context)
+                            .setTitle(context.resources.getString(R.string.title_open_settings))
+                            .setPositiveButton(context.resources.getString(R.string.open_camera_permissions_settings)) { dialog, which ->
+                                val intent = Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS)
+                                val uri = Uri.fromParts("package", context.packageName, null)
+                                intent.data = uri
+                                context.startActivity(intent)
+                            }
+                            .show()
+                    }
+                }
+            }
+        }
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         imageView = findViewById(R.id.imageview_photo)
 
-        Log.d (TAG,"OnCreate")
-        registerForPermissionLauncher()
-        registerForResultImage()
-        registerForFillFormResult()
+        Log.d(TAG, "OnCreate")
+
+        Gallery.create(this)
+        Camera.create(this)
+        Details.create(this)
 
         findViewById<Toolbar>(R.id.toolbar).apply {
             inflateMenu(R.menu.menu)
@@ -59,13 +172,14 @@ class EditProfileActivity : AppCompatActivity(R.layout.activity_edit_profile) {
                         openSenderApp()
                         true
                     }
+
                     else -> false
                 }
             }
         }
 
         findViewById<Button>(R.id.button4).setOnClickListener {
-            openFillForm()
+            Details.invoke(this)
         }
 
         imageView.setOnClickListener {
@@ -73,174 +187,65 @@ class EditProfileActivity : AppCompatActivity(R.layout.activity_edit_profile) {
                 .setTitle(resources.getString(R.string.title_choose_photo_source))
                 .setNeutralButton(resources.getString(R.string.cancel)) { dialog, which ->
                 }
-                .setNegativeButton(resources.getString(R.string.choose_photo_from_gallery)) {dialog, which ->
-                    selectFromGallery()
+                .setNegativeButton(resources.getString(R.string.choose_photo_from_gallery)) { dialog, which ->
+                    Gallery.invoke(this)
                 }
                 .setPositiveButton(resources.getString(R.string.take_photo)) { dialog, which ->
-                    takePhoto()
+                    Camera.invoke(this)
                 }
                 .show()
         }
     }
 
-    fun updateUserData() {
-        findViewById<TextView>(R.id.textview_name).let {
-            it.setText(userData.firstname)
-        }
-        findViewById<TextView>(R.id.textview_surname).let {
-            it.setText(userData.lastname)
-        }
+
+    private fun updateUserData(set: UserDataSet) {
+        userData = set.copy()
+        findViewById<TextView>(R.id.textview_name)
+            .setText(userData.firstname)
+        findViewById<TextView>(R.id.textview_surname)
+            .setText(userData.lastname)
         findViewById<TextView>(R.id.textview_age).let {
-            if (userData.birthdate.year!=1900) {
-                it.setText(Period.between(userData.birthdate, LocalDate.now()).years.toString())
-            }
-
-        }
-    }
-
-    private fun registerForFillFormResult() {
-        resultFillForm = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
-            if (result.resultCode == Activity.RESULT_OK) {
-                result.data?.getParcelableExtra<UserDataSet>(tagUserInfo)?.let {
-                    Log.d(TAG,"Received data<$tagUserInfo>: {${it.toString()}")
-                    userData=it.copy()
-                    updateUserData()
-                }
+            val age=userData.getAge()
+            if (age.isNotEmpty()) {
+                it.setText(age)
             }
         }
-    }
-    private fun openFillForm() {
-        val intent = Intent(this,FillFormActivity::class.java).apply {
-            putExtra(tagUserInfo, userData as Parcelable)
-        }
-        resultFillForm.launch(intent)
-
     }
 
     /**
      * Используйте этот метод чтобы отобразить картинку полученную из медиатеки в ImageView
      */
     private fun populateImage(uri: Uri) {
+        userData.avatar = uri
         val bitmap = BitmapFactory.decodeStream(contentResolver.openInputStream(uri))
         imageView.setImageBitmap(bitmap)
     }
 
     private fun populateImage(bitmap: Bitmap) {
+        userData.avatar = Uri.EMPTY
         imageView.setImageBitmap(bitmap)
     }
 
     private fun openSenderApp() {
+        if (userData.avatar== Uri.EMPTY) {
+            Toast
+                .makeText(this, "Профиль не заполнен", Toast.LENGTH_SHORT)
+                .show()
+            return
+        }
         try {
-            val sendIntent = Intent(Intent.ACTION_SEND)
-            sendIntent.type = "image/*"
-            sendIntent.putExtra(Intent.EXTRA_STREAM, userData.avatar)
-            sendIntent.putExtra(Intent.EXTRA_TEXT, "some text")
-            sendIntent.setPackage("org.telegram.messenger")
-            startActivity(sendIntent)
+            Intent(Intent.ACTION_SEND).apply {
+                type = "image/*"
+                putExtra(Intent.EXTRA_STREAM, userData.avatar)
+                putExtra(Intent.EXTRA_TEXT, userData.toString())
+                setPackage("org.telegram.messenger")
+            }.let {
+                startActivity(it)
+            }
         } catch (e: ActivityNotFoundException) {
             Toast
-                .makeText(this,"Телеграм не найден",Toast.LENGTH_SHORT)
+                .makeText(this, "Телеграм не найден", Toast.LENGTH_SHORT)
                 .show()
-        }
-    }
-
-    private fun registerForResultImage() {
-        resultImage =
-            registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
-                if (result.resultCode == Activity.RESULT_OK) {
-                    Log.d(TAG, "Got image from camera or gallery")
-                    result.getData()?.getData()?.let {
-                        Log.d(TAG, "Set image from gallery")
-                        userData.avatar = it
-                        populateImage(it)
-                    }
-                    result.getData()?.getExtras()?.get("data")?.let {
-                        Log.d(TAG, "Set image from camera")
-                        populateImage(it as Bitmap)
-                        Log.d(TAG, "URI: ${userData.avatar}")
-                    }
-                }
-            }
-    }
-
-    private fun selectFromGallery() {
-        val intent = Intent()
-        intent.type = "image/*"
-        intent.action = Intent.ACTION_GET_CONTENT
-        resultImage.launch(intent)
-    }
-
-
-    private fun takePhoto() {
-        if (requestCameraPermission()) {
-            Log.d(TAG,"Taking photo")
-            val intent = Intent(MediaStore.ACTION_IMAGE_CAPTURE).apply {
-                userData.avatar= Uri.EMPTY
-            }
-            resultImage.launch(intent)
-        }
-    }
-
-    private fun registerForPermissionLauncher() {
-        permissionLauncher = registerForActivityResult(ActivityResultContracts.RequestPermission()) {
-            if (it) {
-                cameraPermissionState = PermissionState.GRANTED
-                Log.d(TAG, "Granted")
-                takePhoto()
-            } else {
-                Log.d(TAG, "Denied")
-                Toast
-                    .makeText(this, R.string.camera_access_denied, Toast.LENGTH_SHORT)
-                    .show()
-                if (cameraPermissionState == PermissionState.NOT_ASKED) {
-                    cameraPermissionState = PermissionState.DENIED
-                }
-            }
-
-        }
-    }
-
-    private fun requestCameraPermission(): Boolean {
-        if (ContextCompat.checkSelfPermission(
-                this,
-                android.Manifest.permission.CAMERA
-            ) == PackageManager.PERMISSION_GRANTED
-        ) {
-            cameraPermissionState = PermissionState.GRANTED
-            return true
-        } else {
-            if (shouldShowRequestPermissionRationale(android.Manifest.permission.CAMERA)) {
-                Log.d(TAG, "Show rationale dialogue")
-                MaterialAlertDialogBuilder(this)
-                    .setTitle(resources.getString(R.string.title_need_permission))
-                    .setNeutralButton(resources.getString(R.string.cancel)) { dialog, which ->
-                    }
-                    .setPositiveButton(resources.getString(R.string.give_permission)) { dialog, which ->
-                        permissionLauncher.launch(android.Manifest.permission.CAMERA)
-                    }
-                    .show()
-            } else {
-                if (cameraPermissionState == PermissionState.NOT_ASKED) {
-                    Log.d(TAG, "Just request permissions")
-                    permissionLauncher.launch(android.Manifest.permission.CAMERA)
-                    Log.d(TAG, "Just request permissions after launcher")
-                } else {
-                    Log.d (TAG, "Show open settings dialogue")
-                    Toast
-                        .makeText(this,R.string.camera_access_denied,Toast.LENGTH_SHORT)
-                        .show()
-                    MaterialAlertDialogBuilder(this)
-                        .setTitle(resources.getString(R.string.title_open_settings))
-                        .setPositiveButton(resources.getString(R.string.open_camera_permissions_settings)) { dialog, which ->
-                            val intent = Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS)
-                            val uri = Uri.fromParts("package", packageName, null)
-                            intent.data = uri
-                            startActivity(intent)
-                        }
-                        .show()
-                }
-            }
-            return false
         }
     }
 }
