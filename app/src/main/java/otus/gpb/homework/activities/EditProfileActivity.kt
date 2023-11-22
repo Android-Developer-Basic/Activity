@@ -28,6 +28,55 @@ enum class PermissionState {
     NOT_ASKED,GRANTED,DENIED
 }
 
+public class runWithPermissions(
+    val context:AppCompatActivity,
+    val permission: String,
+    val f: () -> Unit
+) {
+    var r:() -> Unit = Unit
+    var d:() -> Unit = Unit
+    init {
+        if (ContextCompat.checkSelfPermission(
+                context,
+                permission
+            ) == PackageManager.PERMISSION_GRANTED
+        ) {
+            f()
+        } else {
+            if (context.shouldShowRequestPermissionRationale(android.Manifest.permission.CAMERA)) {
+                Log.d(EditProfileActivity.Camera.TAG, "Show rationale dialogue")
+                r()
+                
+            } else {
+                if (context.cameraPermissionState == PermissionState.NOT_ASKED) {
+
+                } else {
+                    Log.d(EditProfileActivity.Camera.TAG, "Show open settings dialogue")
+                    Toast
+                        .makeText(context, R.string.camera_access_denied, Toast.LENGTH_SHORT)
+                        .show()
+                    MaterialAlertDialogBuilder(context)
+                        .setTitle(context.resources.getString(R.string.title_open_settings))
+                        .setPositiveButton(context.resources.getString(R.string.open_camera_permissions_settings)) { dialog, which ->
+                            val intent = Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS)
+                            val uri = Uri.fromParts("package", context.packageName, null)
+                            intent.data = uri
+                            context.startActivity(intent)
+                        }
+                        .show()
+                }
+            }
+        }
+    }
+
+    fun onShowRationale(r: () -> Unit) {
+        this.r=r
+    }
+    fun onPermissionDeined(r: () -> Unit) {
+        this.d=d
+    }
+}
+
 class EditProfileActivity : AppCompatActivity(R.layout.activity_edit_profile) {
 
     private val TAG = "EditProfileActivity"
@@ -114,10 +163,12 @@ class EditProfileActivity : AppCompatActivity(R.layout.activity_edit_profile) {
                     android.Manifest.permission.CAMERA
                 ) == PackageManager.PERMISSION_GRANTED
             ) {
-                context.cameraPermissionState = PermissionState.GRANTED
-                Log.d(TAG, "Taking photo")
-                val intent = Intent(MediaStore.ACTION_IMAGE_CAPTURE)
-                result.launch(intent)
+                runWithPermissions(context, android.Manifest.permission.CAMERA) {
+                    context.cameraPermissionState = PermissionState.GRANTED
+                    Log.d(TAG, "Taking photo")
+                    val intent = Intent(MediaStore.ACTION_IMAGE_CAPTURE)
+                    result.launch(intent)
+                }
             } else {
                 if (context.shouldShowRequestPermissionRationale(android.Manifest.permission.CAMERA)) {
                     Log.d(TAG, "Show rationale dialogue")
