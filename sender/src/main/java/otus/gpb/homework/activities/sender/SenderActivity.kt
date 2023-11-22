@@ -28,8 +28,11 @@ class SenderActivity : AppCompatActivity() {
         }
 
         findViewById<Button?>(R.id.btn_send_email).setOnClickListener {
-            intent = Intent( Intent.ACTION_SENDTO,
-                Uri.parse("mailto:android@otus.ru"))
+            intent = Intent( Intent.ACTION_SENDTO).apply {
+                data = Uri.parse("mailto:android@otus.ru")
+                putExtra(Intent.EXTRA_SUBJECT, "Subjet text")
+                putExtra(Intent.EXTRA_TEXT, "My text message.")
+            }
             startActivity(intent)
         }
 
