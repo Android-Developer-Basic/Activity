@@ -1,4 +1,20 @@
 <resources>
     <string name="app_name">Activities</string>
     <string name="title_send">Отправить</string>
+    <string name="title_choose_photo_source">Откуда добавить фотографию</string>
+    <string name="title_need_permission">Нужны права к камере</string>
+    <string name="title_fill_form">Правка информации</string>
+    <string name="cancel">Отмена</string>
+    <string name="choose_photo_from_gallery">Из галереи</string>
+    <string name="take_photo">Сделать фото</string>
+    <string name="give_permission">Дать права</string>
+    <string name="title_open_settings">Открыть настройки</string>
+    <string name="open_camera_permissions_settings">Открыть</string>
+    <string name="camera_access_denied">Доступ к камере запрещен</string>
+    <string name="user_firstname">Имя</string>
+    <string name="user_lastname">Фамилия</string>
+    <string name="user_birth_date">Дата рождения</string>
+    <string name="user_birth_date_pick">Выбрать</string>
+    <string name="user_button_submit">Применить</string>
+    <string name="user_button_cancel">Отмена</string>
 </resources>
