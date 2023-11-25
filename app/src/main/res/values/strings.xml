@@ -1,4 +1,15 @@
 <resources>
     <string name="app_name">Activities</string>
     <string name="title_send">Отправить</string>
+    <string name="title">Выберите действие</string>
+    <string name="explanation">Камера нужна чтобы установить новое фото на аватар профиля</string>
+    <string name="title_explanation">Объяснение</string>
+    <string name="setting_message">Вы запретили приложению доступ к камере. Вы можете открыть настройки приложения и разрешить использование камеры.</string>
+    <string name="open_settings">Открыть</string>
+    <string name="get_access">Дать доступ</string>
+    <string name="cancel">Отмена</string>
+    <string name="name_fill_form">Имя</string>
+    <string name="last_name_fill_form">Фамилия</string>
+    <string name="age_fill_form">Возраст</string>
+    <string name="apply_fill_form">Применить</string>
 </resources>
