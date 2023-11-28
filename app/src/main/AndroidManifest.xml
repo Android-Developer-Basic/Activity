@@ -3,6 +3,15 @@
     xmlns:tools="http://schemas.android.com/tools"
     package="otus.gpb.homework.activities">
 
+    <uses-feature
+        android:name="android.hardware.camera"
+        android:required="false" />
+    <uses-permission android:name="android.permission.CAMERA"/>
+
+    <!-- для передачи картинки ее необходимо сохранить -->
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/>
+
     <application
         android:allowBackup="true"
         android:dataExtractionRules="@xml/data_extraction_rules"
@@ -19,10 +28,25 @@
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
+        <activity
+            android:name=".FillFormActivity"
+            android:exported="false">
+        </activity>
+
+         <provider
+             android:name="androidx.core.content.FileProvider"
+             android:authorities="${applicationId}.provider"
+             android:exported="false"
+             android:grantUriPermissions="true">
+             <!-- ressource file to create -->
+            <meta-data android:name="android.support.FILE_PROVIDER_PATHS"
+                    android:resource="@xml/file_paths">
+        </meta-data>
+      </provider>
     </application>
 
 </manifest>
