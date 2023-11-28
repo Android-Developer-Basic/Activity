@@ -9,8 +9,6 @@ import android.graphics.BitmapFactory
 import android.net.Uri
 import android.os.Bundle
 import android.os.Environment
-import android.os.StrictMode
-import android.os.StrictMode.VmPolicy
 import android.provider.Settings
 import android.util.Log
 import android.widget.Button
@@ -23,6 +21,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
+import androidx.core.content.FileProvider
 import androidx.core.view.drawToBitmap
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import java.io.File
@@ -178,9 +177,6 @@ class EditProfileActivity : AppCompatActivity() {
             Log.d("Permission", "save to storage")
             requestPermissions(permissions,100)
         }
-        // для сохранения картинки на диск и передачи без FileProvaider'a
-        val builder = VmPolicy.Builder()
-        StrictMode.setVmPolicy(builder.build())
 
 
         val intent = Intent(Intent.ACTION_SEND).apply {
@@ -203,7 +199,8 @@ class EditProfileActivity : AppCompatActivity() {
             outputStream.flush()
             outputStream.close()
             // Uri image
-            val uri = Uri.fromFile(imageFile)
+            val uri = FileProvider.getUriForFile(this@EditProfileActivity,
+                packageName+".provider", imageFile)
             intent.setType("image/*")
             intent.putExtra(Intent.EXTRA_STREAM, uri)
         }
