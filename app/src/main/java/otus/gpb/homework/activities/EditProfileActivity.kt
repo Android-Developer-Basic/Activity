@@ -1,6 +1,7 @@
 package otus.gpb.homework.activities
 
 import android.Manifest
+import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.graphics.BitmapFactory
@@ -16,6 +17,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
 import androidx.core.content.ContextCompat
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
+import com.google.android.material.snackbar.Snackbar
 
 private const val cameraPermission = Manifest.permission.CAMERA
 
@@ -50,7 +52,7 @@ class EditProfileActivity : AppCompatActivity() {
     }
 
     private lateinit var imageView: ImageView
-    private var permissionRequest = false
+    private var permissionRequest = 0
     private var profileData = DataProfile("", "", "")
 
     //Contacts
@@ -84,12 +86,12 @@ class EditProfileActivity : AppCompatActivity() {
                     takePictureContract.launch(null)
                 }
 
-                !shouldShowRequestPermissionRationale(cameraPermission) -> {
+                !shouldShowRequestPermissionRationale(cameraPermission) && permissionRequest > 1 -> {
                     showDialogSettings()
                 }
 
                 else -> {
-                    permissionRequest = true
+                    permissionRequest++
                 }
             }
         }
@@ -100,7 +102,10 @@ class EditProfileActivity : AppCompatActivity() {
     //Dialogs
     private fun showDialogChoseActionPhoto() {
 
-        val options = arrayOf(TAKE_PHOTO, SELECT_PHOTO)
+        val options = arrayOf(
+            resources.getString(R.string.take_photo),
+            resources.getString(R.string.select_photo)
+        )
 
         MaterialAlertDialogBuilder(this).apply {
 
@@ -126,6 +131,7 @@ class EditProfileActivity : AppCompatActivity() {
             }
             setNegativeButton(R.string.cancel) { dialog, _ ->
                 dialog.dismiss()
+                permissionRequest++
             }
             show()
         }
@@ -138,6 +144,9 @@ class EditProfileActivity : AppCompatActivity() {
                 dialog.dismiss()
                 openSettings()
             }
+            setNegativeButton(R.string.cancel) { dialog, _ ->
+                dialog.dismiss()
+            }
             create()
             show()
         }
@@ -145,18 +154,25 @@ class EditProfileActivity : AppCompatActivity() {
 
 
     private fun selectPhoto() {
-        getContentContract.launch(SELECTED_PHOTO_PATTERN)
+        getContentContract.launch(resources.getString(R.string.selected_photo_pattern))
     }
 
     private fun openSettings() {
         val intent = Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS).apply {
-            val uri = Uri.fromParts(PACKAGE, packageName, null)
+            val uri =
+                Uri.fromParts(resources.getString(R.string.package_settings), packageName, null)
             data = uri
         }
         startActivity(intent)
     }
 
     private fun checkPermissionGranted() {
+
+        if (permissionRequest == 1) {
+            showDialogExplanation()
+            return
+        }
+
         val isGranted = ContextCompat.checkSelfPermission(
             this,
             cameraPermission
@@ -166,12 +182,9 @@ class EditProfileActivity : AppCompatActivity() {
             return
         }
 
-        if (permissionRequest) {
-            showDialogExplanation()
-            return
-        }
-
         permissionCamera.launch(Manifest.permission.CAMERA)
+
+
     }
 
     /**
@@ -183,13 +196,34 @@ class EditProfileActivity : AppCompatActivity() {
         imageView.setImageBitmap(bitmap)
     }
 
-    private fun openSenderApp() {
-        val sendIntent = Intent(Intent.ACTION_SEND).apply {
-            type = SELECTED_PHOTO_PATTERN
-            putExtra(Intent.EXTRA_STREAM, uriImage)
-            putExtra(Intent.EXTRA_TEXT, sendDataTelegram)
-            setPackage(PACKAGE_TELEGRAM)
+    private fun isTelegramInstalled(context: Context, packageName: String): Boolean {
+        val packageManager = context.packageManager
+        val installedApps = packageManager.getInstalledApplications(PackageManager.GET_META_DATA)
+
+        for (appInfo in installedApps) {
+            if (appInfo.packageName == resources.getString(R.string.package_telegram)) {
+                return true
+            }
         }
-        startActivity(sendIntent)
+
+        return false
+    }
+
+    private fun openSenderApp() {
+        if (isTelegramInstalled(this, resources.getString(R.string.package_telegram))) {
+            val sendIntent = Intent(Intent.ACTION_SEND).apply {
+                type = resources.getString(R.string.selected_photo_pattern)
+                putExtra(Intent.EXTRA_STREAM, uriImage)
+                putExtra(Intent.EXTRA_TEXT, sendDataTelegram)
+                setPackage(resources.getString(R.string.package_telegram))
+            }
+            startActivity(sendIntent)
+        } else {
+            Snackbar.make(
+                findViewById(android.R.id.content),
+                resources.getString(R.string.text_snackbar_telegram),
+                Snackbar.LENGTH_LONG
+            ).show()
+        }
     }
 }

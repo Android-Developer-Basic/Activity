@@ -12,4 +12,12 @@
     <string name="last_name_fill_form">Фамилия</string>
     <string name="age_fill_form">Возраст</string>
     <string name="apply_fill_form">Применить</string>
+
+    <string name="take_photo">Сделать фото</string>
+    <string name="select_photo">Выбрать фото</string>
+    <string name="selected_photo_pattern">image/*</string>
+    <string name="package_settings">package</string>
+    <string name="package_telegram">org.telegram.messenger</string>
+
+    <string name="text_snackbar_telegram">Телеграм не установлен</string>
 </resources>
