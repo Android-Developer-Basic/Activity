@@ -1,4 +1,8 @@
 <resources>
     <string name="app_name">Activities</string>
     <string name="title_send">Отправить</string>
+    <string name="add_name">Add Name</string>
+    <string name="add_last_name">Add Last Name</string>
+    <string name="add_your_age">Add your age</string>
+    <string name="accept">Accept</string>
 </resources>
