@@ -27,10 +27,11 @@ class SenderActivity : AppCompatActivity() {
 
         binding.sendEmailButton.setOnClickListener {
             val intent = Intent(Intent.ACTION_SENDTO) // it's not ACTION_SEND
-            intent.putExtra(Intent.EXTRA_EMAIL, "android@otus.ru")
+            intent.data = Uri.parse("mailto:")
+            intent.putExtra(Intent.EXTRA_EMAIL, arrayOf("android@otus.ru"))
             intent.putExtra(Intent.EXTRA_SUBJECT, "Subject of email")
             intent.putExtra(Intent.EXTRA_TEXT, "Body of email")
-            intent.data = Uri.parse("mailto:") // or just "mailto:" for blank
+
             intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK) // this will make such that when user returns to your app, your app is displayed, instead of the email app.
             startActivity(intent)
         }
