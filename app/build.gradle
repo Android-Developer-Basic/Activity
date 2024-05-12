@@ -1,16 +1,17 @@
 plugins {
     id 'com.android.application'
     id 'org.jetbrains.kotlin.android'
+    id 'kotlin-parcelize'
     id("io.gitlab.arturbosch.detekt")
 }
 
 android {
-    compileSdk 32
+    compileSdk 34
 
     defaultConfig {
         applicationId "otus.gpb.homework.activities"
         minSdk 23
-        targetSdk 32
+        targetSdk 34
         versionCode 1
         versionName "1.0"
 
