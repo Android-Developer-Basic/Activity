@@ -1,7 +1,9 @@
 package otus.gpb.homework.activities
 
+import android.Manifest
 import android.app.Activity
 import android.content.Intent
+import android.content.pm.PackageManager
 import android.graphics.BitmapFactory
 import android.net.Uri
 import android.os.Build
@@ -15,8 +17,8 @@ import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
-import java.security.Permissions
-import java.util.jar.Manifest
+import androidx.core.app.ActivityCompat
+import androidx.core.content.ContextCompat
 
 class EditProfileActivity : AppCompatActivity() {
 
@@ -28,7 +30,7 @@ class EditProfileActivity : AppCompatActivity() {
     private lateinit var textViewAge: TextView
     private val options = arrayOf("Сделать фото", "Выбрать фото")
 
-    private val requestPermissionCam = registerForActivityResult(ActivityResultContracts.RequestPermission()) {
+    private val requestPermission = registerForActivityResult(ActivityResultContracts.RequestPermission()) {
             isGranted ->
         when {
             isGranted -> { imageView.setImageResource(R.drawable.cat) }
@@ -37,7 +39,7 @@ class EditProfileActivity : AppCompatActivity() {
     }
 
     private var uriImg: Uri? = null
-    private val getCommentMedia =
+    private val takePhoto =
         registerForActivityResult(ActivityResultContracts.GetContent()) { uri: Uri? ->
             uri?.let { imageUri ->
                 uriImg = imageUri
@@ -108,14 +110,15 @@ class EditProfileActivity : AppCompatActivity() {
     }
 
     fun makePhoto() {
-        if (!shouldShowRequestPermissionRationale(android.Manifest.permission.CAMERA) && countsDeniedPermission < 2) {
-            requestPermissionCam.launch(android.Manifest.permission.CAMERA)
-        }
-        if (shouldShowRequestPermissionRationale(android.Manifest.permission.CAMERA)) {
-            alertDialogAskPermission()
-        }
-        if (!shouldShowRequestPermissionRationale(android.Manifest.permission.CAMERA) && countsDeniedPermission >= 2) {
-            alertDialogOpenSetting()
+        val isGrantedCamera = ContextCompat.checkSelfPermission(this, Manifest.permission.CAMERA) == PackageManager.PERMISSION_GRANTED
+        if (!isGrantedCamera) {
+            if(countsDeniedPermission == 1) {
+                alertDialogAskPermission()
+            } else if(countsDeniedPermission == 2) {
+                alertDialogOpenSetting()
+            } else {
+                requestPermission.launch(android.Manifest.permission.CAMERA)
+            }
         }
     }
 
@@ -124,7 +127,7 @@ class EditProfileActivity : AppCompatActivity() {
         alertBuilder.setMessage("Доступ к камере необходим для использования функционала приложения - делать фотографии")
         alertBuilder.setPositiveButton("Дать доступ") {
                 dialog, which ->
-            requestPermissionCam.launch(android.Manifest.permission.CAMERA)
+            requestPermission.launch(android.Manifest.permission.CAMERA)
         }
         alertBuilder.setNegativeButton("Отмена", null)
         val dialog = alertBuilder.create()
@@ -147,7 +150,7 @@ class EditProfileActivity : AppCompatActivity() {
     }
 
     fun choosePhoto() {
-        getCommentMedia.launch("image/*")
+        takePhoto.launch("image/*")
     }
 
 
