@@ -121,7 +121,6 @@ class EditProfileActivity : AppCompatActivity() {
             }
         }
     }
-
     private fun alertDialogAskPermission() {
         val alertBuilder = AlertDialog.Builder(this)
         alertBuilder.setMessage("Доступ к камере необходим для использования функционала приложения - делать фотографии")
@@ -129,7 +128,10 @@ class EditProfileActivity : AppCompatActivity() {
                 dialog, which ->
             requestPermission.launch(android.Manifest.permission.CAMERA)
         }
-        alertBuilder.setNegativeButton("Отмена", null)
+        alertBuilder.setNegativeButton("Отмена") {
+            dialog, which ->
+            countsDeniedPermission++
+        }
         val dialog = alertBuilder.create()
         dialog.show()
     }
@@ -144,7 +146,10 @@ class EditProfileActivity : AppCompatActivity() {
             }
             startActivity(intent)
         }
-        alertBuilder.setNegativeButton("Отмена", null)
+        alertBuilder.setNegativeButton("Отмена") {
+                dialog, which ->
+            countsDeniedPermission++
+        }
         val dialog = alertBuilder.create()
         dialog.show()
     }
