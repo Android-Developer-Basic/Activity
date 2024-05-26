@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/main"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:paddingHorizontal="50dp"
+    tools:context=".SenderActivity">
+
+    <Button
+        android:id="@+id/btn_to_maps"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/btn_to_maps"
+        android:textAllCaps="false"
+        android:textSize="22sp"
+        android:layout_gravity="center"
+        >
+    </Button>
+
+    <Button
+        android:id="@+id/btn_send_email"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/btn_send_email"
+        android:textAllCaps="false"
+        android:textSize="22sp"
+        android:layout_gravity="center"
+        >
+    </Button>
+
+    <Button
+        android:id="@+id/btn_open_receiver"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/btn_open_receiver"
+        android:textAllCaps="false"
+        android:textSize="22sp"
+        android:layout_gravity="center"
+        >
+    </Button>
+
+</LinearLayout>
