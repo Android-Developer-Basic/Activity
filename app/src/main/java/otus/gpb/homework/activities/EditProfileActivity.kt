@@ -28,6 +28,7 @@ class EditProfileActivity : AppCompatActivity() {
     private lateinit var textSurname: TextView
     private lateinit var textAge: TextView
 
+    private var launchSettings: (() -> Unit)? = ::gotoSettings
     private var currentImageUri: Uri? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -78,9 +79,11 @@ class EditProfileActivity : AppCompatActivity() {
         })
     }
 
-    private fun gotoSettings() = MaterialAlertDialogBuilder(this).setNeutralButton("Открыть настройки") { _, _ ->
-        startActivity(Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS, Uri.fromParts("package", packageName, null)))
-    }.show()
+    private fun gotoSettings() {
+        MaterialAlertDialogBuilder(this).setNeutralButton("Открыть настройки") { _, _ ->
+            startActivity(Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS, Uri.fromParts("package", packageName, null)))
+        }.show()
+    }
 
     private val permission = registerForActivityResult(ActivityResultContracts.RequestPermission()) {
         when {
@@ -89,13 +92,15 @@ class EditProfileActivity : AppCompatActivity() {
                 currentImageUri = null
             }
 
-            !shouldShowRequestPermissionRationale(Manifest.permission.CAMERA) -> gotoSettings() // если "больше не спрашивать"
+            !shouldShowRequestPermissionRationale(Manifest.permission.CAMERA) -> // если "больше не спрашивать"
+                launchSettings?.invoke() ?: run { launchSettings = ::gotoSettings }
         }
     }
 
     private fun makePhoto() {
         // повторный запрос на использование камеры
         if (shouldShowRequestPermissionRationale(Manifest.permission.CAMERA)) {
+            launchSettings = null // чтобы не предлагало пойти в настройки в первый раз после "больше не спрашивать"
             MaterialAlertDialogBuilder(this).setMessage("Очень нужен доступ к камере!").setNegativeButton("Отмена", null)
                 .setPositiveButton("Дать доступ") { _, _ ->
                     permission.launch(Manifest.permission.CAMERA)
