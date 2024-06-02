@@ -1,4 +1,11 @@
 <resources>
     <string name="app_name">Activities</string>
     <string name="title_send">Отправить</string>
+    <string name="name">Name</string>
+    <string name="sur_name">Sur name</string>
+    <string name="enter_name">Enter name</string>
+    <string name="enter_sur_name">Enter sur name</string>
+    <string name="enter_year">Enter year</string>
+    <string name="year">year</string>
+    <string name="accept">Accept</string>
 </resources>
