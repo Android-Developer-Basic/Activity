@@ -1,4 +1,13 @@
 <resources>
     <string name="app_name">Activities</string>
     <string name="title_send">Отправить</string>
+    <string name="title_activity_fill_form">Редактировать профиль</string>
+    <string name="label_first_name">Имя:      %1$s</string>
+    <string name="label_last_name">Фамилия:  %1$s</string>
+    <string name="label_age">Возраст:  %1$d</string>
+    <string name="hint_first_name">Имя</string>
+    <string name="hint_last_name">Фамилия</string>
+    <string name="hint_age">Возраст (лет)</string>
+    <string name="btn_ok">OK</string>
+    <string name="btn_cancel">Отмена</string>
 </resources>
