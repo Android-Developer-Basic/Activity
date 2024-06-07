@@ -238,16 +238,11 @@ class EditProfileActivity : AppCompatActivity() {
 
         val intent = Intent().apply {
             action = Intent.ACTION_SEND
-            type = "text/plain/image/*"
-//            data = uri
-            addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
-            addFlags(Intent.FLAG_GRANT_WRITE_URI_PERMISSION)
+            type = "text/plain"
 //            setPackage("org.telegram.messenger")
-            putExtra(Intent.EXTRA_TITLE, "Test title")
-            putExtra(Intent.EXTRA_SUBJECT, "Test subject")
             putExtra(Intent.EXTRA_TEXT, messageText)
-//            putExtra(Intent.EXTRA_STREAM, uri)
+            putExtra(Intent.EXTRA_STREAM, uri)
         }
-        startActivity(Intent.createChooser(intent, "Share title"))
+        startActivity(Intent.createChooser(intent, ""))
     }
 }
