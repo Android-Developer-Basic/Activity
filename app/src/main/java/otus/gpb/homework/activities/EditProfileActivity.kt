@@ -2,7 +2,7 @@ package otus.gpb.homework.activities
 
 import android.Manifest
 import android.app.AlertDialog
-import android.content.ClipData
+import android.content.ActivityNotFoundException
 import android.content.ContentResolver
 import android.content.Intent
 import android.graphics.BitmapFactory
@@ -31,6 +31,8 @@ class EditProfileActivity : AppCompatActivity() {
         "Выбрать фото" to ::getContent,
     )
 
+    private var openCamPermissionSettings = false
+
     /**
      * Установка в качестве аватарки изображения, сделанного на камеру
      */
@@ -38,10 +40,14 @@ class EditProfileActivity : AppCompatActivity() {
         val granted = ContextCompat.checkSelfPermission(this, Manifest.permission.CAMERA)
         when {
             granted == PermissionChecker.PERMISSION_GRANTED -> {
+                openCamPermissionSettings = false
                 populateImage()
             }
             shouldShowRequestPermissionRationale(Manifest.permission.CAMERA) -> {
-                camRationaleDialog()
+                if (openCamPermissionSettings)
+                    openAppSettingsDialog()
+                else
+                    camRationaleDialog()
             }
             else -> {
                 launcherUseCamera.launch(Manifest.permission.CAMERA)
@@ -141,8 +147,8 @@ class EditProfileActivity : AppCompatActivity() {
             launcherUseCamera.launch(Manifest.permission.CAMERA)
         }
         .setNegativeButton("Отмена") { dialog, _ ->
+            openCamPermissionSettings = true
             dialog.cancel()
-            openAppSettingsDialog()
         }
         .create()
         .show()
@@ -238,11 +244,22 @@ class EditProfileActivity : AppCompatActivity() {
 
         val intent = Intent().apply {
             action = Intent.ACTION_SEND
-            type = "text/plain"
-//            setPackage("org.telegram.messenger")
+            type = "image/*"
+            setPackage("org.telegram.messenger")
             putExtra(Intent.EXTRA_TEXT, messageText)
             putExtra(Intent.EXTRA_STREAM, uri)
         }
-        startActivity(Intent.createChooser(intent, ""))
+        try {
+            startActivity(intent)
+        } catch (e: ActivityNotFoundException) {
+            Toast.makeText(this, "Telegram не найден", LENGTH_SHORT).show()
+            intent.apply {
+                type = "plain/text"
+                setPackage(null)
+            }
+            startActivity(Intent.createChooser(intent, ""))
+        } catch (e: Exception) {
+            Toast.makeText(this, "Неизвестная ошибка при попытке отправки сообщения в Telegram", LENGTH_SHORT).show()
+        }
     }
 }
