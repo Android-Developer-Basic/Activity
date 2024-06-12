@@ -31,13 +31,12 @@ open class EditProfileActivity : AppCompatActivity() {
         ActivityResultContracts.RequestPermission()
     ) { granted ->
         when {
-            granted -> imageView?.setImageResource(R.drawable.cat)
+            granted -> imageView.setImageResource(R.drawable.cat)
             !shouldShowRequestPermissionRationale(Manifest.permission.CAMERA) ->
-                showAlertDialogCamera(this)
+                showSettingsAlertDialog(this)
 
-            else -> null
+            else -> showAlertDialogCamera(this)
         }
-
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -136,6 +135,23 @@ open class EditProfileActivity : AppCompatActivity() {
             .show()
     }
 
+    fun showSettingsAlertDialog(context: Context) {
+        MaterialAlertDialogBuilder(context)
+            .setTitle(context.getString(R.string.permission_needed))
+            .setMessage(context.getString(R.string.permission_denied_explanation))
+            .setPositiveButton(context.getString(R.string.settings)) { _, _ ->
+                val intent =
+                    Intent(android.provider.Settings.ACTION_APPLICATION_DETAILS_SETTINGS).apply {
+                        data = Uri.fromParts("package", packageName, null)
+                    }
+                startActivity(intent)
+            }
+            .setNegativeButton(context.getString(R.string.cancel)) { dialog, _ ->
+                dialog.dismiss()
+            }
+            .show()
+    }
+
 
     private fun populateImage(uri: Uri) {
         val bitmap = BitmapFactory.decodeStream(contentResolver.openInputStream(uri))
@@ -144,16 +160,16 @@ open class EditProfileActivity : AppCompatActivity() {
 
 
     private fun openSenderApp() {
-        if (fillFormLauncher != null){
-        val intent = Intent(Intent.ACTION_SEND).apply {
-            setPackage("org.telegram.messenger")
-            setType("image/*")
-            putExtra(
-                Intent.EXTRA_TEXT,
-                "name=${textViewName}\nsurname=${textViewSurname}\nage=${textViewAge} "
-            )
-            if (imageUri != null) putExtra(Intent.EXTRA_STREAM, imageUri)
-        }
+        if (fillFormLauncher != null) {
+            val intent = Intent(Intent.ACTION_SEND).apply {
+                setPackage("org.telegram.messenger")
+                setType("image/*")
+                putExtra(
+                    Intent.EXTRA_TEXT,
+                    "name=${textViewName}\nsurname=${textViewSurname}\nage=${textViewAge} "
+                )
+                if (imageUri != null) putExtra(Intent.EXTRA_STREAM, imageUri)
+            }
             startActivity(intent)
         }
     }

@@ -20,10 +20,10 @@ class FillFormActivity : Activity() {
             val surname = editTextSurname.text.toString()
             val age = editTextAge.text.toString()
             val resultIntent = Intent()
-            resultIntent.putExtra("name",name)
-            resultIntent.putExtra("surname",surname)
-            resultIntent.putExtra("age",age)
-            setResult(Activity.RESULT_OK,resultIntent)
+            resultIntent.putExtra("name", name)
+            resultIntent.putExtra("surname", surname)
+            resultIntent.putExtra("age", age)
+            setResult(Activity.RESULT_OK, resultIntent)
             finish()
         }
     }
