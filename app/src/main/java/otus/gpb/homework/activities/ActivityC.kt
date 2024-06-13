@@ -13,7 +13,7 @@ class ActivityC : AppCompatActivity() {
         val openActivityA: Button = findViewById(R.id.btn_open_activity_a)
         openActivityA.setOnClickListener {
             val intent = Intent(this, ActivityA::class.java)
-            intent.flags = Intent.FLAG_ACTIVITY_SINGLE_TOP or Intent.FLAG_ACTIVITY_CLEAR_TOP
+            intent.setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP or Intent.FLAG_ACTIVITY_CLEAR_TOP)
             startActivity(intent)
         }
 
@@ -22,7 +22,6 @@ class ActivityC : AppCompatActivity() {
             val intent = Intent(this, ActivityD::class.java)
             intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK
             startActivity(intent)
-            finish()
         }
 
         val closeActivityC: Button = findViewById(R.id.btn_close_activity_c)
@@ -33,9 +32,8 @@ class ActivityC : AppCompatActivity() {
         val closeStack: Button = findViewById(R.id.btn_close_stack)
         closeStack.setOnClickListener {
             val intent = Intent(this, ActivityA::class.java)
-            intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK
             startActivity(intent)
-            finish()
+            finishAffinity()
         }
     }
 }
