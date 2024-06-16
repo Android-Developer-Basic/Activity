@@ -30,7 +30,7 @@ class SenderActivity : AppCompatActivity() {
         }
 
         openReceiverButton.setOnClickListener {
-
+            val intent = Intent(Intent.ACTION_SEND)
         }
     }
 }
