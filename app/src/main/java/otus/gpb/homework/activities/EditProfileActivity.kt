@@ -91,9 +91,6 @@ open class EditProfileActivity : AppCompatActivity() {
             }
     }
 
-    /**
-     * Используйте этот метод чтобы отобразить картинку полученную из медиатеки в ImageView
-     */
     fun showAlertDialogWithActions(context: Context) {
         val options = arrayOf(
             context.getString(R.string.take_photo),
@@ -127,10 +124,10 @@ open class EditProfileActivity : AppCompatActivity() {
             .setTitle(context.getString(R.string.title))
             .setMessage(resources.getString(R.string.explanation))
             .setNeutralButton(context.getString(R.string.cancel)) { dialog, which ->
-                // Respond to neutral button press
+                dialog.dismiss()
             }
             .setPositiveButton(context.getString(R.string.accept)) { dialog, which ->
-                // Respond to positive button press
+                permissionCamera.launch(Manifest.permission.CAMERA)
             }
             .show()
     }
@@ -152,12 +149,10 @@ open class EditProfileActivity : AppCompatActivity() {
             .show()
     }
 
-
     private fun populateImage(uri: Uri) {
         val bitmap = BitmapFactory.decodeStream(contentResolver.openInputStream(uri))
         imageView.setImageBitmap(bitmap)
     }
-
 
     private fun openSenderApp() {
         if (fillFormLauncher != null) {
