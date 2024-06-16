@@ -16,9 +16,9 @@ class ReceiverActivity : AppCompatActivity() {
 
         Log.d("ReceiverActivity", "onCreate() called")
 
-        val title: String = intent.getStringExtra(TITLE_KEY) ?: "no title"
-        val year: String = intent.getStringExtra(YEAR_KEY) ?: "no year"
-        val description: String = intent.getStringExtra(DESCRIPTION_KEY) ?: "no description"
+        val title = intent.extras?.getString(TITLE_KEY, "no title")
+        val year = intent.extras?.getString(YEAR_KEY, "no year")
+        val description = intent.extras?.getString(DESCRIPTION_KEY, "no description")
 
         Log.d("ReceiverActivity", "Title: $title, Year: $year, Description: $description")
 
