@@ -1,6 +1,7 @@
 package otus.gpb.homework.activities.receiver
 
 import android.os.Bundle
+import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import otus.gpb.homework.activities.receiver.databinding.ActivityReceiverBinding
@@ -13,9 +14,13 @@ class ReceiverActivity : AppCompatActivity() {
         binding = ActivityReceiverBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        val title: String = intent.getStringExtra(TITLE_KEY).toString()
-        val year: String = intent.getStringExtra(YEAR_KEY).toString()
-        val description: String = intent.getStringExtra(DESCRIPTION_KEY).toString()
+        Log.d("ReceiverActivity", "onCreate() called")
+
+        val title: String = intent.getStringExtra(TITLE_KEY) ?: "no title"
+        val year: String = intent.getStringExtra(YEAR_KEY) ?: "no year"
+        val description: String = intent.getStringExtra(DESCRIPTION_KEY) ?: "no description"
+
+        Log.d("ReceiverActivity", "Title: $title, Year: $year, Description: $description")
 
         binding.titleTextView.text = title
         binding.yearTextView.text = year
