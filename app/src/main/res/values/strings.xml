@@ -1,4 +1,16 @@
 <resources>
     <string name="app_name">Activities</string>
     <string name="title_send">Отправить</string>
+    <string name="title">Выберите действие</string>
+    <string name="take_photo">Сделать фото</string>
+    <string name="choose_photo">Выбрать фото</string>
+    <string name="cancel">Отмена</string>
+    <string name="decline">Отклонить</string>
+    <string name="accept">Принять</string>
+    <string name="explanation">К сожаление,вы не дали доступ к камере.
+        Для того чтобы сделать фотографию нужно разрешение</string>
+    <string name="permission_needed">Требуется разрешение</string>
+    <string name="permission_denied_explanation">Для фотосъемки необходимо разрешение на камеру.
+        Включите его в настройках приложения.</string>
+    <string name="settings">Настройки</string>
 </resources>
