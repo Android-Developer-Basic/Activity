@@ -32,7 +32,7 @@ android {
     }
     namespace 'otus.gpb.homework.activities.receiver'
     buildFeatures {
-        viewBinding true
+        viewBinding = true
     }
 }
 

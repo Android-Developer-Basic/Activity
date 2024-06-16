@@ -3,34 +3,47 @@ package otus.gpb.homework.activities.sender
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
-import android.widget.Button
 import androidx.appcompat.app.AppCompatActivity
-import otus.gpb.homework.activities.receiver.R
+import otus.gpb.homework.activities.receiver.ReceiverActivity
+import otus.gpb.homework.activities.sender.databinding.ActivitySenderBinding
 
 class SenderActivity : AppCompatActivity() {
+    private lateinit var binding: ActivitySenderBinding
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_sender)
+        binding = ActivitySenderBinding.inflate(layoutInflater)
+        setContentView(binding.root)
 
-        val toGoogleMapsButton: Button = findViewById(R.id.btn_to_google_maps)
-        val sendEmailButton: Button = findViewById(R.id.btn_send_email)
-        val openReceiverButton: Button = findViewById(R.id.btn_open_receiver)
-
-        toGoogleMapsButton.setOnClickListener {
-            val intent = Intent(Intent.ACTION_VIEW, Uri.parse("geo:0,0?q=Рестораны"))
-                .setPackage("com.google.android.apps.maps")
+        binding.btnToGoogleMaps.setOnClickListener {
+            val intent = Intent(
+                Intent.ACTION_VIEW,
+                Uri.parse("geo:0,0?q=Рестораны")
+            ).setPackage("com.google.android.apps.maps")
             startActivity(intent)
         }
 
-        sendEmailButton.setOnClickListener {
-            val intent = Intent(Intent.ACTION_SENDTO, Uri.parse("mailto:android@otus.ru",))
-                .putExtra(Intent.EXTRA_SUBJECT,"Тема письма")
+        binding.btnSendEmail.setOnClickListener {
+            val intent = Intent(
+                Intent.ACTION_SENDTO,
+                Uri.parse("mailto:android@otus.ru")
+            ).putExtra(Intent.EXTRA_SUBJECT, "Тема письма")
                 .putExtra(Intent.EXTRA_TEXT, "Текст письма")
             startActivity(intent)
         }
 
-        openReceiverButton.setOnClickListener {
-            val intent = Intent(Intent.ACTION_SEND)
+        binding.btnOpenReceiver.setOnClickListener {
+            val intent = Intent().apply {
+                action = Intent.ACTION_SEND
+                addCategory(Intent.CATEGORY_DEFAULT)
+                type = "text/plain"
+                intent.putExtra(ReceiverActivity.TITLE_KEY, "Славные парни")
+                intent.putExtra(ReceiverActivity.YEAR_KEY, "2016")
+                intent.putExtra(
+                    ReceiverActivity.DESCRIPTION_KEY,
+                    "Что бывает, когда напарником брутального костолома становится субтильный лопух? Наемный охранник Джексон Хили и частный детектив Холланд Марч вынуждены работать в паре, чтобы распутать плевое дело о пропавшей девушке, которое оборачивается преступлением века. Смогут ли парни разгадать сложный ребус, если у каждого из них – свои, весьма индивидуальные методы."
+                )
+            }
+            startActivity(intent)
         }
     }
 }
