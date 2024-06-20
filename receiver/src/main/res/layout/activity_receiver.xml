@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:layout_marginStart="4dp"
+    android:layout_marginTop="4dp"
+    android:layout_marginEnd="4dp"
+    android:layout_marginBottom="24dp">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        tools:context=".ReceiverActivity">
+
+        <ImageView
+            android:id="@+id/PosterImageView"
+            android:layout_width="162dp"
+            android:layout_height="243dp"
+            android:layout_marginStart="32dp"
+            android:layout_marginTop="24dp"
+            android:scaleType="fitStart"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:srcCompat="@drawable/interstellar" />
+
+        <TextView
+            android:id="@+id/title_textView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="24dp"
+            tools:text="Title"
+            android:textColor="@color/black"
+            android:textSize="24sp"
+            android:textStyle="bold"
+            app:layout_constraintStart_toEndOf="@+id/PosterImageView"
+            app:layout_constraintTop_toTopOf="@+id/PosterImageView" />
+
+        <TextView
+            android:id="@+id/year_textView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            tools:text="Year"
+            android:textSize="16sp"
+            app:layout_constraintStart_toStartOf="@+id/title_textView"
+            app:layout_constraintTop_toBottomOf="@+id/title_textView" />
+
+        <TextView
+            android:id="@+id/description_textView"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="32dp"
+            android:layout_marginTop="24dp"
+            android:layout_marginEnd="32dp"
+            tools:text="Description"
+            android:textAlignment="gravity"
+            android:textColor="@color/black"
+            android:textSize="20sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/PosterImageView" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</ScrollView>
