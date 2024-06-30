@@ -1,4 +1,7 @@
 <resources>
     <string name="app_name">Activities</string>
     <string name="title_send">Отправить</string>
+    <string name="title_dialog">Выберите действие</string>
+    <string name="ok_button_dialog">Ок</string>
+    <string name="cancel_button_dialog">Отменить</string>
 </resources>
