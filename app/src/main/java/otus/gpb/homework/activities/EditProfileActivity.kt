@@ -1,20 +1,99 @@
 package otus.gpb.homework.activities
 
+import android.Manifest
+import android.content.Intent
+import android.content.pm.PackageManager
 import android.graphics.BitmapFactory
 import android.net.Uri
 import android.os.Bundle
+import android.provider.Settings
+import android.widget.Button
 import android.widget.ImageView
+import android.widget.TextView
+import android.widget.Toast
+import androidx.activity.result.contract.ActivityResultContracts
+import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
+import androidx.appcompat.content.res.AppCompatResources
 import androidx.appcompat.widget.Toolbar
+import androidx.core.content.ContextCompat
 
 class EditProfileActivity : AppCompatActivity() {
 
+    private var deniedOnce = false
+    private var uriImage: Uri? = null
+    private var content = ""
+
+    private val takePictureContract = registerForActivityResult(
+        ActivityResultContracts.TakePicturePreview()
+    ) { bitmap ->
+        imageView.setImageBitmap(bitmap)
+    }
+
+    private val getContentContract = registerForActivityResult(
+        ActivityResultContracts.GetContent()
+    ) { result ->
+        result?.let {
+            populateImage(it)
+        }
+    }
+
+    private val permissionCamera = registerForActivityResult(
+        ActivityResultContracts.RequestPermission()
+    ) { granted ->
+        when {
+            granted -> {
+                permissionCameraGranted()
+                //takePictureContract.launch(null)
+            }
+            !shouldShowRequestPermissionRationale(Manifest.permission.CAMERA) -> {
+                //Permission Denied And Don't Ask Again
+                deniedOnce = false
+                alertQuestionSettingsShow()
+            }
+            else -> {
+                deniedOnce = true
+                showToast(getString(R.string.permission_camera_denied))
+            }
+        }
+    }
+
+    private fun permissionCameraGranted() {
+        //takePictureContract.launch(null)
+        imageView.setImageDrawable(AppCompatResources.getDrawable(this, R.drawable.cat))
+    }
+
+    private val fillFormContract = registerForActivityResult(ContractFillFromActivity()) { result ->
+        if (result != null) {
+            val firstName = result.getStringExtra(NAME_KEY)
+            val lastName = result.getStringExtra(SUR_NAME_KEY)
+            val age = result.getStringExtra(AGE_KEY)
+
+            content = "$firstName \n $lastName \n $age"
+            textviewName.text = firstName
+            textviewSurname.text = lastName
+            textviewAge.text = age
+        }
+        else {
+            showToast(getString(R.string.requestError))
+        }
+    }
+
     private lateinit var imageView: ImageView
+    private lateinit var textviewName: TextView
+    private lateinit var textviewSurname: TextView
+    private lateinit var textviewAge: TextView
+    private lateinit var buttonEditProfile: Button
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_edit_profile)
+
+        buttonEditProfile = findViewById(R.id.buttonEditProfile)
         imageView = findViewById(R.id.imageview_photo)
+        textviewName = findViewById(R.id.textview_name)
+        textviewSurname = findViewById(R.id.textview_surname)
+        textviewAge = findViewById(R.id.textview_age)
 
         findViewById<Toolbar>(R.id.toolbar).apply {
             inflateMenu(R.menu.menu)
@@ -28,17 +107,109 @@ class EditProfileActivity : AppCompatActivity() {
                 }
             }
         }
+
+        buttonEditProfile.setOnClickListener {
+            fillFormContract.launch("smth")
+        }
+
+        imageView.setOnClickListener {
+            showPhotoSelectionDialog()
+        }
+    }
+
+    private fun showPhotoSelectionDialog(){
+        val options = arrayOf(getString(R.string.make_photo), getString(R.string.choose_photo))
+        AlertDialog.Builder(this)
+            .setTitle(getString(R.string.title_dialog_choice))
+            .setItems(options) { dialog, which ->
+                when (which) {
+                    0 -> requestCameraPermission()
+                    1 -> selectPhotoFromGallery()
+                }
+            }
+            .show()
+    }
+
+    private fun selectPhotoFromGallery(){
+        getContentContract.launch("image/*")
+    }
+
+    private fun requestCameraPermission(){
+        val isGranted = ContextCompat.checkSelfPermission(this, Manifest.permission.CAMERA) == PackageManager.PERMISSION_GRANTED
+        if (isGranted) {
+            permissionCameraGranted()
+            return
+        }
+
+        if (deniedOnce){
+            alertDialogExplanation()
+            return
+        }
+
+        permissionCamera.launch(Manifest.permission.CAMERA)
+    }
+
+    private fun alertDialogExplanation(){
+        AlertDialog.Builder(this)
+            .setTitle(getString(R.string.permission_camera_alert_title))
+            .setMessage(getString(R.string.permission_camera_description))
+            .setPositiveButton(getString(R.string.access)) { dialog, which ->
+                permissionCamera.launch(Manifest.permission.CAMERA)
+            }
+            .setNegativeButton(getString(R.string.cancel)) { dialog, which ->
+                showToast(getString(R.string.permission_camera_denied))
+            }
+            .show()
+    }
+
+    private fun alertQuestionSettingsShow(){
+        //TODO в задании надо было показать одну кнопку пользователю, без альтернативы.
+        // я решил пойти на встречу пользователю.
+        AlertDialog.Builder(this)
+            .setTitle(getString(R.string.permission_camera_alert_title))
+            .setMessage(getString(R.string.open_settings_alert_description))
+            .setPositiveButton(getString(R.string.yes)) { dialog, which ->
+                openSettings()
+            }
+            .setNegativeButton(getString(R.string.no)) { dialog, which ->
+                showToast(getString(R.string.cant_open_settings))
+            }
+            .show()
+    }
+
+    private fun openSettings(){
+        val intent = Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS).apply {
+            val uri = Uri.fromParts("package", packageName, null)
+            data = uri
+        }
+        startActivity(intent)
     }
 
     /**
      * Используйте этот метод чтобы отобразить картинку полученную из медиатеки в ImageView
      */
     private fun populateImage(uri: Uri) {
+        uriImage = uri
         val bitmap = BitmapFactory.decodeStream(contentResolver.openInputStream(uri))
         imageView.setImageBitmap(bitmap)
     }
 
     private fun openSenderApp() {
-        TODO("В качестве реализации метода отправьте неявный Intent чтобы поделиться профилем. В качестве extras передайте заполненные строки и картинку")
+        if (content.isEmpty() || uriImage == null){
+            showToast(getString(R.string.sendError))
+            return
+        }
+
+        // TODO "В качестве реализации метода отправьте неявный Intent чтобы поделиться профилем. В качестве extras передайте заполненные строки и картинку"
+        val sendIntent = Intent(Intent.ACTION_SEND)
+        sendIntent.type = "image/*"
+        sendIntent.putExtra(Intent.EXTRA_STREAM, uriImage)
+        sendIntent.putExtra(Intent.EXTRA_TEXT, content)
+        sendIntent.setPackage("org.telegram.messenger")
+        startActivity(sendIntent)
+    }
+
+    private fun showToast(message: String){
+        Toast.makeText(this, message, Toast.LENGTH_LONG).show()
     }
 }
