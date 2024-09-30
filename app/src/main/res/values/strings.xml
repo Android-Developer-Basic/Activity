@@ -1,4 +1,23 @@
 <resources>
     <string name="app_name">Activities</string>
     <string name="title_send">Отправить</string>
+
+    <integer name="count_camera_permission_requests">0</integer>
+
+    <string-array name="dialogActions">
+        <item>Сделать фото</item>
+        <item>Выбрать фото</item>
+    </string-array>
+
+    <string name="cancel">Отмена</string>
+    <string name="decline">Отклонить</string>
+    <string name="accept">Принять</string>
+    <string name="grant_access">Дать доступ</string>
+    <string name="camera_rationale">Доступ к камере необходим для выполнения домешнего задания.</string>
+    <string name="camera_explanation">Для создания снимка требуется доступ к камере.</string>
+    <string name="settings">Настройки</string>
+    <string name="apply_button">Применить</string>
+    <string name="lastname_field_hint">Фамилия</string>
+    <string name="firstname_field_hint">Имя</string>
+    <string name="age_field_hint">Возраст</string>
 </resources>
