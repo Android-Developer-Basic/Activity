@@ -1,3 +1,21 @@
 <resources>
     <string name="app_name">Activities</string>
+    <string name="title_send">Отправить</string>
+    <string name="go_to_settings_dialog_message">"Для предоставления доступа к камере перейдите в настройки"</string>
+    <string name="choose_image_title">Выберите изображение</string>
+    <string name="take_photo_dialog_button">Сделать фото</string>
+    <string name="choose_photo_dialog_button">Выбрать фото</string>
+    <string name="camera_permission_title">Разрешение доступа к камере</string>
+    <string name="rational_dialog_message">Для выбора изображения профиля необходимо предоставить доступ к камере</string>
+    <string name="give_permission_dialog_button">"Дать доступ"</string>
+    <string name="cancel_dialog_button">Отмена</string>
+    <string name="open_settings_screen_dialog_button">Открыть настройки</string>
+    <string name="telegram_alert_message">У вас не установлен Telegram</string>
+    <string name="edit_profile_title">Редактировать профиль</string>
+    <string name="write_name_hint">Введите имя</string>
+    <string name="write_surname_hint">Введите фамилию</string>
+    <string name="write_age_hint">Введите возраст</string>
+    <string name="apply_button">Применить</string>
+    <string name="fill_profile_info_message">Заполните информацию о профиле пользователя</string>
+
 </resources>
