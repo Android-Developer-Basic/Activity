@@ -1,3 +1,13 @@
 <resources>
     <string name="app_name">Sender</string>
+    <string name="send_email">send email</string>
+    <string name="open_receiver">open receiver</string>
+    <string name="to_google_maps">to google maps</string>
+    <string name="title">Интерстеллар</string>
+    <string name="year">2014</string>
+    <string name="description">Когда засуха, пыльные бури и вымирание растений приводят человечество к продовольственному кризису,
+        коллектив исследователей и учёных отправляется сквозь червоточину (которая предположительно соединяет области пространства-времени
+        через большое расстояние) в путешествие, чтобы превзойти прежние ограничения для космических путешествий человека и найти планету с
+        подходящими для человечества условиями.</string>
+
 </resources>
