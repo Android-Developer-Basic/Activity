@@ -1,4 +1,18 @@
 <resources>
     <string name="app_name">Activities</string>
     <string name="title_send">Отправить</string>
+    <string name="select_an_action">Выберите действие</string>
+    <string name="title">Диалог</string>
+    <string name="take_a_photo">Сделать фото</string>
+    <string name="choose_a_photo">Выбрать фото</string>
+    <string name="give_access">Дать доступ</string>
+    <string name="camera_access">Доступ к фотокамере</string>
+    <string name="why_get_foto">Камера используется для того, чтобы сделать фото для вашего профиля.</string>
+    <string name="cancellation">Отмена</string>
+    <string name="open_settings">Открыть настройки</string>
+    <string name="input_name">Введите имя</string>
+    <string name="input_surname">Введите фамилию</string>
+    <string name="input_age">Введите возраст</string>
+    <string name="edit_profile">Редактировать профиль</string>
+    <string name="apply">Применить</string>
 </resources>
