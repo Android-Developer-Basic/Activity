@@ -27,11 +27,3 @@ jobs:
 
       - name: build
         run: ./gradlew buildDebug
-
-      - name: upload reports
-        if: ${{ failure() }}
-        uses: actions/upload-artifact@v3.1.0
-        with:
-          path: app/build/reports/detekt/detekt.html
-          if-no-files-found: ignore
-          retention-days: 7
