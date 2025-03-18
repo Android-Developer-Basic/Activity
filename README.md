@@ -2,7 +2,7 @@
 
 Создайте в модуле **sender** класс **SenderActivity**. Добавьте в него три кнопки: **“To Google Maps”**, **“Send Email”** и **“Open Receiver”**. Добавьте пустые обработчики нажатий на эти кнопки.
 
-1. По клику на кнопку **“To Google Maps”**, используя явный `Intent` вызовите `Activity` приложения Google Maps. После того как Google Maps поймает ваш Intent, в нем должны отобразиться ближайшие к текущей геолокации места по тэгу “*Рестораны”*
+1. По клику на кнопку **“To Google Maps”**, используя интент с указанием package `com.google.android.apps.maps`, вызовите `Activity` приложения Google Maps. После того как Google Maps поймает ваш Intent, в нем должны отобразиться ближайшие к текущей геолокации места по тэгу “*Рестораны”*
 
     <img src="art/Untitled.png" width="520">
 
