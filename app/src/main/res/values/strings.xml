@@ -1,3 +1,11 @@
 <resources>
-    <string name="app_name">Activities</string>
+    <string name="app_name">Homework_activity_01</string>
+    <string name="activity_a.open_activity_b_button">Open activity B</string>
+    <string name="activity_b.open_activity_c_button">Open activity C</string>
+    <string name="activity_c.open_activity_a_button">Open activity A</string>
+    <string name="activity_c.open_activity_d_button">Open activity D</string>
+    <string name="activity_c.open_activity_c_button">Open activity C</string>
+    <string name="activity_c.close_activity_c_button">Close activity C</string>
+    <string name="activity_c.close_stack_button">Close stack</string>
+    <string name="activity_a.task_check_box">Open activity on new task</string>
 </resources>
