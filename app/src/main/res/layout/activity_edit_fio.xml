@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".FillFormActivity">
+
+    <EditText
+        android:id="@+id/plain_text_firstname"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="40dp"
+        android:layout_marginTop="40dp"
+        android:hint="Имя"
+        android:inputType="text"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <EditText
+        android:id="@+id/plain_text_surname"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:hint="Фамилия"
+        android:inputType="text"
+        app:layout_constraintStart_toStartOf="@+id/plain_text_firstname"
+        app:layout_constraintTop_toBottomOf="@+id/plain_text_firstname" />
+
+    <EditText
+        android:id="@+id/plain_text_age"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:hint="Возраст"
+        android:inputType="text"
+        app:layout_constraintStart_toStartOf="@+id/plain_text_surname"
+        app:layout_constraintTop_toBottomOf="@+id/plain_text_surname" />
+
+    <Button
+        android:id="@+id/button_edit_fio"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:text="Применить"
+        app:layout_constraintStart_toStartOf="@+id/plain_text_age"
+        app:layout_constraintTop_toBottomOf="@+id/plain_text_age" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>
