@@ -1,3 +1,8 @@
 <resources>
     <string name="app_name">Receiver</string>
+    <string name="niceguys_title">Славные парни</string>
+    <string name="interstellar_title">Интерстеллар</string>
+    <string name="title_not_found">Фильм \'%s\' не найден(</string>
+    <string name="payliad_not_found">Не переданы данные для поиска</string>
+    <string name="image_not_found">Рисунок к фильму \'%s\' не найден</string>
 </resources>
