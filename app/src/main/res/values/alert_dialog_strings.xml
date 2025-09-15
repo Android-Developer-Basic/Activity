@@ -1,0 +1,7 @@
+<resources>
+    <string name="choose_dialog_title">Выберите фото</string>
+    <string name="choose_dialog_canceled">Отмена</string>
+    <string name="choose_dialog_choose_photo">Выбрать фото</string>
+    <string name="choose_dialog_create_photo">Сделать фото</string>
+    <string name="choose_dialog_ok">OK</string>
+</resources>

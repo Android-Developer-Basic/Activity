@@ -1,4 +1,10 @@
 <resources>
     <string name="app_name">Activities</string>
-    <string name="title_send">Отправить</string>
+    <string name="last_name_hint">Фамилия</string>
+    <string name="first_name_hint">Имя</string>
+    <string name="age_hint">Возраст</string>
+    <string name="textview_age_default">Возраст</string>
+    <string name="textview_last_name_default">Фамилия</string>
+    <string name="textview_first_name_default">Имя</string>
+    <string name="apply_button_text">Применить</string>
 </resources>

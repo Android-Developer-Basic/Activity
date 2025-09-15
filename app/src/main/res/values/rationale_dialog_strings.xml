@@ -1,0 +1,8 @@
+<resources>
+    <string name="title_send">Отправить</string>
+    <string name="rationale_dialog_button_ok">Дать доступ</string>
+    <string name="rationale_dialog_button_canceled">Отмена</string>
+    <string name="rationale_dialog_title">Необходимо разрешение</string>
+    <string name="rationale_dialog_message">Для того, чтобы снять фотографию, необходимо разрешение на использование камеры</string>
+
+</resources>
