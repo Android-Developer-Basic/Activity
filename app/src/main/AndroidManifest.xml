@@ -7,10 +7,31 @@
         android:dataExtractionRules="@xml/data_extraction_rules"
         android:fullBackupContent="@xml/backup_rules"
         android:icon="@mipmap/ic_launcher"
-        android:label="@string/app_name"
+        android:label=""
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
-        android:theme="@style/Theme.Activities"
-        tools:targetApi="31" />
-
+        android:theme="@style/Theme.LaunchMode"
+        tools:targetApi="31">
+        <activity
+            android:name=".ActivityB"
+            android:exported="false"
+            android:taskAffinity="abc.abc"/>
+        <activity
+            android:name=".ActivityC"
+            android:taskAffinity="abc.abc"
+            android:exported="false"/>
+        <activity
+            android:name=".ActivityD"
+            android:taskAffinity="abc.abc"
+            android:exported="false"/>
+        <activity
+            android:name=".ActivityA"
+            android:launchMode="singleTask"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+    </application>
 </manifest>
