@@ -38,9 +38,9 @@ class SenderActivity : AppCompatActivity() {
             val intent = Intent(Intent.ACTION_SEND)
             intent.type = "text/plain"
             intent.addCategory(Intent.CATEGORY_DEFAULT)
-            intent.putExtra("title", "interstellar")
-            intent.putExtra("year", "2025")
-            intent.putExtra("description", "Трудный был год")
+            intent.putExtra("title", "Интерстеллар")
+            intent.putExtra("year", "2014")
+            intent.putExtra("description", "Когда засуха, пыльные бури и вымирание растений приводят человечество к продовольственному кризису, коллектив исследователей и учёных отправляется сквозь червоточину (которая предположительно соединяет области пространства-времени через большое расстояние) в путешествие, чтобы превзойти прежние ограничения для космических путешествий человека и найти планету с подходящими для человечества условиями.")
             startActivity(intent)
         }
     }

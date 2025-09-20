@@ -20,8 +20,8 @@ class ReceiverActivity : AppCompatActivity() {
                 findViewById<TextView>(R.id.titleTextView).text = it
 
                 when (it) {
-                    "interstellar" -> ContextCompat.getDrawable(this, R.drawable.interstellar)
-                    "niceguys" -> ContextCompat.getDrawable(this, R.drawable.niceguys)
+                    "Интерстеллар" -> ContextCompat.getDrawable(this, R.drawable.interstellar)
+                    "Славные парни" -> ContextCompat.getDrawable(this, R.drawable.niceguys)
                     else -> null
                 }?.let { drawable ->
                     findViewById<ImageView>(R.id.posterImageView).setImageDrawable(drawable)
