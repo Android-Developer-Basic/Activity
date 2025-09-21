@@ -1,4 +1,8 @@
 <resources>
     <string name="app_name">Activities</string>
     <string name="title_send">Отправить</string>
+    <string name="getData">Применить</string>
+    <string name="age">Возвраст</string>
+    <string name="surname">Фамилия</string>
+    <string name="name">Имя</string>
 </resources>
