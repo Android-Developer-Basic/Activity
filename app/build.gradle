@@ -2,10 +2,11 @@ plugins {
     id 'com.android.application'
     id 'org.jetbrains.kotlin.android'
     id("io.gitlab.arturbosch.detekt")
+    id("org.jetbrains.kotlin.plugin.parcelize")
 }
 
 android {
-    compileSdk 34
+    compileSdk 36
 
     defaultConfig {
         applicationId "otus.gpb.homework.activities"
@@ -60,4 +61,5 @@ dependencies {
     implementation 'androidx.activity:activity-ktx:1.9.0'
     implementation 'androidx.fragment:fragment-ktx:1.7.1'
     implementation 'com.squareup.picasso:picasso:2.71828'
+    implementation 'androidx.activity:activity:1.11.0'
 }
