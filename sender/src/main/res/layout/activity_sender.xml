@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/main"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context="otus.gpb.homework.activities.sender.SenderActivity">
+
+    <Button
+        android:id="@+id/btn_google_maps"
+        android:layout_width="148dp"
+        android:layout_height="wrap_content"
+        android:text="@string/btn_google_maps"
+        android:paddingLeft="12dp"
+        android:layout_marginLeft="48dp"
+        android:layout_marginTop="12dp"
+        >
+
+    </Button>
+
+    <Button
+        android:id="@+id/btn_email"
+        android:layout_width="148dp"
+        android:layout_height="wrap_content"
+        android:text="@string/btn_email"
+        android:paddingLeft="12dp"
+        android:layout_marginLeft="48dp"
+        android:layout_marginTop="12dp"
+        >
+
+    </Button>
+
+    <Button
+        android:id="@+id/btn_send"
+        android:layout_width="148dp"
+        android:layout_height="wrap_content"
+        android:text="@string/btn_receiver"
+        android:paddingLeft="12dp"
+        android:layout_marginLeft="224dp"
+        android:layout_marginTop="24dp"
+        >
+
+    </Button>
+
+</LinearLayout>
