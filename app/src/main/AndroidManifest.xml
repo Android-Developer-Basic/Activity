@@ -15,13 +15,16 @@
 
         <activity
             android:name=".ActivityD"
-            android:exported="false" />
+            android:exported="false"
+            android:taskAffinity="tasks2"/>
         <activity
             android:name=".ActivityC"
-            android:exported="false" />
+            android:exported="false"
+            android:taskAffinity="tasks2"/>
         <activity
             android:name=".ActivityB"
-            android:exported="false" />
+            android:exported="false"
+            android:taskAffinity="tasks2"/>
 
         <activity android:name=".ActivityA" android:exported="true" >
             <intent-filter>

@@ -2,6 +2,7 @@ package otus.gpb.homework.activities
 
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import android.view.ViewGroup
 import android.widget.Button
 import androidx.activity.enableEdgeToEdge
@@ -27,9 +28,13 @@ class ActivityA : AppCompatActivity(), BaseComponentsI {
         buttonOpenView = findViewById<ViewGroup>(R.id.base).findViewById(R.id.button)
         buttonOpenView.text = resources.getStringArray(R.array.open_buttons)[1] // Open Activity B
         buttonOpenView.setOnClickListener {
-            startActivity( Intent(this, ActivityB::class.java))
+            startActivity( Intent(this, ActivityB::class.java).addFlags(Intent.FLAG_ACTIVITY_NEW_TASK))
         }
     }
 
+    override fun onNewIntent(intent: Intent) {
+        super.onNewIntent(intent)
+        Log.d("ActivityA", "get ActivityA and call callback onNewIntent")
+    }
 
 }

@@ -27,7 +27,12 @@ class ActivityC : AppCompatActivity() {
 
         btn1 = findViewById<ViewGroup>(R.id.base_1).findViewById(R.id.button)
         btn1.text = resources.getStringArray(R.array.open_buttons)[0] // Open Activity A
-        btn1.setOnClickListener { startActivity(Intent(this, ActivityA::class.java)) }
+        btn1.setOnClickListener {
+            val intent = Intent(this, ActivityA::class.java)
+            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+            intent.addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP)
+            startActivity(intent)
+        }
 
         btn2 = findViewById<ViewGroup>(R.id.base_2).findViewById(R.id.button)
         btn2.text = resources.getStringArray(R.array.open_buttons)[3] // Open Activity D
