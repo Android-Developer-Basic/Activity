@@ -1,4 +1,16 @@
 <resources>
     <string name="app_name">Activities</string>
     <string name="title_send">Отправить</string>
+    <string name="title">Сделайте выбор</string>
+    <string name="select_photo">Выбрать фото</string>
+    <string name="make_photo">Сделать фото</string>
+    <string name="cancel">Отмена</string>
+    <string name="give_access">Дать доступ</string>
+    <string name="attention">Внимание</string>
+    <string name="message_text">Без доступа к камере работа программы не возможна</string>
+    <string name="open_settings">Открыть настройки</string>
+    <string name="FirstName">Имя</string>
+    <string name="LastName">Фамилия</string>
+    <string name="Age">Возраст</string>
+    <string name="Apply">Применить</string>
 </resources>
