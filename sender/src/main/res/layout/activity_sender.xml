@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:gravity="center"
+    android:orientation="vertical"
+    android:padding="24dp"
+    tools:context=".SenderActivity">
+
+    <Button
+        android:id="@+id/toGoogleMapsButton"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="To Google Maps" />
+
+    <Button
+        android:id="@+id/sendEmailButton"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:text="Send Email" />
+
+    <Button
+        android:id="@+id/openReceiverButton"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:text="Open Receiver" />
+
+</LinearLayout>
