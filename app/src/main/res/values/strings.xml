@@ -1,4 +1,8 @@
 <resources>
     <string name="app_name">Activities</string>
     <string name="title_send">Отправить</string>
+    <string name="profile_first_name">Имя</string>
+    <string name="profile_last_name">Фамилия</string>
+    <string name="profile_age">Возраст</string>
+    <string name="profile_apply">Применить</string>
 </resources>
