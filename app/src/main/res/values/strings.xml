@@ -1,4 +1,29 @@
 <resources>
     <string name="app_name">Activities</string>
     <string name="title_send">Отправить</string>
+
+    <string name="dialog_photo_title">Фото профиля</string>
+    <string name="dialog_photo_take">Сделать фото</string>
+    <string name="dialog_photo_pick">Выбрать фото</string>
+
+    <string-array name="photo_actions">
+        <item>@string/dialog_photo_take</item>
+        <item>@string/dialog_photo_pick</item>
+    </string-array>
+
+    <string name="dialog_rationale_title">Нужен доступ к камере</string>
+    <string name="dialog_rationale_message">Камера нужна, чтобы сделать фото для профиля. Снимок остается на устройстве и никуда не отправляется без вашего действия.</string>
+    <string name="dialog_rationale_grant">Дать доступ</string>
+    <string name="dialog_rationale_cancel">Отмена</string>
+
+    <string name="dialog_settings_title">Доступ к камере запрещен</string>
+    <string name="dialog_settings_message">Разрешение на камеру отключено. Включить его можно в настройках приложения.</string>
+    <string name="dialog_settings_open">Открыть настройки</string>
+
+    <string name="hint_name">Имя</string>
+    <string name="hint_surname">Фамилия</string>
+    <string name="hint_age">Возраст</string>
+    <string name="title_fill_form">Заполнить профиль</string>
+    <string name="button_apply">Применить</string>
+    <string name="share_chooser_title">Поделиться профилем</string>
 </resources>
