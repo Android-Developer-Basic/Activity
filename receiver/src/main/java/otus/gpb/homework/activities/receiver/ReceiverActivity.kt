@@ -4,35 +4,37 @@ import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import android.widget.ImageView
 import android.widget.TextView
+import androidx.activity.enableEdgeToEdge
+import androidx.appcompat.content.res.AppCompatResources
+import androidx.core.view.ViewCompat
+import androidx.core.view.WindowInsetsCompat
+import otus.gpb.homework.activities.receiver.databinding.ActivityReceiverBinding
 
 class ReceiverActivity : AppCompatActivity() {
+    private lateinit var binding: ActivityReceiverBinding
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_receiver)
-
-        val posterImageView = findViewById<ImageView>(R.id.posterImageView)
-        val titleTextView = findViewById<TextView>(R.id.titleTextView)
-        val yearTextView = findViewById<TextView>(R.id.yearTextView)
-        val descriptionTextView = findViewById<TextView>(R.id.descriptionTextView)
-
-        val title = intent.getStringExtra("title").orEmpty()
-        val year = intent.getIntExtra("year", 0)
-        val description = intent.getStringExtra("description").orEmpty()
-
-        titleTextView.text = title
-        yearTextView.text = year.toString()
-        descriptionTextView.text = description
-
-        /*
-        val posterRes = when (title.lowercase()) {
-            "inception"      -> R.drawable.poster_inception
-            "interstellar"   -> R.drawable.poster_interstellar
-            "matrix"         -> R.drawable.poster_matrix
-            // добавьте остальные фильмы
-            else             -> R.drawable.poster_default
+        binding = ActivityReceiverBinding.inflate(layoutInflater)
+        setContentView(binding.root)
+        ViewCompat.setOnApplyWindowInsetsListener(binding.root) { v, insets ->
+            val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
+            v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
+            insets
         }
-        posterImageView.setImageResource(posterRes)
-         */
+
+        binding.titleTextView.text = intent.getStringExtra("title").orEmpty()
+        binding.yearTextView.text = intent.getStringExtra("year").orEmpty()
+        binding.descriptionTextView.text = intent.getStringExtra("description").orEmpty()
+
+        val posterResId = when (binding.titleTextView.text.toString().lowercase()) {
+            "интерстеллар"   -> R.drawable.interstellar
+            "славные парни"  -> R.drawable.niceguys
+            else             -> R.drawable.niceguys
+        }
+
+        AppCompatResources.getDrawable(this, posterResId)?.let {
+            binding.posterImageView.setImageDrawable(it)
+        }
     }
 }
