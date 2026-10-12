@@ -29,3 +29,4 @@
 > 💡 Чтобы достать ресурс, используйте метод [Context.getDrawable()](https://developer.android.com/reference/android/content/Context#getDrawable(int)), а чтобы поменять картинку в ImageView используйте метод [setImageDrawable()](https://developer.android.com/reference/android/widget/ImageView#setImageDrawable(android.graphics.drawable.Drawable))
 
 <img src="art/Untitled%202.png" width="720">
+[payload.txt](sender/payload.txt)
